@@ -2,6 +2,8 @@ package graphics;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.*;
 
 public class Player extends JPanel implements KeyListener {
@@ -15,6 +17,7 @@ public class Player extends JPanel implements KeyListener {
     public int x = 0;
     public int y = 0;
 
+    private final Set<Integer> pressed = new HashSet<>();
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -55,23 +58,32 @@ public class Player extends JPanel implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-            updatePlayer(1, 0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT){
-            updatePlayer(-1, 0);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_UP){
-            updatePlayer(0, -1);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN){
-            updatePlayer(0, 1);
+    public synchronized void keyPressed(KeyEvent e) {
+        pressed.add(e.getKeyCode());
+        if (pressed.size() > 0) {
+            int xMovement = 0;
+            int yMovement = 0;
+            for(Integer key : pressed){
+
+                if(key == KeyEvent.VK_RIGHT){
+                    xMovement = 1;
+                }
+                if(key == KeyEvent.VK_LEFT){
+                    xMovement = -1;
+                }
+                if(key == KeyEvent.VK_UP){
+                    yMovement = -1;
+                }
+                if(key == KeyEvent.VK_DOWN){
+                    yMovement = 1;
+                }
+            }
+            updatePlayer(xMovement, yMovement);
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
+    public synchronized void keyReleased(KeyEvent e) {
+        pressed.remove(e.getKeyCode());
     }
 }
