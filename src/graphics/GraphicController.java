@@ -7,6 +7,8 @@ public class GraphicController {
 
         Player p = new Player();
 
+        p.updatePlayer(5, 5);
+
         f.getContentPane().add(p);//adding button in JFrame
         f.pack();
         f.setLocationByPlatform(true);
