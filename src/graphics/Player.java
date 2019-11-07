@@ -1,45 +1,77 @@
 package graphics;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.*;
 
-public class Player extends JPanel {
-    private static final int RECT_WIDTH = 20;
-    private static final int RECT_HEIGHT = RECT_WIDTH;
-    private static final int TRIA_POINTS = 3;
-    private static final int TRIA_HEIGHT = 15;
+public class Player extends JPanel implements KeyListener {
+    private static final int POLYGON_WIDTH = 20;
+    private static final int POLYGON_HEIGHT_BODY = POLYGON_WIDTH;
+    private static final int POLYGON_HEIGHT = POLYGON_WIDTH + 15;
+    private static final int POLYGON_POINTS = 5;
 
-    private int[] triangleXPoints = new int[TRIA_POINTS];
-    private int[] triangleYPoints = new int[TRIA_POINTS];
-    private int x = 0;
-    private int y = 0;
+    private int[] polygonXPoints = new int[POLYGON_POINTS];
+    private int[] polygonYPoints = new int[POLYGON_POINTS];
+    public int x = 0;
+    public int y = 0;
 
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
-        g.drawRect(x, y, RECT_WIDTH, RECT_HEIGHT);
-        g.fillRect(x, y, RECT_WIDTH, RECT_HEIGHT);
-        g.drawPolygon(triangleXPoints, triangleYPoints, TRIA_POINTS);
-        g.fillPolygon(triangleXPoints, triangleYPoints, TRIA_POINTS);
+        g.drawPolygon(polygonXPoints, polygonYPoints, POLYGON_POINTS);
+        g.fillPolygon(polygonXPoints, polygonYPoints, POLYGON_POINTS);
     }
 
     @Override
     public Dimension getPreferredSize() {
         // so that our GUI is big enough
-        return new Dimension(RECT_WIDTH + 2 * 20, RECT_HEIGHT + 2 * 20);
+        return new Dimension(500, 500);
     }
 
     public void updatePlayer(int newX, int newY){
-        x = newX;
-        y = newY;
+        x += newX;
+        y += newY;
 
-        triangleXPoints[0] = newX;
-        triangleXPoints[1] = newX + RECT_WIDTH;
-        triangleXPoints[2] = Math.round(newX + RECT_WIDTH/ 2f);
+        polygonXPoints[0] = x;
+        polygonXPoints[1] = x + POLYGON_WIDTH;
+        polygonXPoints[2] = x + POLYGON_WIDTH;
+        polygonXPoints[3] = Math.round(x + POLYGON_WIDTH/ 2f);
+        polygonXPoints[4] = x;
 
-        triangleYPoints[0] = newY + RECT_HEIGHT;
-        triangleYPoints[1] = newY + RECT_HEIGHT;
-        triangleYPoints[2] = newY + RECT_HEIGHT + TRIA_HEIGHT;
+        polygonYPoints[0] = y;
+        polygonYPoints[1] = y;
+        polygonYPoints[2] = y + POLYGON_HEIGHT_BODY;
+        polygonYPoints[3] = y + POLYGON_HEIGHT;
+        polygonYPoints[4] = y + POLYGON_HEIGHT_BODY;
+
+        repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            updatePlayer(1, 0);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            updatePlayer(-1, 0);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_UP){
+            updatePlayer(0, -1);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_DOWN){
+            updatePlayer(0, 1);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
