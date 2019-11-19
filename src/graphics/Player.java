@@ -16,6 +16,7 @@ public class Player extends JPanel implements KeyListener {
     private int[] polygonYPoints = new int[POLYGON_POINTS];
     public int x = 0;
     public int y = 0;
+    public int speed = 10;
 
     private final Set<Integer> pressed = new HashSet<>();
 
@@ -30,7 +31,7 @@ public class Player extends JPanel implements KeyListener {
     @Override
     public Dimension getPreferredSize() {
         // so that our GUI is big enough
-        return new Dimension(500, 500);
+        return new Dimension(1200, 800);
     }
 
     public void updatePlayer(int newX, int newY){
@@ -78,7 +79,7 @@ public class Player extends JPanel implements KeyListener {
                     yMovement = 1;
                 }
             }
-            updatePlayer(xMovement, yMovement);
+            updatePlayer(xMovement * speed, yMovement * speed);
         }
     }
 
