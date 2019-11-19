@@ -1,4 +1,6 @@
-package control;
+package game;
+
+import game.GameObject;
 
 import java.util.LinkedList;
 
