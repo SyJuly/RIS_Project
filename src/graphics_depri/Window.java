@@ -1,4 +1,4 @@
-package graphics;
+package graphics_depri;
 import javax.swing.*;
 
 public class Window {
