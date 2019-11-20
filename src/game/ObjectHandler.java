@@ -28,4 +28,5 @@ public class ObjectHandler {
     public void removeObject(GameObject tempObject){
         objects.remove(tempObject);
     }
+
 }

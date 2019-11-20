@@ -1,11 +1,17 @@
 package game;
 
+import javax.swing.*;
 import java.awt.*;
 
 public abstract class GameObject {
 
     protected int x, y;
     protected int velX = 0, velY = 0;
+
+    public ID getId() {
+        return id;
+    }
+
     protected ID id;
 
     protected GameObject(int x, int y, ID id){

@@ -2,6 +2,7 @@ package game;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class Game extends Canvas implements Runnable{
 
@@ -15,7 +16,9 @@ public class Game extends Canvas implements Runnable{
     public Game (){
         new Window(1000, 563, "Game", this);
         objectHandler = new ObjectHandler();
-        objectHandler.addObject(new Box(10,10, ID.Obstacle));
+        Player player = new Player(30,30, ID.Player);
+        objectHandler.addObject(player);
+        this.addKeyListener(new KeyInput(new ArrayList<IMoveable>(){{add(player);}}));
     }
 
     public void start(){

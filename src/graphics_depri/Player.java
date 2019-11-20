@@ -16,7 +16,7 @@ public class Player extends JPanel implements KeyListener {
     private int[] polygonYPoints = new int[POLYGON_POINTS];
     public int x = 0;
     public int y = 0;
-    public int speed = 10;
+    public int speed = 100;
 
     private final Set<Integer> pressed = new HashSet<>();
 
