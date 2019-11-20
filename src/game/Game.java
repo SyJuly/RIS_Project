@@ -15,6 +15,7 @@ public class Game extends Canvas implements Runnable{
     public Game (){
         new Window(1000, 563, "Game", this);
         objectHandler = new ObjectHandler();
+        objectHandler.addObject(new Box(10,10, ID.Obstacle));
     }
 
     public void start(){
@@ -76,7 +77,7 @@ public class Game extends Canvas implements Runnable{
         Graphics g = bs.getDrawGraphics();
         ///////////////////////////////////////////////
 
-        g.setColor(Color.red);
+        g.setColor(Color.blue);
         g.fillRect(0,0, 1000, 563);
 
         objectHandler.render(g);
@@ -90,4 +91,6 @@ public class Game extends Canvas implements Runnable{
         Game game = new Game();
         game.start();
     }
+
+    //https://www.youtube.com/watch?v=Px6d_i46GbA
 }

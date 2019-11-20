@@ -6,10 +6,12 @@ public abstract class GameObject {
 
     protected int x, y;
     protected int velX = 0, velY = 0;
+    protected ID id;
 
-    protected GameObject(int x, int y){
+    protected GameObject(int x, int y, ID id){
         this.x = x;
         this.y = y;
+        this.id = id;
     }
 
     public abstract void tick();
