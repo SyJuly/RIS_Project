@@ -8,11 +8,11 @@ public class Utility {
                 0,1 * size,0,
                 1 * size,-1 * size,0
         };
-        return new Model(vertices);
+        return new Model(vertices, new int[]{0,1,2});
     }
 
     public static Model GetSquare(float size){
-        return new Model(getSquareVertices(size));
+        return new Model(getSquareVertices(size), getSquareIndices());
     }
 
     public static Model GetSquareWithTexture(float size){
@@ -23,11 +23,9 @@ public class Utility {
                 0,0,
                 1,0,
                 1,1,
-                1,1,
                 0,1,
-                0,0,
         };
-        return new Model(vertices, texture);
+        return new Model(vertices, texture, getSquareIndices());
     }
 
     private static float[] getSquareVertices(float size) {
@@ -35,10 +33,15 @@ public class Utility {
                 -1 * size, 1 * size, 0, // TOP LEFT
                 1 * size,1 * size, 0, // TOP RIGHT
                 1 * size,-1 * size, 0, // BOTTOM RIGHT
-
-                1 * size, -1 * size, 0, // BOTTOM RIGHT
                 -1 * size, -1 * size, 0, // BOTTOM LEFT
-                -1 * size, 1 *  size, 0 // TOP LEFT
         };
+    }
+
+    private static int[] getSquareIndices() {
+        return new int[]{
+                0,1, 2,
+                2,3,0
+        };
+
     }
 }
