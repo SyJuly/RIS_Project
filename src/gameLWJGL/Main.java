@@ -30,22 +30,14 @@ public class Main {
 
         GL.createCapabilities();
 
-        float squareSize = 0.2f;
-        float speed = 0.005f;
-        float x = 0;
-        float y = 0;
-
-
         double frame_cap = 1.0/60.0; // 60 frames per second
-
         double frame_time = 0;
         int frames = 0;
-
         double lastTime = Timer.getTime();
         double unprocessed = 0; // time that hasn't been processed
 
         Input input = new Input();
-        Player player = new Player(x,y,squareSize);
+        Player player = new Player(0,0, 0.2f);
 
         while(!glfwWindowShouldClose(window)){
             boolean can_render = false;
@@ -63,7 +55,8 @@ public class Main {
 
                 glfwPollEvents();
 
-                input.handleInput(window, player);
+                input.handleInput(window);
+                input.addMoveable(player);
                 player.update();
 
 
@@ -80,16 +73,6 @@ public class Main {
 
                 player.render();
 
-            /*glBegin(GL_QUADS);
-                glTexCoord2f(0,0);
-                glVertex2f(-squareSize + x, squareSize + y);
-                glTexCoord2f(1,0);
-                glVertex2f(squareSize + x, squareSize + y);
-                glTexCoord2f(1,1);
-                glVertex2f(squareSize + x, -squareSize + y);
-                glTexCoord2f(0,1);
-                glVertex2f(-squareSize + x, -squareSize + y);
-            glEnd();*/
 
                 glfwSwapBuffers(window);
                 frames++;
