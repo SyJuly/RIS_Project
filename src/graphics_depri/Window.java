@@ -9,7 +9,6 @@ public class Window {
         JFrame f=new JFrame();//creating instance of JFrame
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Player p = new Player();
-        game.Player player = new game.Player(30,30, ID.Player);
         p.updatePlayer(20, 5);
 
         f.getContentPane().add(p);//adding button in JFrame
