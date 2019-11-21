@@ -32,6 +32,7 @@ public class Main {
 
         glEnable(GL_TEXTURE_2D);
         Texture tex = new Texture("/home/july/Projects/RIS/Projekt/player.jpeg");
+        Model modelSquare = Utility.GetSquareWithTexture(0.5f);
 
         float squareSize = 0.2f;
         float speed = 0.005f;
@@ -62,7 +63,9 @@ public class Main {
 
             glClear(GL_COLOR_BUFFER_BIT);
 
+
             tex.bind();
+            modelSquare.render();
 
             /*glBegin(GL_QUADS);
                 glColor4f(1,0,0,0);
@@ -72,7 +75,7 @@ public class Main {
                 glVertex2f(-squareSize + x, -squareSize + y);
             glEnd();*/
 
-            glBegin(GL_QUADS);
+            /*glBegin(GL_QUADS);
                 glTexCoord2f(0,0);
                 glVertex2f(-squareSize + x, squareSize + y);
                 glTexCoord2f(1,0);
@@ -81,7 +84,7 @@ public class Main {
                 glVertex2f(squareSize + x, -squareSize + y);
                 glTexCoord2f(0,1);
                 glVertex2f(-squareSize + x, -squareSize + y);
-            glEnd();
+            glEnd();*/
 
             glfwSwapBuffers(window);
         }
