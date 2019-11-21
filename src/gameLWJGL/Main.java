@@ -18,7 +18,7 @@ public class Main {
             throw new IllegalStateException("Failed to initialise GLFW.");
         }
 
-        long window = setUpWindow();
+        Window window = new Window(640, 480, "Game");
 
         GL.createCapabilities();
 
@@ -36,7 +36,7 @@ public class Main {
         input.addMoveable(player);
 
 
-        while(!glfwWindowShouldClose(window)){
+        while(!window.shouldClose()){
             boolean can_render = false;
             double currentTime = Timer.getTime();
             double delta = currentTime - lastTime;
@@ -52,7 +52,7 @@ public class Main {
 
                 glfwPollEvents();
 
-                input.handleInput(window);
+                input.handleInput(window.window);
                 objectHandler.update();
 
 
@@ -69,30 +69,11 @@ public class Main {
 
                 objectHandler.render();
 
-
-                glfwSwapBuffers(window);
+                window.swapBuffers();
                 frames++;
             }
         }
 
         glfwTerminate();
-    }
-
-    private long setUpWindow(){
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        long window = glfwCreateWindow(640, 480, "Game", 0, 0);
-
-        if(window == 0){
-            throw new IllegalStateException("Failed to create Window");
-        }
-
-        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window, (videoMode.width() - 640) / 2, (videoMode.height() - 480) / 2);
-
-        glfwShowWindow(window);
-
-        glfwMakeContextCurrent(window);
-
-        return window;
     }
 }
