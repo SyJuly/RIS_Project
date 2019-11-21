@@ -44,6 +44,9 @@ public class Main {
         double lastTime = Timer.getTime();
         double unprocessed = 0; // time that hasn't been processed
 
+        Input input = new Input();
+        Player player = new Player(x,y,squareSize);
+
         while(!glfwWindowShouldClose(window)){
             boolean can_render = false;
             double currentTime = Timer.getTime();
@@ -60,22 +63,9 @@ public class Main {
 
                 glfwPollEvents();
 
-                if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE){
-                    glfwSetWindowShouldClose(window, true);
-                }
-                if(glfwGetKey(window, GLFW_KEY_LEFT) == GL_TRUE){
-                    x-= speed;
-                }
-                if(glfwGetKey(window, GLFW_KEY_RIGHT) == GL_TRUE){
-                    x+= speed;
-                }
+                input.handleInput(window, player);
+                player.update();
 
-                if(glfwGetKey(window, GLFW_KEY_UP) == GL_TRUE){
-                    y+= speed;
-                }
-                if(glfwGetKey(window, GLFW_KEY_DOWN) == GL_TRUE){
-                    y-= speed;
-                }
 
                 if(frame_time >= 1.0){
                     frame_time = 0;
@@ -88,13 +78,7 @@ public class Main {
             if(can_render){
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                glBegin(GL_QUADS);
-                glColor4f(1,0,0,0);
-                glVertex2f(-squareSize + x, squareSize + y);
-                glVertex2f(squareSize + x, squareSize + y);
-                glVertex2f(squareSize + x, -squareSize + y);
-                glVertex2f(-squareSize + x, -squareSize + y);
-                glEnd();
+                player.render();
 
             /*glBegin(GL_QUADS);
                 glTexCoord2f(0,0);
