@@ -9,24 +9,16 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
 
+    public static void main(String[] args) {
+        new Main();
+    }
+
     public Main(){
         if(!glfwInit()){
             throw new IllegalStateException("Failed to initialise GLFW.");
         }
 
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        long window = glfwCreateWindow(640, 480, "Game", 0, 0);
-
-        if(window == 0){
-            throw new IllegalStateException("Failed to create Window");
-        }
-
-        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window, (videoMode.width() - 640) / 2, (videoMode.height() - 480) / 2);
-
-        glfwShowWindow(window);
-
-        glfwMakeContextCurrent(window);
+        long window = setUpWindow();
 
         GL.createCapabilities();
 
@@ -36,8 +28,11 @@ public class Main {
         double lastTime = Timer.getTime();
         double unprocessed = 0; // time that hasn't been processed
 
+
         Input input = new Input();
         Player player = new Player(0,0, 0.2f);
+        input.addMoveable(player);
+
 
         while(!glfwWindowShouldClose(window)){
             boolean can_render = false;
@@ -56,7 +51,6 @@ public class Main {
                 glfwPollEvents();
 
                 input.handleInput(window);
-                input.addMoveable(player);
                 player.update();
 
 
@@ -82,7 +76,21 @@ public class Main {
         glfwTerminate();
     }
 
-    public static void main(String[] args) {
-        new Main();
+    private long setUpWindow(){
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        long window = glfwCreateWindow(640, 480, "Game", 0, 0);
+
+        if(window == 0){
+            throw new IllegalStateException("Failed to create Window");
+        }
+
+        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowPos(window, (videoMode.width() - 640) / 2, (videoMode.height() - 480) / 2);
+
+        glfwShowWindow(window);
+
+        glfwMakeContextCurrent(window);
+
+        return window;
     }
 }
