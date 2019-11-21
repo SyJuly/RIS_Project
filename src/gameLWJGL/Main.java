@@ -30,7 +30,9 @@ public class Main {
 
 
         Input input = new Input();
+        ObjectHandler objectHandler = new ObjectHandler();
         Player player = new Player(0,0, 0.2f);
+        objectHandler.addObject(player);
         input.addMoveable(player);
 
 
@@ -51,7 +53,7 @@ public class Main {
                 glfwPollEvents();
 
                 input.handleInput(window);
-                player.update();
+                objectHandler.update();
 
 
                 if(frame_time >= 1.0){
@@ -65,7 +67,7 @@ public class Main {
             if(can_render){
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                player.render();
+                objectHandler.render();
 
 
                 glfwSwapBuffers(window);
