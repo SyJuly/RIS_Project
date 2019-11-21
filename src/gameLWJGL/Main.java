@@ -30,50 +30,71 @@ public class Main {
 
         GL.createCapabilities();
 
-        glEnable(GL_TEXTURE_2D);
-        Texture tex = new Texture("/home/july/Projects/RIS/Projekt/player.jpeg");
-        Model modelSquare = Utility.GetSquareWithTexture(0.5f);
-
         float squareSize = 0.2f;
         float speed = 0.005f;
         float x = 0;
         float y = 0;
 
+
+        double frame_cap = 1.0/60.0; // 60 frames per second
+
+        double frame_time = 0;
+        int frames = 0;
+
+        double lastTime = Timer.getTime();
+        double unprocessed = 0; // time that hasn't been processed
+
         while(!glfwWindowShouldClose(window)){
+            boolean can_render = false;
+            double currentTime = Timer.getTime();
+            double delta = currentTime - lastTime;
+            unprocessed += delta;
+            frame_time += delta;
 
-            glfwPollEvents();
+            lastTime = currentTime;
 
-            if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE){
-                glfwSetWindowShouldClose(window, true);
+            while(unprocessed >= frame_cap){
+                // UPDATE
+                unprocessed -= frame_cap;
+                can_render = true;
+
+                glfwPollEvents();
+
+                if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE){
+                    glfwSetWindowShouldClose(window, true);
+                }
+                if(glfwGetKey(window, GLFW_KEY_LEFT) == GL_TRUE){
+                    x-= speed;
+                }
+                if(glfwGetKey(window, GLFW_KEY_RIGHT) == GL_TRUE){
+                    x+= speed;
+                }
+
+                if(glfwGetKey(window, GLFW_KEY_UP) == GL_TRUE){
+                    y+= speed;
+                }
+                if(glfwGetKey(window, GLFW_KEY_DOWN) == GL_TRUE){
+                    y-= speed;
+                }
+
+                if(frame_time >= 1.0){
+                    frame_time = 0;
+                    System.out.println("FPS: " + frames);
+                    frames = 0;
+                }
             }
-            if(glfwGetKey(window, GLFW_KEY_LEFT) == GL_TRUE){
-                x-= speed;
-            }
-            if(glfwGetKey(window, GLFW_KEY_RIGHT) == GL_TRUE){
-                x+= speed;
-            }
 
-            if(glfwGetKey(window, GLFW_KEY_UP) == GL_TRUE){
-                y+= speed;
-            }
-            if(glfwGetKey(window, GLFW_KEY_DOWN) == GL_TRUE){
-                y-= speed;
-            }
+            //RENDER
+            if(can_render){
+                glClear(GL_COLOR_BUFFER_BIT);
 
-
-            glClear(GL_COLOR_BUFFER_BIT);
-
-
-            tex.bind();
-            modelSquare.render();
-
-            /*glBegin(GL_QUADS);
+                glBegin(GL_QUADS);
                 glColor4f(1,0,0,0);
                 glVertex2f(-squareSize + x, squareSize + y);
                 glVertex2f(squareSize + x, squareSize + y);
                 glVertex2f(squareSize + x, -squareSize + y);
                 glVertex2f(-squareSize + x, -squareSize + y);
-            glEnd();*/
+                glEnd();
 
             /*glBegin(GL_QUADS);
                 glTexCoord2f(0,0);
@@ -86,7 +107,9 @@ public class Main {
                 glVertex2f(-squareSize + x, -squareSize + y);
             glEnd();*/
 
-            glfwSwapBuffers(window);
+                glfwSwapBuffers(window);
+                frames++;
+            }
         }
 
         glfwTerminate();
