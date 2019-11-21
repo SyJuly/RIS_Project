@@ -30,24 +30,41 @@ public class Main {
 
         GL.createCapabilities();
 
+        float squareSize = 0.2f;
+        float speed = 0.005f;
         float x = 0;
+        float y = 0;
 
         while(!glfwWindowShouldClose(window)){
 
             glfwPollEvents();
 
-            if(glfwGetKey(window, GLFW_KEY_RIGHT) == GL_TRUE){
-                x+= 0.001f;
+            if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE){
+                glfwSetWindowShouldClose(window, true);
             }
+            if(glfwGetKey(window, GLFW_KEY_LEFT) == GL_TRUE){
+                x-= speed;
+            }
+            if(glfwGetKey(window, GLFW_KEY_RIGHT) == GL_TRUE){
+                x+= speed;
+            }
+
+            if(glfwGetKey(window, GLFW_KEY_UP) == GL_TRUE){
+                y+= speed;
+            }
+            if(glfwGetKey(window, GLFW_KEY_DOWN) == GL_TRUE){
+                y-= speed;
+            }
+
 
             glClear(GL_COLOR_BUFFER_BIT);
 
             glBegin(GL_QUADS);
             glColor4f(1,0,0,0);
-            glVertex2f(-0.5f + x, 0.5f);
-            glVertex2f(0.5f + x, 0.5f);
-            glVertex2f(0.5f + x, -0.5f);
-            glVertex2f(-0.5f + x, -0.5f);
+            glVertex2f(-squareSize + x, squareSize + y);
+            glVertex2f(squareSize + x, squareSize + y);
+            glVertex2f(squareSize + x, -squareSize + y);
+            glVertex2f(-squareSize + x, -squareSize + y);
             glEnd();
 
             glfwSwapBuffers(window);
