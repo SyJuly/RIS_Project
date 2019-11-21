@@ -30,6 +30,9 @@ public class Main {
 
         GL.createCapabilities();
 
+        glEnable(GL_TEXTURE_2D);
+        Texture tex = new Texture("/home/july/Projects/RIS/Projekt/player.jpeg");
+
         float squareSize = 0.2f;
         float speed = 0.005f;
         float x = 0;
@@ -59,12 +62,25 @@ public class Main {
 
             glClear(GL_COLOR_BUFFER_BIT);
 
+            tex.bind();
+
+            /*glBegin(GL_QUADS);
+                glColor4f(1,0,0,0);
+                glVertex2f(-squareSize + x, squareSize + y);
+                glVertex2f(squareSize + x, squareSize + y);
+                glVertex2f(squareSize + x, -squareSize + y);
+                glVertex2f(-squareSize + x, -squareSize + y);
+            glEnd();*/
+
             glBegin(GL_QUADS);
-            glColor4f(1,0,0,0);
-            glVertex2f(-squareSize + x, squareSize + y);
-            glVertex2f(squareSize + x, squareSize + y);
-            glVertex2f(squareSize + x, -squareSize + y);
-            glVertex2f(-squareSize + x, -squareSize + y);
+                glTexCoord2f(0,0);
+                glVertex2f(-squareSize + x, squareSize + y);
+                glTexCoord2f(1,0);
+                glVertex2f(squareSize + x, squareSize + y);
+                glTexCoord2f(1,1);
+                glVertex2f(squareSize + x, -squareSize + y);
+                glTexCoord2f(0,1);
+                glVertex2f(-squareSize + x, -squareSize + y);
             glEnd();
 
             glfwSwapBuffers(window);
