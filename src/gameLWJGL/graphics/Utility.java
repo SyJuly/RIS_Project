@@ -1,4 +1,6 @@
-package gameLWJGL;
+package gameLWJGL.graphics;
+
+import gameLWJGL.graphics.Model;
 
 public class Utility {
 
