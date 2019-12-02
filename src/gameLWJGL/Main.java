@@ -1,5 +1,8 @@
 package gameLWJGL;
 
+import gameLWJGL.collision.CollisionDetector;
+import gameLWJGL.world.GroundBlock;
+import gameLWJGL.world.World;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
@@ -18,7 +21,7 @@ public class Main {
             throw new IllegalStateException("Failed to initialise GLFW.");
         }
 
-        Window window = new Window(640, 480, "Game");
+        Window window = new Window(1000, 700, "Game");
 
         GL.createCapabilities();
 
@@ -29,11 +32,16 @@ public class Main {
         double unprocessed = 0; // time that hasn't been processed
 
 
+        World world = new World();
+        world.buildWorld();
         Input input = new Input();
         ObjectHandler objectHandler = new ObjectHandler();
-        Player player = new Player(0,0, 0.2f);
+
+        Player player = new Player(0,0, 0.06f);
         objectHandler.addObject(player);
         input.addMoveable(player);
+
+        CollisionDetector collisionDetector = new CollisionDetector(world, objectHandler);
 
 
         while(!window.shouldClose()){
@@ -54,11 +62,13 @@ public class Main {
 
                 input.handleInput(window.window);
                 objectHandler.update();
+                collisionDetector.detectCollisions();
 
 
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    System.out.println("FPS: " + frames);
+                    //System.out.println("FPS: " + frames);
+                    System.out.println("X: " + player.x + "| Y: " + player.y);
                     frames = 0;
                 }
             }
@@ -67,6 +77,7 @@ public class Main {
             if(can_render){
                 glClear(GL_COLOR_BUFFER_BIT);
 
+                world.render();
                 objectHandler.render();
 
                 window.swapBuffers();

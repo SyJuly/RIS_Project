@@ -1,10 +1,11 @@
 package gameLWJGL;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class ObjectHandler {
 
-    LinkedList<GameObject> objects = new LinkedList<>();
+    List<GameObject> objects = new LinkedList<>();
 
     public void update(){
         for(int i = 0; i < objects.size(); i++){
@@ -26,6 +27,10 @@ public class ObjectHandler {
 
     public void removeObject(GameObject tempObject){
         objects.remove(tempObject);
+    }
+
+    public List<GameObject> getDynamicObjects(){
+        return objects;
     }
 
 }

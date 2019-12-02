@@ -1,12 +1,16 @@
 package gameLWJGL;
 
+import gameLWJGL.collision.AABB;
+import gameLWJGL.collision.Collision;
+import org.joml.Vector2f;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class Player extends GameObject implements IMoveable{
 
     private final static float MOVING_SPEED = 0.005f;
 
-    private float squareSize = 1;
+    private float squareSize = 0.5f;
 
     private int xDirection = 0;
     private int yDirection = 0;
@@ -14,6 +18,8 @@ public class Player extends GameObject implements IMoveable{
     public Player(float x, float y, float size){
         super(x,y);
         squareSize = size;
+
+        boundingBox = new AABB( new Vector2f(x+ (squareSize /2f), y - (squareSize /2f)), new Vector2f(squareSize, squareSize));
     }
 
     @Override
@@ -42,6 +48,11 @@ public class Player extends GameObject implements IMoveable{
                 glTexCoord2f(0,1);
                 glVertex2f(-squareSize + x, -squareSize + y);
             glEnd();*/
+    }
+
+    @Override
+    public void handleCollision(Collision collisionData) {
+        System.out.println("Player has collision.");
     }
 
     @Override
