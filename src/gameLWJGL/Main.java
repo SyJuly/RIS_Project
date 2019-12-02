@@ -1,9 +1,10 @@
 package gameLWJGL;
 
 import gameLWJGL.collision.CollisionDetector;
-import gameLWJGL.world.GroundBlock;
+import gameLWJGL.input.Input;
+import gameLWJGL.world.ObjectHandler;
+import gameLWJGL.world.Player;
 import gameLWJGL.world.World;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;

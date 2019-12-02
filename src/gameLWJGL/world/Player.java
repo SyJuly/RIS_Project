@@ -1,10 +1,11 @@
-package gameLWJGL;
+package gameLWJGL.world;
 
 import gameLWJGL.collision.Collision;
+import gameLWJGL.input.IMoveable;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Player extends GameObject implements IMoveable{
+public class Player extends GameObject implements IMoveable {
 
     private final static float MOVING_SPEED = 0.005f;
 

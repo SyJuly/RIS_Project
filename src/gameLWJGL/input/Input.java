@@ -1,4 +1,4 @@
-package gameLWJGL;
+package gameLWJGL.input;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,9 +1,6 @@
 package gameLWJGL.world;
 
-import gameLWJGL.GameObject;
-import gameLWJGL.collision.AABB;
 import gameLWJGL.collision.Collision;
-import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 

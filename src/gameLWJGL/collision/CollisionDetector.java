@@ -1,7 +1,7 @@
 package gameLWJGL.collision;
 
-import gameLWJGL.GameObject;
-import gameLWJGL.ObjectHandler;
+import gameLWJGL.world.GameObject;
+import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
 
 public class CollisionDetector {

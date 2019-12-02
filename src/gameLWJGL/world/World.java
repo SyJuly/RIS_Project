@@ -1,7 +1,5 @@
 package gameLWJGL.world;
 
-import gameLWJGL.GameObject;
-
 import java.util.ArrayList;
 import java.util.List;
 

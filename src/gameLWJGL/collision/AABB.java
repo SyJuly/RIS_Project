@@ -1,6 +1,6 @@
 package gameLWJGL.collision;
 
-import gameLWJGL.GameObject;
+import gameLWJGL.world.GameObject;
 
 public class AABB {
 

@@ -1,4 +1,4 @@
-package gameLWJGL;
+package gameLWJGL.input;
 
 public interface IMoveable {
 
