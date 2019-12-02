@@ -17,9 +17,8 @@ public class CollisionDetector {
     public void detectCollisions(){
         for (GameObject staticObject : world.getStaticObjects()) {
             for (GameObject dynamicObject: objectHandler.getDynamicObjects()) {
-                Collision collision = staticObject.boundingBox.getCollision(dynamicObject.boundingBox);
-                if(collision.isIntersecting){
-                    collision.gameObjects = new GameObject[]{dynamicObject, staticObject};
+                Collision collision = AABB.getCollision(dynamicObject, staticObject);
+                if(collision.isColliding){
                     dynamicObject.handleCollision(collision);
                 }
             }

@@ -1,17 +1,17 @@
 package gameLWJGL;
 
-import gameLWJGL.collision.AABB;
 import gameLWJGL.collision.Collision;
 
 public abstract class GameObject {
 
     public float x, y;
+    public float width, height;
 
-    public AABB boundingBox;
-
-    protected GameObject(float x, float y){
+    protected GameObject(float x, float y, float width, float height){
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     public abstract void update();

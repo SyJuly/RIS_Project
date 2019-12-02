@@ -21,7 +21,7 @@ public class Main {
             throw new IllegalStateException("Failed to initialise GLFW.");
         }
 
-        Window window = new Window(1000, 700, "Game");
+        Window window = new Window(700, 700, "Game");
 
         GL.createCapabilities();
 

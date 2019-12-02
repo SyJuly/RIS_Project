@@ -1,16 +1,13 @@
 package gameLWJGL.collision;
 
 import gameLWJGL.GameObject;
-import org.joml.Vector2f;
 
 public class Collision {
-    public Vector2f distance;
-    public boolean isIntersecting;
+    public boolean isColliding;
     public GameObject[] gameObjects;
 
-    public Collision(Vector2f distance, boolean intersects) {
-        this.distance = distance;
-        this.isIntersecting = intersects;
+    public Collision(boolean isColliding, GameObject[] gameObjects) { // no check if objects are inside each other
+        this.isColliding = isColliding;
         this.gameObjects = gameObjects;
     }
 }
