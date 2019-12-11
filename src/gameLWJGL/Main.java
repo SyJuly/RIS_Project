@@ -3,7 +3,7 @@ package gameLWJGL;
 import gameLWJGL.collision.CollisionDetector;
 import gameLWJGL.input.Input;
 import gameLWJGL.world.ObjectHandler;
-import gameLWJGL.world.Player;
+import gameLWJGL.objects.Player;
 import gameLWJGL.world.World;
 import org.lwjgl.opengl.GL;
 

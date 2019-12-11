@@ -1,16 +1,15 @@
-package gameLWJGL.world;
+package gameLWJGL.objects;
 
-import gameLWJGL.collision.Collision;
 import gameLWJGL.input.IMoveable;
+import gameLWJGL.physics.PhysicsObject;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Player extends GameObject implements IMoveable {
+public class Player extends PhysicsObject implements IMoveable {
 
-    private final static float MOVING_SPEED = 0.005f;
 
-    private int xDirection = 0;
-    private int yDirection = 0;
+    public static final double JUMP_STRENGTH = 0.07f;
+    public static final double SPEED = 0.03f;
 
     public Player(float x, float y, float size){
         super(x,y, size, size);
@@ -18,8 +17,7 @@ public class Player extends GameObject implements IMoveable {
 
     @Override
     public void update() {
-        x += xDirection * MOVING_SPEED;
-        y += yDirection * MOVING_SPEED;
+        super.update();
     }
 
     @Override
@@ -45,16 +43,14 @@ public class Player extends GameObject implements IMoveable {
     }
 
     @Override
-    public void handleCollision(Collision collisionData) {
-        x -= xDirection * MOVING_SPEED;
-        y -= yDirection * MOVING_SPEED;
-        xDirection = 0;
-        yDirection = 0;
+    public void move(int xDirection, int yDirection) {
+        if(yDirection > 0){
+            jump();
+        }
+        moveWithPhysics(SPEED * xDirection, 0);
     }
 
-    @Override
-    public void move(int xDirection, int yDirection) {
-        this.xDirection = xDirection;
-        this.yDirection = yDirection;
+    public void jump() {
+        accelerate(0, JUMP_STRENGTH);
     }
 }

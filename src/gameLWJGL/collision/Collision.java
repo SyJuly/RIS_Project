@@ -1,6 +1,6 @@
 package gameLWJGL.collision;
 
-import gameLWJGL.world.GameObject;
+import gameLWJGL.objects.GameObject;
 
 public class Collision {
     public boolean isColliding;

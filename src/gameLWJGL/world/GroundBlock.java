@@ -1,6 +1,7 @@
 package gameLWJGL.world;
 
 import gameLWJGL.collision.Collision;
+import gameLWJGL.objects.GameObject;
 
 import static org.lwjgl.opengl.GL11.*;
 

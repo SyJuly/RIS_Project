@@ -1,5 +1,7 @@
 package gameLWJGL.world;
 
+import gameLWJGL.objects.GameObject;
+
 import java.util.LinkedList;
 import java.util.List;
 

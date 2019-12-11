@@ -1,4 +1,4 @@
-package gameLWJGL.world;
+package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
 
