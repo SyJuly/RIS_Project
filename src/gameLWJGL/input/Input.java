@@ -34,6 +34,7 @@ public class Input {
             yDirection = - 1;
         }
 
+        if(xDirection == 0 && yDirection == 0) { return; }
 
         for (int i = 0; i < moveables.size(); i++){
             IMoveable tempMovable = moveables.get(i);

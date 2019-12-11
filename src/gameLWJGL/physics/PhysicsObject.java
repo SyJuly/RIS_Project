@@ -25,13 +25,11 @@ public abstract class PhysicsObject extends GameObject {
     public void moveWithPhysics(double xDelta, double yDelta) {
         x += xDelta;
         y += yDelta;
-        // do collision detection here. upon collision, set speedX/speedY to zero..!
     }
 
     @Override
     public void update() {
         moveWithPhysics(speedX, speedY);
-
         speedX = Math.min(speedX * FRICTION, maxSpeed);
         speedY = Math.min(speedX * FRICTION, maxSpeed);
         accelerate(0, -GRAVITY);
