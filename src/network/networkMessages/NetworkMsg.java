@@ -1,4 +1,6 @@
-package network;
+package network.networkMessages;
+
+import network.MsgType;
 
 import java.util.UUID;
 

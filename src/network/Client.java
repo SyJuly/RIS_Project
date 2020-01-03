@@ -11,9 +11,9 @@ public class Client {
 	  socket.getOutputStream().write(4);
 	  socket.close();
   }
-  
-  public void writeData() {
-	  
+
+  public void sendMoveMsg() {
+
   }
   
 }
