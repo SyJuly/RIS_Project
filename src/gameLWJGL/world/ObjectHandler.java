@@ -16,10 +16,10 @@ public class ObjectHandler {
         }
     }
 
-    public void render(){
+    public void render(Camera camera){
         for(int i = 0; i < objects.size(); i++){
             GameObject tempObject = objects.get(i);
-            tempObject.render();
+            tempObject.render(camera);
         }
     }
 

@@ -2,6 +2,7 @@ package gameLWJGL;
 
 import gameLWJGL.collision.CollisionDetector;
 import gameLWJGL.input.Input;
+import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.objects.Player;
 import gameLWJGL.world.World;
@@ -39,6 +40,7 @@ public class Main {
         ObjectHandler objectHandler = new ObjectHandler();
 
         Player player = new Player(0,0, 0.06f);
+        Camera camera = new Camera(player);
         objectHandler.addObject(player);
         input.addMoveable(player);
 
@@ -63,6 +65,7 @@ public class Main {
 
                 input.handleInput(window.window);
                 objectHandler.update();
+                camera.update();
                 collisionDetector.detectCollisions();
 
 
@@ -78,8 +81,8 @@ public class Main {
             if(can_render){
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                world.render();
-                objectHandler.render();
+                world.render(camera);
+                objectHandler.render(camera);
 
                 window.swapBuffers();
                 frames++;

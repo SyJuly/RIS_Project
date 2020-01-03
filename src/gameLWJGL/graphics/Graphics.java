@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
-public class Graphics implements Runnable {
+/*public class Graphics implements Runnable {
 
     private ObjectHandler objectHandler;
     private World world;
@@ -66,4 +66,4 @@ public class Graphics implements Runnable {
     public Window getWindow(){
         return window;
     }
-}
+}*/

@@ -2,6 +2,8 @@ package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
 import gameLWJGL.input.IMoveable;
+import gameLWJGL.world.Camera;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class NonGravityObject extends GameObject implements IMoveable {
@@ -22,25 +24,16 @@ public class NonGravityObject extends GameObject implements IMoveable {
     }
 
     @Override
-    public void render(){
+    public void render(Camera camera){
+        float xOffset = camera.getXOffset(x);
+        float yOffset = camera.getYOffset(y);
         glBegin(GL_QUADS);
-        glColor4f(1,0,0,0);
-        glVertex2f(-width + x, height + y);
-        glVertex2f(width + x, height + y);
-        glVertex2f(width + x, -height + y);
-        glVertex2f(-width + x, -height + y);
+        glColor4f(1,1,1,0);
+        glVertex2f(-width + xOffset, height + yOffset);
+        glVertex2f(width + xOffset, height + yOffset);
+        glVertex2f(width + xOffset, -height + yOffset);
+        glVertex2f(-width + xOffset, -height + yOffset);
         glEnd();
-
-        /*glBegin(GL_QUADS);
-                glTexCoord2f(0,0);
-                glVertex2f(-squareSize + x, squareSize + y);
-                glTexCoord2f(1,0);
-                glVertex2f(squareSize + x, squareSize + y);
-                glTexCoord2f(1,1);
-                glVertex2f(squareSize + x, -squareSize + y);
-                glTexCoord2f(0,1);
-                glVertex2f(-squareSize + x, -squareSize + y);
-            glEnd();*/
     }
 
     @Override

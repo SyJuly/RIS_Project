@@ -1,6 +1,7 @@
 package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
+import gameLWJGL.world.Camera;
 
 public abstract class GameObject {
 
@@ -15,7 +16,7 @@ public abstract class GameObject {
     }
 
     public abstract void update();
-    public abstract void render();
+    public abstract void render(Camera camera);
     public abstract void handleCollision(Collision collisionData);
 }
 

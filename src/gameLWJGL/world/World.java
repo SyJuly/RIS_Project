@@ -8,9 +8,7 @@ import java.util.List;
 public class World {
 
     private List<GameObject> ground;
-    private int numberOfGroundBoxes = 3;
     private int worldSize = 10;
-    private float groundBoxDistance = 0.3f;
 
     public World (){
         ground = new ArrayList<>();
@@ -23,18 +21,16 @@ public class World {
         }
     }
 
-    public void render(){
+    public void render(Camera camera){
         for(int i = 0; i < ground.size(); i++){
             GameObject tempObject = ground.get(i);
-            tempObject.render();
+            tempObject.render(camera);
         }
     }
 
     private float getY(float x){
         return (float)(0.4f * Math.cos(0.5f * x) - 0.4f * Math.cos(1f * x) - 0.4f * Math.cos(2f * x) + 0.3f);
     }
-
-    // y= 0.4 cos(x) - 0.4 cos(2 x) - 0.4 cos(4 x) + 0.3
 
 
     public List<GameObject> getStaticObjects(){

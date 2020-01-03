@@ -16,13 +16,15 @@ public class GroundBlock extends GameObject {
     }
 
     @Override
-    public void render() {
+    public void render(Camera camera) {
+        float xOffset = camera.getXOffset(x);
+        float yOffset = camera.getYOffset(y);
         glBegin(GL_QUADS);
         glColor4f(1,1,1,0);
-        glVertex2f(-width + x, height + y);
-        glVertex2f(width + x, height + y);
-        glVertex2f(width + x, -height + y);
-        glVertex2f(-width + x, -height + y);
+        glVertex2f(-width + xOffset, height + yOffset);
+        glVertex2f(width + xOffset, height + yOffset);
+        glVertex2f(width + xOffset, -height + yOffset);
+        glVertex2f(-width + xOffset, -height + yOffset);
         glEnd();
     }
 
