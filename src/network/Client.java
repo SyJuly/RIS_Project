@@ -8,8 +8,8 @@ public class Client {
 
   public static void main(String[] args) throws IOException {
 	  Socket socket = new Socket( "localhost", PORT);
-	  socket.getOutputStream().write(4);
-	  socket.close();
+	  //socket.getOutputStream().write(4);
+	  //socket.close();
   }
 
   public void sendMoveMsg() {
