@@ -7,6 +7,7 @@ import java.util.List;
 public class WorldArea {
 
     public float startingX;
+    public float lastUsed;
     private float width;
     private LinkedList<GameObject> staticObjects;
 
@@ -35,7 +36,6 @@ public class WorldArea {
     private float getY(float x){
         return (float)(0.4f * Math.cos(0.5f * x) - 0.4f * Math.cos(1f * x) - 0.4f * Math.cos(2f * x) + 0.3f);
     }
-
 
     public List<GameObject> getStaticObjects(){
         return staticObjects;
