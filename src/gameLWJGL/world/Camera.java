@@ -10,8 +10,11 @@ public class Camera {
     public Camera(Player player){
         this.player = player;
     }
+    public Camera(){
+    }
 
     public void update(){
+        if(player == null) return;
         x = player.x;
         y = player.y;
     }
