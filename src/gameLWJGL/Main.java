@@ -34,8 +34,7 @@ public class Main {
         double unprocessed = 0; // time that hasn't been processed
 
 
-        World world = new World();
-        world.buildWorld();
+        World world = new World(0, 4);
         Input input = new Input();
         ObjectHandler objectHandler = new ObjectHandler();
 
