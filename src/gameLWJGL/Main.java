@@ -34,12 +34,11 @@ public class Main {
         double unprocessed = 0; // time that hasn't been processed
 
 
-        World world = new World(0, 4);
-        Input input = new Input();
-        ObjectHandler objectHandler = new ObjectHandler();
-
         Player player = new Player(0,0, 0.06f);
         Camera camera = new Camera(player);
+        World world = new World(0, 4, camera);
+        Input input = new Input();
+        ObjectHandler objectHandler = new ObjectHandler();
         objectHandler.addObject(player);
         input.addMoveable(player);
 
@@ -63,6 +62,7 @@ public class Main {
                 glfwPollEvents();
 
                 input.handleInput(window.window);
+                world.update();
                 objectHandler.update();
                 camera.update();
                 collisionDetector.detectCollisions();
@@ -80,7 +80,7 @@ public class Main {
             if(can_render){
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                world.render(camera);
+                world.render();
                 objectHandler.render(camera);
 
                 window.swapBuffers();
