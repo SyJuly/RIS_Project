@@ -6,7 +6,8 @@ import java.util.List;
 
 public class WorldArea {
 
-    private float startingX, width;
+    public float startingX;
+    private float width;
     private LinkedList<GameObject> staticObjects;
 
     public WorldArea (float startingX, float width) {

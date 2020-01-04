@@ -71,7 +71,7 @@ public class Main {
                 if(frame_time >= 1.0){
                     frame_time = 0;
                     //System.out.println("FPS: " + frames);
-                    System.out.println("X: " + player.x + "| Y: " + player.y);
+                    //System.out.println("X: " + player.x + "| Y: " + player.y);
                     frames = 0;
                 }
             }
