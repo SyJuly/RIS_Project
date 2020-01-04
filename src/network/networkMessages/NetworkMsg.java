@@ -20,6 +20,7 @@ public abstract class NetworkMsg<T> {
 	public abstract void serialize(OutputStream outputStream) throws IOException;
 
 	public void serializeBase(DataOutputStream dos) throws IOException {
+		dos.writeInt(msgType.getCode());
 		dos.writeInt(id.length());
 		for(int i = 0; i < id.length(); i++){
 			dos.writeChar(id.charAt(i));

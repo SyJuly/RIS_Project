@@ -23,7 +23,7 @@ public class ClientWorker implements Runnable{
             InputStream input  = clientSocket.getInputStream();
             OutputStream output = clientSocket.getOutputStream();
 
-            WorldMsg worldMsg = new WorldMsg(3);
+            WorldMsg worldMsg = new WorldMsg(0);
             System.out.println("Serializing world.");
             worldMsg.serialize(output);
 

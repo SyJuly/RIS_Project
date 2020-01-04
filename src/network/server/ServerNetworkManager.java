@@ -32,7 +32,7 @@ public class ServerNetworkManager {
 	}
 
 	public void register(NetworkMsgHandler msgHandler, MsgType type){
-		msgHandlers.put(type.getCode(), msgHandler);
+		//msgHandlers.put(type.getCode(), msgHandler);
 	}
 
 	public void receiveMessage(byte[] message, String networkCode){

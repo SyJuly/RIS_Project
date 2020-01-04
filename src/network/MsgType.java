@@ -1,13 +1,13 @@
 package network;
 
 public enum MsgType {
-	Move("6001");
+	World(6000);
 
-	private final String code;
+	private final int code;
 
-	MsgType(final String newValue) {
+	MsgType(final int newValue) {
 		code = newValue;
 	}
 
-	public String getCode() { return code; }
+	public int getCode() { return code; }
 }

@@ -25,7 +25,7 @@ public class GameClient {
         world = new World(4, camera);
         objectHandler = new ObjectHandler();
         input = new Input();
-        networkManager = new ClientNetworkManager();
+        networkManager = new ClientNetworkManager(world);
     }
 
     private void runGame(){
