@@ -49,6 +49,7 @@ public class Server implements Runnable{
   public synchronized void stop(){
     this.isStopped = true;
     try {
+      System.out.println("Stopping Server");
       this.serverSocket.close();
     } catch (IOException e) {
       throw new RuntimeException("Error closing server", e);
@@ -74,7 +75,7 @@ public class Server implements Runnable{
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      System.out.println("Stopping Server");
+      System.out.println("Stopping server application.");
       server.stop();
     }
   }
