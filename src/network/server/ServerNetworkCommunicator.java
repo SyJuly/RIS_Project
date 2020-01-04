@@ -1,7 +1,5 @@
 package network.server;
 
-import network.WorkerRunnable;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,7 +26,7 @@ public class ServerNetworkCommunicator implements Runnable{
       try {
         clientSocket = this.serverSocket.accept();
         new Thread(
-                new WorkerRunnable(
+                new ClientWorker(
                         clientSocket, "Multithreaded ServerNetworkCommunicator")
         ).start();
       } catch (IOException e) {

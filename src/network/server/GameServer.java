@@ -16,7 +16,8 @@ public class GameServer {
 
     public GameServer(){
         camera = new Camera();
-        world = new World(0, 4, camera);
+        world = new World(4, camera);
+        world.buildWorld(0);
         //Input input = new Input();
         objectHandler = new ObjectHandler();
         collisionDetector = new CollisionDetector(world, objectHandler);

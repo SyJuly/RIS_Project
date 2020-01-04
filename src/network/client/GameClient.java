@@ -1,25 +1,37 @@
-package gameLWJGL;
+package network.client;
 
-import gameLWJGL.collision.CollisionDetector;
+import gameLWJGL.Timer;
+import gameLWJGL.Window;
 import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
-import gameLWJGL.objects.Player;
 import gameLWJGL.world.World;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glClear;
 
-public class Main {
+public class GameClient {
 
-    public static void main(String[] args) {
-        new Main();
+    private Camera camera;
+    private World world;
+    private ObjectHandler objectHandler;
+    private Input input;
+    private ClientNetworkManager networkManager;
+
+    public GameClient(){
+        camera = new Camera();
+        world = new World(4, camera);
+        objectHandler = new ObjectHandler();
+        input = new Input();
+        networkManager = new ClientNetworkManager();
     }
 
-    public Main(){
-    /*    if(!glfwInit()){
+    private void runGame(){
+        networkManager.start();
+
+        if(!glfwInit()){
             throw new IllegalStateException("Failed to initialise GLFW.");
         }
 
@@ -32,18 +44,6 @@ public class Main {
         int frames = 0;
         double lastTime = Timer.getTime();
         double unprocessed = 0; // time that hasn't been processed
-
-
-        Player player = new Player(0,0, 0.06f);
-        Camera camera = new Camera(player);
-        World world = new World(0, 4, camera);
-        Input input = new Input();
-        ObjectHandler objectHandler = new ObjectHandler();
-        objectHandler.addObject(player);
-        input.addMoveable(player);
-
-        CollisionDetector collisionDetector = new CollisionDetector(world, objectHandler);
-
 
         while(!window.shouldClose()){
             boolean can_render = false;
@@ -62,15 +62,11 @@ public class Main {
                 glfwPollEvents();
 
                 input.handleInput(window.window);
-                world.update();
-                objectHandler.update();
-                camera.update();
-                collisionDetector.detectCollisions();
 
 
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    //System.out.println("FPS: " + frames);
+                    System.out.println("FPS: " + frames);
                     //System.out.println("X: " + player.x + "| Y: " + player.y);
                     frames = 0;
                 }
@@ -88,8 +84,12 @@ public class Main {
             }
         }
 
-        glfwTerminate();*/
+        networkManager.stop();
+        glfwTerminate();
     }
 
-    //https://www.youtube.com/watch?v=S7W-zjppzlI&list=PLILiqflMilIxta2xKk2EftiRHD4nQGW0u&index=17
+    public static void main(String[] args) {
+        GameClient gameClient = new GameClient();
+        gameClient.runGame();
+    }
 }

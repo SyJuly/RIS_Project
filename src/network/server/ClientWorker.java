@@ -1,16 +1,16 @@
-package network;
+package network.server;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class WorkerRunnable implements Runnable{
+public class ClientWorker implements Runnable{
 
     protected Socket clientSocket = null;
     protected String serverText   = null;
 
-    public WorkerRunnable(Socket clientSocket, String serverText) {
+    public ClientWorker(Socket clientSocket, String serverText) {
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
     }
@@ -22,10 +22,6 @@ public class WorkerRunnable implements Runnable{
             int result = input.read();
             System.out.println(result);
             long time = System.currentTimeMillis();
-            output.write(("HTTP/1.1 200 OK\n\nWorkerRunnable: " +
-                    this.serverText + " - " +
-                    time +
-                    "").getBytes());
             output.close();
             input.close();
             System.out.println("Request processed: " + time);

@@ -17,13 +17,18 @@ public class World {
     private float currentCentralX;
     private float worldAreaWidth;
 
-    public World (float centralX, float worldAreaWidth, Camera camera){
+    public World (float worldAreaWidth, Camera camera){
         this.camera = camera;
-        this.currentCentralX = centralX;
         this.worldAreaWidth = worldAreaWidth;
-        world = new WorldArea[worldSize];
+
         worldCache = new HashMap<>();
+    }
+
+    public void buildWorld(float centralX){
+        this.currentCentralX = centralX;
         float startingX = centralX - worldAreaWidth;
+
+        world = new WorldArea[worldSize];
         for (int i = 0; i < worldSize; i++){
             WorldArea area = new WorldArea(startingX, worldAreaWidth);
             world[i] = area;
@@ -69,6 +74,7 @@ public class World {
     }
 
     public void render(){
+        if(world == null) return;
         for(int i = 0; i < world.length; i++){
             WorldArea area = world[i];
             area.render(camera);
