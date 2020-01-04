@@ -1,5 +1,8 @@
 package network.client;
 
+import network.networkMessages.WorldMsg;
+
+import java.io.InputStream;
 import java.net.Socket;
 import java.io.IOException;
 
@@ -18,10 +21,20 @@ public class ClientNetworkCommunicator implements Runnable{
         synchronized (this) {
             this.runningThread = Thread.currentThread();
         }
+        try {
+            clientSocket = new Socket("localhost", port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while (!isStopped()) {
             try {
-                clientSocket = new Socket("localhost", port);
-                clientSocket.getOutputStream().write(4);
+                InputStream inputStream = clientSocket.getInputStream();
+                if(inputStream.available() > 0){
+                    System.out.println("inputstream available: " + inputStream.available() );
+
+                    WorldMsg msg = new WorldMsg(inputStream);
+                    System.out.println("WE DID IT: " + msg.centralX + "| " + msg.id);
+                }
             } catch (IOException e) {
                 if (isStopped()) {
                     System.out.println("ClientNetworkCommunicator Stopped.");

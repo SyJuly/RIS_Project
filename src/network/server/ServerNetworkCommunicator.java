@@ -29,6 +29,7 @@ public class ServerNetworkCommunicator implements Runnable{
                 new ClientWorker(
                         clientSocket, "Multithreaded ServerNetworkCommunicator")
         ).start();
+        System.out.println("created new worker");
       } catch (IOException e) {
         if(isStopped()) {
           System.out.println("ServerNetworkCommunicator Stopped.") ;
