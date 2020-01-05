@@ -116,6 +116,6 @@ public class World implements IMsgRecipient<WorldMsg> {
 
     @Override
     public void receive(WorldMsg worldMsg) {
-
+        buildWorld(worldMsg.centralX);
     }
 }

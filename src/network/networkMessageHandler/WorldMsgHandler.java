@@ -16,6 +16,5 @@ public class WorldMsgHandler extends NetworkMsgHandler<WorldMsg> {
     public void handleMsg(DataInputStream dis) throws IOException {
         WorldMsg msg = new WorldMsg(dis);
         recipient.receive(msg);
-        //world.buildWorld(msg.centralX);
     }
 }
