@@ -7,6 +7,7 @@ import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
 import network.MsgType;
+import network.NetworkManager;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessageHandler.WorldMsgHandler;
 import org.lwjgl.opengl.GL;
@@ -24,14 +25,14 @@ public class GameClient {
     private World world;
     private ObjectHandler objectHandler;
     private Input input;
-    private ClientNetworkManager networkManager;
+    private NetworkManager networkManager;
 
     public GameClient(){
         camera = new Camera();
         world = new World(4, camera);
         objectHandler = new ObjectHandler();
         input = new Input();
-        networkManager = new ClientNetworkManager(createMsgRecipients());
+        networkManager = new NetworkManager(getClientNetworkCommunicator());
     }
 
     private void runGame(){
@@ -90,14 +91,14 @@ public class GameClient {
             }
         }
 
-        networkManager.stop();
+        //networkManager.stop();
         glfwTerminate();
     }
 
-    private Map<Integer, NetworkMsgHandler> createMsgRecipients(){
+    private ClientNetworkCommunicator getClientNetworkCommunicator(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
         msgHandlers.put(MsgType.World.getCode(), new WorldMsgHandler(world));
-        return msgHandlers;
+        return new ClientNetworkCommunicator(msgHandlers);
     }
 
     public static void main(String[] args) {

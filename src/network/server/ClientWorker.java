@@ -1,11 +1,13 @@
 package network.server;
 
+import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessages.NetworkMsg;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -17,6 +19,7 @@ public class ClientWorker implements Runnable{
     public long id = 0;
 
     private Queue<NetworkMsg> messagesToSend;
+    private Map<Integer, NetworkMsgHandler> msgHandlers;
 
     public ClientWorker(Socket clientSocket, String serverText) {
         this.clientSocket = clientSocket;
@@ -25,25 +28,13 @@ public class ClientWorker implements Runnable{
     }
 
     public void run() {
-        System.out.println();
         while(! isStopped()) {
-            try {
-                InputStream input = clientSocket.getInputStream();
+            try (InputStream input = clientSocket.getInputStream();
+                 OutputStream output = clientSocket.getOutputStream();){
 
-                OutputStream output = clientSocket.getOutputStream();
                 for (NetworkMsg msg : messagesToSend) {
                     msg.serialize(output);
                 }
-            /*WorldMsg worldMsg = new WorldMsg(0);
-            System.out.println("Serializing world.");
-            worldMsg.serialize(output);*/
-
-            /*int result = input.read();
-            System.out.println(result);
-            long time = System.currentTimeMillis();*/
-                output.close();
-                input.close();
-                //System.out.println("Request processed: " + time);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,7 @@
 package network.server;
 
+import network.NetworkCommunicator;
+import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessages.NetworkMsg;
 
 import java.io.IOException;
@@ -7,23 +9,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ServerNetworkCommunicator implements Runnable{
+public class ServerNetworkCommunicator extends NetworkCommunicator{
 
-  protected int          serverPort   = 8080;
   protected ServerSocket serverSocket = null;
-  protected boolean      isStopped    = false;
-  protected Thread       runningThread= null;
 
   private List<ClientWorker> clientWorkers;
 
-  public ServerNetworkCommunicator(int port){
+  public ServerNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers){
+    super(msgHandlers);
     this.clientWorkers = new ArrayList<>();
-    this.serverPort = port;
   }
 
   public void run(){
-    System.out.println("Starting server on port: " + serverPort);
+    System.out.println("Starting server on port: " + port);
     synchronized(this){
       this.runningThread = Thread.currentThread();
     }
@@ -45,11 +45,6 @@ public class ServerNetworkCommunicator implements Runnable{
     System.out.println("ServerNetworkCommunicator Stopped.") ;
   }
 
-
-  private synchronized boolean isStopped() {
-    return this.isStopped;
-  }
-
   public synchronized void stop(){
     this.isStopped = true;
     try {
@@ -65,7 +60,7 @@ public class ServerNetworkCommunicator implements Runnable{
 
   private void openServerSocket() {
     try {
-      this.serverSocket = new ServerSocket(this.serverPort);
+      this.serverSocket = new ServerSocket(this.port);
     } catch (IOException e) {
       throw new RuntimeException("Cannot open port 8080", e);
     }
@@ -86,5 +81,10 @@ public class ServerNetworkCommunicator implements Runnable{
     for (ClientWorker worker: clientWorkers) {
       worker.sendMsg(msg);
     }
+  }
+
+  @Override
+  protected void send(NetworkMsg networkMsg) {
+    sendMsgToAllClients(networkMsg);
   }
 }

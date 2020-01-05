@@ -6,9 +6,11 @@ import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
+import network.NetworkManager;
 import network.networkMessages.NetworkMsg;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameServer {
@@ -17,7 +19,7 @@ public class GameServer {
     private World world;
     private ObjectHandler objectHandler;
     private CollisionDetector collisionDetector;
-    private ServerNetworkManager networkManager;
+    private NetworkManager networkManager;
 
     private List<IMsgApplicator> msgApplicators;
 
@@ -29,7 +31,7 @@ public class GameServer {
         //Input input = new Input();
         objectHandler = new ObjectHandler();
         collisionDetector = new CollisionDetector(world, objectHandler);
-        networkManager = new ServerNetworkManager();
+        networkManager = new NetworkManager(new ServerNetworkCommunicator(new HashMap<>()));
         msgApplicators = new ArrayList<>();
         msgApplicators.add(world);
     }

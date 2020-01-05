@@ -1,24 +1,20 @@
 package network.client;
 
+import network.NetworkCommunicator;
 import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.WorldMsg;
-
+import network.networkMessages.NetworkMsg;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.net.Socket;
 import java.io.IOException;
 import java.util.Map;
 
-public class ClientNetworkCommunicator implements Runnable{
-    private int port = 8080;
-    private Map<Integer, NetworkMsgHandler> msgHandlers;
-    protected boolean isStopped = false;
-    protected Thread runningThread = null;
+public class ClientNetworkCommunicator extends NetworkCommunicator{
+
     protected Socket clientSocket = null;
 
-    public ClientNetworkCommunicator(int port, Map<Integer, NetworkMsgHandler> msgHandlers) {
-        this.port = port;
-        this.msgHandlers = msgHandlers;
+    public ClientNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers) {
+        super(msgHandlers);
     }
 
     public void run() {
@@ -60,11 +56,6 @@ public class ClientNetworkCommunicator implements Runnable{
         System.out.println("ClientNetworkCommunicator Stopped.");
     }
 
-
-    private synchronized boolean isStopped() {
-        return this.isStopped;
-    }
-
     public synchronized void stop() {
         this.isStopped = true;
         try {
@@ -72,5 +63,10 @@ public class ClientNetworkCommunicator implements Runnable{
         } catch (IOException e) {
             throw new RuntimeException("Error closing server", e);
         }
+    }
+
+    @Override
+    protected void send(NetworkMsg networkMsg) {
+
     }
 }
