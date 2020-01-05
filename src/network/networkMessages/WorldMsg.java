@@ -4,7 +4,7 @@ import network.MsgType;
 
 import java.io.*;
 
-public class WorldMsg<WorldMsg> extends NetworkMsg {
+public class WorldMsg extends NetworkMsg {
 
     public float centralX;
 

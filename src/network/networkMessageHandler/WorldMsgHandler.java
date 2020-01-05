@@ -1,22 +1,21 @@
 package network.networkMessageHandler;
 
-import gameLWJGL.world.World;
+import network.IMsgRecipient;
 import network.networkMessages.WorldMsg;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class WorldMsgHandler extends NetworkMsgHandler {
+public class WorldMsgHandler extends NetworkMsgHandler<WorldMsg> {
 
-    private World world;
-
-    public WorldMsgHandler(World world){
-        this.world = world;
+    public WorldMsgHandler(IMsgRecipient<WorldMsg> recipient){
+        super(recipient);
     }
 
     @Override
     public void handleMsg(DataInputStream dis) throws IOException {
         WorldMsg msg = new WorldMsg(dis);
-        world.buildWorld(msg.centralX);
+        recipient.receive(msg);
+        //world.buildWorld(msg.centralX);
     }
 }

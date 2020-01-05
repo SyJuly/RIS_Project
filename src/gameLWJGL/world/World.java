@@ -1,13 +1,15 @@
 package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
+import network.IMsgRecipient;
+import network.networkMessages.WorldMsg;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class World {
+public class World implements IMsgRecipient<WorldMsg> {
 
     private WorldArea[] world;
     private Map<Float, WorldArea> worldCache;
@@ -20,7 +22,6 @@ public class World {
     public World (float worldAreaWidth, Camera camera){
         this.camera = camera;
         this.worldAreaWidth = worldAreaWidth;
-
         worldCache = new HashMap<>();
     }
 
@@ -106,5 +107,15 @@ public class World {
             System.out.println("Created world area in direction: " + direction);
         }
         return area;
+    }
+
+    @Override
+    public WorldMsg send() {
+        return new WorldMsg(currentCentralX);
+    }
+
+    @Override
+    public void receive(WorldMsg worldMsg) {
+
     }
 }

@@ -6,7 +6,16 @@ import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
+import network.IMsgRecipient;
+import network.MsgType;
+import network.networkMessageHandler.NetworkMsgHandler;
+import network.networkMessageHandler.WorldMsgHandler;
 import org.lwjgl.opengl.GL;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -25,7 +34,7 @@ public class GameClient {
         world = new World(4, camera);
         objectHandler = new ObjectHandler();
         input = new Input();
-        networkManager = new ClientNetworkManager(world);
+        networkManager = new ClientNetworkManager(createMsgRecipients());
     }
 
     private void runGame(){
@@ -86,6 +95,12 @@ public class GameClient {
 
         networkManager.stop();
         glfwTerminate();
+    }
+
+    private Map<Integer, NetworkMsgHandler> createMsgRecipients(){
+        Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
+        msgHandlers.put(MsgType.World.getCode(), new WorldMsgHandler(world));
+        return msgHandlers;
     }
 
     public static void main(String[] args) {

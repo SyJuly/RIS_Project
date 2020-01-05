@@ -5,13 +5,13 @@ import network.MsgType;
 import java.io.*;
 import java.util.UUID;
 
-public abstract class NetworkMsg<T> {
+public abstract class NetworkMsg {
 	
 	public String id;
 	public long createdAt;
-	
+
 	public MsgType msgType;
-	
+
 	public NetworkMsg() {
 		id = UUID.randomUUID().toString();
 		createdAt = System.currentTimeMillis();

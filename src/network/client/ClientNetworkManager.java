@@ -1,11 +1,6 @@
 package network.client;
 
-import gameLWJGL.world.World;
-import network.MsgType;
 import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessageHandler.WorldMsgHandler;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class ClientNetworkManager {
@@ -14,9 +9,8 @@ public class ClientNetworkManager {
     private Map<Integer, NetworkMsgHandler> msgHandlers;
     private ClientNetworkCommunicator communicator;
 
-    public ClientNetworkManager(World world){
-        msgHandlers = new HashMap();
-        msgHandlers.put(MsgType.World.getCode(), new WorldMsgHandler(world));
+    public ClientNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers){
+        this.msgHandlers = msgHandlers;
     }
 
     public void start(){
@@ -28,13 +22,5 @@ public class ClientNetworkManager {
     public void stop(){
         System.out.println("Stopping ClientNetworkManager.");
         communicator.stop();
-    }
-
-    public void register(NetworkMsgHandler msgHandler, MsgType type){
-        msgHandlers.put(type.getCode(), msgHandler);
-    }
-
-    public void receiveMessage(byte[] message, String networkCode){
-        //msgHandlers.get(networkCode).handleMsg();
     }
 }
