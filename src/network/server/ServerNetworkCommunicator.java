@@ -60,26 +60,25 @@ public class ServerNetworkCommunicator extends NetworkCommunicator{
 
   private void openServerSocket() {
     try {
-      this.serverSocket = new ServerSocket(this.port);
+      this.serverSocket = new ServerSocket(port);
     } catch (IOException e) {
-      throw new RuntimeException("Cannot open port 8080", e);
+      throw new RuntimeException("Cannot open port " + port, e);
     }
   }
 
   private void setUpIncomingClient(Socket clientSocket){
-    ClientWorker worker = new ClientWorker(clientSocket, "Multithreaded ServerNetworkCommunicator");
+    ClientWorker worker = new ClientWorker(clientSocket, "Multithreaded ServerNetworkCommunicator", msgHandlers);
     clientWorkers.add(worker);
     Thread incomingClientWorkerThread = new Thread(worker);
     incomingClientWorkerThread.start();
-    long id = incomingClientWorkerThread.getId();
-    worker.id = id;
-    System.out.println("Created client worker.");
+    //long id = incomingClientWorkerThread.getId();
+    //worker.id = id;
   }
 
   public void sendMsgToAllClients(NetworkMsg msg) {
     System.out.println("sending msg to all clients");
     for (ClientWorker worker: clientWorkers) {
-      worker.sendMsg(msg);
+      worker.send(msg);
     }
   }
 

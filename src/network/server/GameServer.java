@@ -6,12 +6,18 @@ import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
+import network.MsgType;
 import network.NetworkManager;
+import network.client.ClientNetworkCommunicator;
+import network.networkMessageHandler.JoinMsgHandler;
+import network.networkMessageHandler.NetworkMsgHandler;
+import network.networkMessageHandler.WorldMsgHandler;
 import network.networkMessages.NetworkMsg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameServer {
 
@@ -31,7 +37,7 @@ public class GameServer {
         //Input input = new Input();
         objectHandler = new ObjectHandler();
         collisionDetector = new CollisionDetector(world, objectHandler);
-        networkManager = new NetworkManager(new ServerNetworkCommunicator(new HashMap<>()));
+        networkManager = new NetworkManager(getServerNetworkCommunicator());
         msgApplicators = new ArrayList<>();
         msgApplicators.add(world);
     }
@@ -83,6 +89,12 @@ public class GameServer {
                 }
             }
         }
+    }
+
+    private ServerNetworkCommunicator getServerNetworkCommunicator(){
+        Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
+        msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(objectHandler));
+        return new ServerNetworkCommunicator(msgHandlers);
     }
 
     public static void main(String[] args) {

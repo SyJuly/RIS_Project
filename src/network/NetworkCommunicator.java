@@ -2,11 +2,10 @@ package network;
 
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessages.NetworkMsg;
-
 import java.util.Map;
 
 public abstract class NetworkCommunicator implements Runnable{
-    protected int port = 8080; //default if port isn't set
+    protected int port = 8080;
     protected Map<Integer, NetworkMsgHandler> msgHandlers;
     protected Thread runningThread = null;
     protected boolean isStopped = false;
@@ -17,10 +16,6 @@ public abstract class NetworkCommunicator implements Runnable{
 
     protected synchronized boolean isStopped() {
         return this.isStopped;
-    }
-
-    protected void setPort(int port){
-        this.port = port;
     }
 
     protected abstract void send(NetworkMsg networkMsg);

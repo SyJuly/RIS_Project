@@ -1,72 +1,51 @@
 package network.client;
 
-import network.NetworkCommunicator;
+import network.NetworkCommunicatorMessager;
 import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.NetworkMsg;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.net.Socket;
+import network.networkMessages.JoinMsg;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Map;
 
-public class ClientNetworkCommunicator extends NetworkCommunicator{
-
-    protected Socket clientSocket = null;
+public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
+    private boolean sentJoinMsg = false;
 
     public ClientNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers) {
         super(msgHandlers);
     }
 
     public void run() {
-        System.out.println("Starting client.");
+        System.out.println("Starting client at port " + port);
         synchronized (this) {
             this.runningThread = Thread.currentThread();
         }
-        try {
-            clientSocket = new Socket("localhost", port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        while (!isStopped()) {
-            try {
-                InputStream inputStream = clientSocket.getInputStream();
-                if(inputStream.available() > 0){
-                    System.out.println("inputstream available: " + inputStream.available() );
-                    DataInputStream dis = new DataInputStream((inputStream));
 
-                    int msgCode = dis.readInt();
-                    if(msgHandlers.containsKey((msgCode))) {
-                        msgHandlers.get(msgCode).handleMsg(dis);
-                    } else {
-                        System.out.println("Code not found: " + msgCode);
-                    }
-
-                    //WorldMsg msg = new WorldMsg(inputStream);
-                    //System.out.println("WE DID IT: " + msg.centralX + "| " + msg.id);
+        try (Socket clientSocket = new Socket("localhost", port);
+             InputStream inputStream = clientSocket.getInputStream();
+             OutputStream outputStream = clientSocket.getOutputStream()){
+            while (!isStopped()) {
+                if(!sentJoinMsg){
+                    sentJoinMsg = true;
+                    JoinMsg msg = new JoinMsg("readyplayerone");
+                    msg.serialize(outputStream);
                 }
-            } catch (IOException e) {
-                if (isStopped()) {
-                    System.out.println("ClientNetworkCommunicator Stopped.");
-                    return;
-                }
-                throw new RuntimeException(
-                        "Error connecting client", e);
+                handleOutgoingMessages(outputStream);
+                handleIncomingMessages(inputStream);
             }
+        } catch (IOException e) {
+            if (isStopped()) {
+                System.out.println("ClientNetworkCommunicator stopped with Exception: " + e );
+                return;
+            }
+            throw new RuntimeException("Error connecting client", e);
         }
-        System.out.println("ClientNetworkCommunicator Stopped.");
+        System.out.println("ClientNetworkCommunicator stopped running.");
     }
 
     public synchronized void stop() {
         this.isStopped = true;
-        try {
-            this.clientSocket.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Error closing server", e);
-        }
-    }
-
-    @Override
-    protected void send(NetworkMsg networkMsg) {
-
     }
 }

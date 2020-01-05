@@ -1,7 +1,8 @@
 package network;
 
 public enum MsgType {
-	World(6000);
+	World(6001),
+	Join(6000);
 
 	private final int code;
 

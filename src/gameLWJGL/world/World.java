@@ -120,7 +120,7 @@ public class World implements IMsgApplicator<WorldMsg> {
 
     @Override
     public WorldMsg getMessage() {
-        //hasBeenUpdated = false;
+        hasBeenUpdated = false;
         return new WorldMsg(currentCentralX);
     }
 

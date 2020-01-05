@@ -1,11 +1,13 @@
 package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
+import network.IMsgApplicator;
+import network.networkMessages.JoinMsg;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ObjectHandler {
+public class ObjectHandler implements IMsgApplicator<JoinMsg> {
 
     List<GameObject> objects = new LinkedList<>();
 
@@ -35,4 +37,18 @@ public class ObjectHandler {
         return objects;
     }
 
+    @Override
+    public boolean shouldSendMessage() {
+        return false;
+    }
+
+    @Override
+    public JoinMsg getMessage() {
+        return null;
+    }
+
+    @Override
+    public void receive(JoinMsg networkMsg) {
+        System.out.println("Creating player.");
+    }
 }

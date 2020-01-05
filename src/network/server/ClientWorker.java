@@ -1,48 +1,50 @@
 package network.server;
 
+import network.NetworkCommunicatorMessager;
 import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.NetworkMsg;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 import java.net.Socket;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ClientWorker implements Runnable{
+public class ClientWorker extends NetworkCommunicatorMessager {
 
     protected Socket clientSocket = null;
     protected String serverText   = null;
-    protected boolean isStopped   = false;
     public long id = 0;
 
-    private Queue<NetworkMsg> messagesToSend;
-    private Map<Integer, NetworkMsgHandler> msgHandlers;
-
-    public ClientWorker(Socket clientSocket, String serverText) {
+    public ClientWorker(Socket clientSocket, String serverText, Map<Integer, NetworkMsgHandler> msgHandlers) {
+        super(msgHandlers);
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
-        messagesToSend = new ConcurrentLinkedQueue<>();
+
     }
 
     public void run() {
-        while(! isStopped()) {
-            try (InputStream input = clientSocket.getInputStream();
-                 OutputStream output = clientSocket.getOutputStream();){
-
-                for (NetworkMsg msg : messagesToSend) {
-                    msg.serialize(output);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try (InputStream inputStream = clientSocket.getInputStream();
+             OutputStream outputStream = clientSocket.getOutputStream()){
+            while (!isStopped()) {
+                handleOutgoingMessages(outputStream);
+                handleIncomingMessages(inputStream);
             }
+        } catch (IOException e) {
+            if (isStopped()) {
+                System.out.println("Client worker stopped with Exception: " + e );
+                return;
+            }
+            throw new RuntimeException("Error connecting client", e);
         }
+        System.out.println("Client worker stopped running.");
     }
 
-    private synchronized boolean isStopped() {
-        return this.isStopped;
+    public boolean isStopped() {
+        if(clientSocket.isClosed()) {
+            System.out.println("isStopped() returns true, because socket was closed, isStopped == " + isStopped);
+            return true;
+        }
+        return super.isStopped();
     }
 
     public synchronized void stop(){
@@ -53,10 +55,5 @@ public class ClientWorker implements Runnable{
         } catch (IOException e) {
             throw new RuntimeException("Error closing server", e);
         }
-    }
-
-
-    public void sendMsg(NetworkMsg msg) {
-        messagesToSend.add(msg);
     }
 }

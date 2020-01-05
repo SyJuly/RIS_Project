@@ -21,18 +21,28 @@ public abstract class NetworkMsg {
 
 	public void serializeBase(DataOutputStream dos) throws IOException {
 		dos.writeInt(msgType.getCode());
-		dos.writeInt(id.length());
-		for(int i = 0; i < id.length(); i++){
-			dos.writeChar(id.charAt(i));
-		}
+		writeString(dos, id);
 		dos.writeLong(createdAt);
 	}
 
 	public void deserializeBase(DataInputStream dis) throws IOException {
-		int idLength = dis.readInt();
-		for(int i = 0; i < idLength; i++){
-			id += dis.readChar();
-		}
+		id = readString(dis);
 		createdAt = dis.readLong();
+	}
+
+	public void writeString(DataOutputStream dos, String string) throws IOException {
+		dos.writeInt(string.length());
+		for(int i = 0; i < string.length(); i++){
+			dos.writeChar(string.charAt(i));
+		}
+	}
+
+	public String readString(DataInputStream dis) throws IOException {
+		String string = "";
+		int stringLength = dis.readInt();
+		for(int i = 0; i < stringLength; i++){
+			string += dis.readChar();
+		}
+		return string;
 	}
 }
