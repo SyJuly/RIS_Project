@@ -7,6 +7,7 @@ public abstract class GameObject {
 
     public float x, y;
     public float width, height;
+    public String id;
 
     protected GameObject(float x, float y, float width, float height){
         this.x = x;

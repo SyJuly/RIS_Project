@@ -1,6 +1,6 @@
 package network.networkMessageHandler;
 
-import network.IMsgRecipient;
+import network.IMsgApplicator;
 import network.networkMessages.NetworkMsg;
 
 import java.io.DataInputStream;
@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public abstract class NetworkMsgHandler<TNetworkMessage extends NetworkMsg> {
 
-	protected IMsgRecipient<TNetworkMessage> recipient;
+	protected IMsgApplicator<TNetworkMessage> recipient;
 
-	public NetworkMsgHandler(IMsgRecipient<TNetworkMessage> recipient){
+	public NetworkMsgHandler(IMsgApplicator<TNetworkMessage> recipient){
 		this.recipient = recipient;
 	}
 	public abstract void handleMsg(DataInputStream dis) throws IOException;

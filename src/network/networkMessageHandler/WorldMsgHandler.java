@@ -1,6 +1,6 @@
 package network.networkMessageHandler;
 
-import network.IMsgRecipient;
+import network.IMsgApplicator;
 import network.networkMessages.WorldMsg;
 
 import java.io.DataInputStream;
@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class WorldMsgHandler extends NetworkMsgHandler<WorldMsg> {
 
-    public WorldMsgHandler(IMsgRecipient<WorldMsg> recipient){
+    public WorldMsgHandler(IMsgApplicator<WorldMsg> recipient){
         super(recipient);
     }
 

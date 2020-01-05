@@ -1,8 +1,12 @@
 package network.server;
 
+import network.networkMessages.NetworkMsg;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerNetworkCommunicator implements Runnable{
 
@@ -11,7 +15,10 @@ public class ServerNetworkCommunicator implements Runnable{
   protected boolean      isStopped    = false;
   protected Thread       runningThread= null;
 
+  private List<ClientWorker> clientWorkers;
+
   public ServerNetworkCommunicator(int port){
+    this.clientWorkers = new ArrayList<>();
     this.serverPort = port;
   }
 
@@ -25,11 +32,7 @@ public class ServerNetworkCommunicator implements Runnable{
       Socket clientSocket = null;
       try {
         clientSocket = this.serverSocket.accept();
-        new Thread(
-                new ClientWorker(
-                        clientSocket, "Multithreaded ServerNetworkCommunicator")
-        ).start();
-        System.out.println("created new worker");
+        setUpIncomingClient(clientSocket);
       } catch (IOException e) {
         if(isStopped()) {
           System.out.println("ServerNetworkCommunicator Stopped.") ;
@@ -51,6 +54,9 @@ public class ServerNetworkCommunicator implements Runnable{
     this.isStopped = true;
     try {
       System.out.println("Stopping ServerNetworkCommunicator");
+      for (ClientWorker worker: clientWorkers) {
+        worker.stop();
+      }
       this.serverSocket.close();
     } catch (IOException e) {
       throw new RuntimeException("Error closing server", e);
@@ -62,6 +68,23 @@ public class ServerNetworkCommunicator implements Runnable{
       this.serverSocket = new ServerSocket(this.serverPort);
     } catch (IOException e) {
       throw new RuntimeException("Cannot open port 8080", e);
+    }
+  }
+
+  private void setUpIncomingClient(Socket clientSocket){
+    ClientWorker worker = new ClientWorker(clientSocket, "Multithreaded ServerNetworkCommunicator");
+    clientWorkers.add(worker);
+    Thread incomingClientWorkerThread = new Thread(worker);
+    incomingClientWorkerThread.start();
+    long id = incomingClientWorkerThread.getId();
+    worker.id = id;
+    System.out.println("Created client worker.");
+  }
+
+  public void sendMsgToAllClients(NetworkMsg msg) {
+    System.out.println("sending msg to all clients");
+    for (ClientWorker worker: clientWorkers) {
+      worker.sendMsg(msg);
     }
   }
 }

@@ -1,7 +1,7 @@
 package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
-import network.IMsgRecipient;
+import network.IMsgApplicator;
 import network.networkMessages.WorldMsg;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class World implements IMsgRecipient<WorldMsg> {
+public class World implements IMsgApplicator<WorldMsg> {
 
     private WorldArea[] world;
     private Map<Float, WorldArea> worldCache;
@@ -18,6 +18,8 @@ public class World implements IMsgRecipient<WorldMsg> {
     private int worldCacheSize = 6;
     private float currentCentralX;
     private float worldAreaWidth;
+
+    private boolean hasBeenUpdated = false;
 
     public World (float worldAreaWidth, Camera camera){
         this.camera = camera;
@@ -36,6 +38,7 @@ public class World implements IMsgRecipient<WorldMsg> {
             area.buildWorld();
             startingX += worldAreaWidth;
         }
+        hasBeenUpdated = true;
     }
 
     public List<GameObject> getStaticObjects(){
@@ -72,6 +75,7 @@ public class World implements IMsgRecipient<WorldMsg> {
             world[i] = world[i + direction];
         }
         world[endIndex] = area;
+        hasBeenUpdated = true;
     }
 
     public void render(){
@@ -110,12 +114,23 @@ public class World implements IMsgRecipient<WorldMsg> {
     }
 
     @Override
-    public WorldMsg send() {
+    public boolean shouldSendMessage() {
+        return hasBeenUpdated;
+    }
+
+    @Override
+    public WorldMsg getMessage() {
+        hasBeenUpdated = false;
         return new WorldMsg(currentCentralX);
     }
 
     @Override
     public void receive(WorldMsg worldMsg) {
-        buildWorld(worldMsg.centralX);
+        if(world == null) {
+            buildWorld(worldMsg.centralX);
+        } else {
+            currentCentralX = worldMsg.centralX;
+            update();
+        }
     }
 }

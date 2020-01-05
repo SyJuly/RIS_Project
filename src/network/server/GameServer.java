@@ -5,6 +5,11 @@ import gameLWJGL.collision.CollisionDetector;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
+import network.IMsgApplicator;
+import network.networkMessages.NetworkMsg;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameServer {
 
@@ -14,19 +19,25 @@ public class GameServer {
     private CollisionDetector collisionDetector;
     private ServerNetworkManager networkManager;
 
+    private List<IMsgApplicator> msgApplicators;
+
     public GameServer(){
         camera = new Camera();
         world = new World(4, camera);
+
         world.buildWorld(0);
         //Input input = new Input();
         objectHandler = new ObjectHandler();
         collisionDetector = new CollisionDetector(world, objectHandler);
-
         networkManager = new ServerNetworkManager();
+        msgApplicators = new ArrayList<>();
+        msgApplicators.add(world);
     }
 
     public void runGame(){
         networkManager.start();
+
+        world.buildWorld(0);
 
         double frame_cap = 1.0/60.0; // 60 frames per second
         double frame_time = 0;
@@ -53,6 +64,14 @@ public class GameServer {
                 camera.update();
                 collisionDetector.detectCollisions();
 
+                for (IMsgApplicator msgApplicator: msgApplicators) {
+                    if(msgApplicator.shouldSendMessage()){
+                        NetworkMsg msg = msgApplicator.getMessage();
+                        networkManager.sendMsg(msg);
+                    }
+                }
+                // for each IMsgSender check if shouldSend
+                // if true -> send msg to SNM
 
                 if(frame_time >= 1.0){
                     frame_time = 0;

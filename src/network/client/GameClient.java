@@ -6,15 +6,12 @@ import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
-import network.IMsgRecipient;
 import network.MsgType;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessageHandler.WorldMsgHandler;
 import org.lwjgl.opengl.GL;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -75,7 +72,7 @@ public class GameClient {
 
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    System.out.println("FPS: " + frames);
+                    //System.out.println("FPS: " + frames);
                     //System.out.println("X: " + player.x + "| Y: " + player.y);
                     frames = 0;
                 }
