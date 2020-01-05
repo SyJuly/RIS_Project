@@ -11,6 +11,8 @@ public class ObjectHandler implements IMsgApplicator<JoinMsg> {
 
     List<GameObject> objects = new LinkedList<>();
 
+    private boolean hasNewPlayer = false;
+
     public void update(){
         for(int i = 0; i < objects.size(); i++){
             GameObject tempObject = objects.get(i);
@@ -50,5 +52,14 @@ public class ObjectHandler implements IMsgApplicator<JoinMsg> {
     @Override
     public void receive(JoinMsg networkMsg) {
         System.out.println("Creating player.");
+        hasNewPlayer = true;
+    }
+
+    public boolean hasNewPlayer() {
+        return hasNewPlayer;
+    }
+
+    public void setHasNewPlayer(boolean hasNewPlayer) {
+        this.hasNewPlayer = hasNewPlayer;
     }
 }

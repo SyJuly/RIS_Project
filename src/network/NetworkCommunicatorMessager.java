@@ -20,7 +20,7 @@ public abstract class NetworkCommunicatorMessager extends NetworkCommunicator {
         messagesToSend = new ConcurrentLinkedQueue<>();
     }
 
-    protected void handleIncomingMessages(InputStream inputStream) throws IOException {
+    protected synchronized void handleIncomingMessages(InputStream inputStream) throws IOException {
         if(inputStream.available() > 0){
             System.out.println("inputstream available: " + inputStream.available() );
             DataInputStream dis = new DataInputStream((inputStream));
@@ -34,7 +34,7 @@ public abstract class NetworkCommunicatorMessager extends NetworkCommunicator {
         }
     }
 
-    protected void handleOutgoingMessages(OutputStream output) throws IOException{
+    protected synchronized void handleOutgoingMessages(OutputStream output) throws IOException{
         for (NetworkMsg msg : messagesToSend) {
             msg.serialize(output);
         }

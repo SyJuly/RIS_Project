@@ -8,10 +8,8 @@ import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
 import network.NetworkManager;
-import network.client.ClientNetworkCommunicator;
 import network.networkMessageHandler.JoinMsgHandler;
 import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessageHandler.WorldMsgHandler;
 import network.networkMessages.NetworkMsg;
 
 import java.util.ArrayList;
@@ -73,10 +71,14 @@ public class GameServer {
                 collisionDetector.detectCollisions();
 
                 for (IMsgApplicator msgApplicator: msgApplicators) {
-                    if(msgApplicator.shouldSendMessage()){
+                    if(msgApplicator.shouldSendMessage() || objectHandler.hasNewPlayer()){
                         NetworkMsg msg = msgApplicator.getMessage();
                         networkManager.sendMsg(msg);
+                        System.out.println("send msg: " + msg.msgType);
                     }
+                }
+                if(objectHandler.hasNewPlayer()){
+                    objectHandler.setHasNewPlayer(false);
                 }
                 // for each IMsgSender check if shouldSend
                 // if true -> send msg to SNM
