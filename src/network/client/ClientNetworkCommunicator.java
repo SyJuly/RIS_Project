@@ -26,12 +26,8 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
         try (Socket clientSocket = new Socket("localhost", port);
              InputStream inputStream = clientSocket.getInputStream();
              OutputStream outputStream = clientSocket.getOutputStream()){
+            sendJoinMsg(outputStream);
             while (!isStopped()) {
-                if(!sentJoinMsg){
-                    sentJoinMsg = true;
-                    JoinMsg msg = new JoinMsg("readyplayerone");
-                    msg.serialize(outputStream);
-                }
                 handleOutgoingMessages(outputStream);
                 handleIncomingMessages(inputStream);
             }
@@ -43,6 +39,14 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
             throw new RuntimeException("Error connecting client", e);
         }
         System.out.println("ClientNetworkCommunicator stopped running.");
+    }
+
+    private void sendJoinMsg(OutputStream outputStream) throws IOException {
+        synchronized (outputStream){
+            sentJoinMsg = true;
+            JoinMsg msg = new JoinMsg("readyplayerone");
+            msg.serialize(outputStream);
+        }
     }
 
     public synchronized void stop() {

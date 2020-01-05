@@ -20,23 +20,28 @@ public abstract class NetworkCommunicatorMessager extends NetworkCommunicator {
         messagesToSend = new ConcurrentLinkedQueue<>();
     }
 
-    protected synchronized void handleIncomingMessages(InputStream inputStream) throws IOException {
-        if(inputStream.available() > 0){
-            System.out.println("inputstream available: " + inputStream.available() );
-            DataInputStream dis = new DataInputStream((inputStream));
+    protected void handleIncomingMessages(InputStream inputStream) throws IOException {
+        synchronized (inputStream) {
+            if (inputStream.available() > 0) {
+                //System.out.println("inputstream available: " + inputStream.available());
+                DataInputStream dis = new DataInputStream((inputStream));
 
-            int msgCode = dis.readInt();
-            if(msgHandlers.containsKey((msgCode))) {
-                msgHandlers.get(msgCode).handleMsg(dis);
-            } else {
-                System.out.println("Code not found: " + msgCode);
+                int msgCode = dis.readInt();
+                if (msgHandlers.containsKey((msgCode))) {
+                    System.out.println("got msg: " + msgHandlers.get(msgCode));
+                    msgHandlers.get(msgCode).handleMsg(dis);
+                } else {
+                    System.out.println("Code not found: " + msgCode);
+                }
             }
         }
     }
 
-    protected synchronized void handleOutgoingMessages(OutputStream output) throws IOException{
-        for (NetworkMsg msg : messagesToSend) {
-            msg.serialize(output);
+    protected void handleOutgoingMessages(OutputStream output) throws IOException{
+        synchronized (output) {
+            while(messagesToSend.size()> 0){
+                messagesToSend.poll().serialize(output);
+            }
         }
     }
 
