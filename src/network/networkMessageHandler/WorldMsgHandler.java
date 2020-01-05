@@ -8,13 +8,13 @@ import java.io.IOException;
 
 public class WorldMsgHandler extends NetworkMsgHandler<WorldMsg> {
 
-    public WorldMsgHandler(IMsgApplicator<WorldMsg> recipient){
-        super(recipient);
+    public WorldMsgHandler(IMsgApplicator<WorldMsg> applicator){
+        super(applicator);
     }
 
     @Override
     public void handleMsg(DataInputStream dis) throws IOException {
         WorldMsg msg = new WorldMsg(dis);
-        recipient.receive(msg);
+        applicator.receive(msg);
     }
 }
