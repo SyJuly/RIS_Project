@@ -2,6 +2,7 @@ package network;
 
 public enum MsgType {
 	World(6001),
+	DynamicObjects(6002),
 	Join(6000);
 
 	private final int code;

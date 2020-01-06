@@ -2,6 +2,7 @@ package gameLWJGL.physics;
 
 import gameLWJGL.collision.Collision;
 import gameLWJGL.objects.GameObject;
+import gameLWJGL.objects.ObjectType;
 
 public abstract class PhysicsObject extends GameObject {
 
@@ -13,8 +14,8 @@ public abstract class PhysicsObject extends GameObject {
 
     protected float maxSpeed = 10;
 
-    protected PhysicsObject(float x, float y, float width, float height) {
-        super(x, y, width, height);
+    protected PhysicsObject(float x, float y, float width, float height, String id, ObjectType objectType) {
+        super(x, y, width, height, id, objectType);
     }
 
     public void accelerate(double accelerationX, double accelerationY) {

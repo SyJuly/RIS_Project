@@ -12,8 +12,8 @@ public class Player extends PhysicsObject implements IMoveable {
     public static final double JUMP_STRENGTH = 0.07f;
     public static final double SPEED = 0.03f;
 
-    public Player(float x, float y, float size){
-        super(x,y, size, size);
+    public Player(float x, float y, float size, String id){
+        super(x,y, size, size, id, ObjectType.Player);
     }
 
     @Override

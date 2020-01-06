@@ -9,7 +9,7 @@ import java.io.OutputStream;
 
 public class JoinMsg extends NetworkMsg {
 
-    private String name;
+    public String name;
 
     public JoinMsg(String name){
         super();

@@ -13,8 +13,8 @@ public class NonGravityObject extends GameObject implements IMoveable {
     private int xDirection = 0;
     private int yDirection = 0;
 
-    public NonGravityObject(float x, float y, float size){
-        super(x,y, size, size);
+    public NonGravityObject(float x, float y, float size, String id, ObjectType objectType){
+        super(x,y, size, size, id, objectType);
     }
 
     @Override
