@@ -87,6 +87,7 @@ public class GameClient {
                     }
                 }
                 camera.update();
+                world.update();
 
                 if(frame_time >= 1.0){
                     frame_time = 0;
