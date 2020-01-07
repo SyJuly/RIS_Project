@@ -38,7 +38,7 @@ public class GameClient {
     public GameClient(){
         camera = new Camera();
         world = new World(4, camera);
-        objectHandler = new ObjectHandler();
+        objectHandler = new ObjectHandler(camera);
         input = new Input();
         networkManager = new NetworkManager(getClientNetworkCommunicator());
         msgSenders = new ArrayList<>();
@@ -86,6 +86,7 @@ public class GameClient {
                         System.out.println("send msg: " + msg.msgType);
                     }
                 }
+                camera.update();
 
                 if(frame_time >= 1.0){
                     frame_time = 0;

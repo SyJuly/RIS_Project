@@ -5,6 +5,7 @@ import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.ObjectType;
 import gameLWJGL.objects.Player;
 import network.IMsgApplicator;
+import network.client.GameClient;
 import network.networkMessages.DynamicObjectsMsg;
 import network.networkMessages.JoinMsg;
 
@@ -22,6 +23,7 @@ public class ObjectHandler {
     private boolean hasNewPlayer = false;
 
     private Input input; // only on server
+    private Camera camera; // only on client
     private JoinApplicator joinApplicator = new JoinApplicator();
     private DynamicObjectsApplicator dynamicObjectsApplicator = new DynamicObjectsApplicator();
 
@@ -29,7 +31,7 @@ public class ObjectHandler {
         this.input = input;
     }
 
-    public ObjectHandler(){ }
+    public ObjectHandler(Camera camera){this.camera = camera; }
 
     public void update(){
         for (GameObject gameObject : objects.values()) {
@@ -54,12 +56,13 @@ public class ObjectHandler {
     public List<GameObject> getDynamicObjects(){
         return new ArrayList<GameObject>(objects.values());
     }
+
     public void createOrUpdateObject(float x, float y, float width, float height, String id, int objectTypeCode){
         if(!objects.containsKey(id)){
             ObjectType type = ObjectType.values()[objectTypeCode];
             switch (type) {
                 case PLAYER:
-                    addObject(new Player(x,y,width,id)); break;
+                    createPlayer(x,y,width,id); break;
                 default: return;
             }
         } else {
@@ -68,6 +71,14 @@ public class ObjectHandler {
             gameObject.y = y;
             gameObject.width = width;
             gameObject.height = height;
+        }
+    }
+
+    private void createPlayer(float x, float y, float width, String id){
+        Player player = new Player(x,y,width,id);
+        addObject(player);
+        if(id.equals(GameClient.CLIENTID)){
+            camera.setPlayer(player);
         }
     }
 

@@ -71,7 +71,7 @@ public class GameServer {
                 //input.handleInput(window.window);
                 world.update();
                 objectHandler.update();
-                camera.update();
+                //camera.update();
                 collisionDetector.detectCollisions();
 
                 for (IMsgApplicator msgApplicator: msgSenders) {

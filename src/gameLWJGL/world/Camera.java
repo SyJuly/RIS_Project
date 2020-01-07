@@ -4,6 +4,10 @@ import gameLWJGL.objects.Player;
 
 public class Camera {
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     private Player player;
     public float x, y;
 
