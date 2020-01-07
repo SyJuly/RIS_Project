@@ -26,7 +26,7 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
         try (Socket clientSocket = new Socket("localhost", port);
              InputStream inputStream = clientSocket.getInputStream();
              OutputStream outputStream = clientSocket.getOutputStream()){
-            sendJoinMsg(outputStream);
+             sendJoinMsg(outputStream);
             while (!isStopped()) {
                 handleOutgoingMessages(outputStream);
                 handleIncomingMessages(inputStream);

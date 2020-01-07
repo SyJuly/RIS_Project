@@ -8,6 +8,7 @@ import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
 import network.MsgType;
 import network.NetworkManager;
+import network.networkMessageHandler.DynamicObjectsMsgHandler;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessageHandler.WorldMsgHandler;
 import org.lwjgl.opengl.GL;
@@ -98,6 +99,7 @@ public class GameClient {
     private ClientNetworkCommunicator getClientNetworkCommunicator(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
         msgHandlers.put(MsgType.World.getCode(), new WorldMsgHandler(world));
+        msgHandlers.put(MsgType.DynamicObjects.getCode(), new DynamicObjectsMsgHandler(objectHandler.getDynamicObjectsApplicator()));
         return new ClientNetworkCommunicator(msgHandlers);
     }
 

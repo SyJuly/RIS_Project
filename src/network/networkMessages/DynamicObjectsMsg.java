@@ -14,6 +14,7 @@ import java.util.List;
 public class DynamicObjectsMsg extends NetworkMsg {
 
     List<GameObject> objects = new ArrayList<>();
+    DataInputStream dis = null;
 
     public DynamicObjectsMsg(List<GameObject> objects){
         super();
@@ -21,7 +22,13 @@ public class DynamicObjectsMsg extends NetworkMsg {
         this.objects = objects;
     }
 
-    public DynamicObjectsMsg(DataInputStream dis, ObjectHandler objectHandler) throws IOException {
+    public DynamicObjectsMsg(DataInputStream dis){
+        this.msgType = MsgType.DynamicObjects;
+        this.dis = dis;
+    }
+
+
+    public void deserializeAndApplyData(ObjectHandler objectHandler) throws IOException {
         deserializeBase(dis);
         int objectsSize = dis.readInt();
         for(int i = 0; i < objectsSize; i++){

@@ -4,18 +4,24 @@ import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.ObjectType;
 import gameLWJGL.objects.Player;
 import network.IMsgApplicator;
+import network.networkMessages.DynamicObjectsMsg;
 import network.networkMessages.JoinMsg;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ObjectHandler implements IMsgApplicator<JoinMsg> {
 
-    Map<String, GameObject> objects = new HashMap<>();
+public class ObjectHandler {
+
+    private Map<String, GameObject> objects = new HashMap<>();
 
     private boolean hasNewPlayer = false;
+
+    private JoinApplicator joinApplicator = new JoinApplicator();
+    private DynamicObjectsApplicator dynamicObjectsApplicator = new DynamicObjectsApplicator();
 
     public void update(){
         for (GameObject gameObject : objects.values()) {
@@ -57,29 +63,63 @@ public class ObjectHandler implements IMsgApplicator<JoinMsg> {
         }
     }
 
-    @Override
-    public boolean shouldSendMessage() {
-        return false;
-    }
-
-    @Override
-    public JoinMsg getMessage() {
-        return null;
-    }
-
-    @Override
-    public void receive(JoinMsg networkMsg) {
-        System.out.println("Creating player.");
-        Player player = new Player(0,0, 0.06f, networkMsg.name);
-        addObject(player);
-        hasNewPlayer = true;
-    }
-
     public boolean hasNewPlayer() {
         return hasNewPlayer;
     }
 
     public void setHasNewPlayer(boolean hasNewPlayer) {
         this.hasNewPlayer = hasNewPlayer;
+    }
+
+    public JoinApplicator getJoinApplicator() {
+        return joinApplicator;
+    }
+
+    public DynamicObjectsApplicator getDynamicObjectsApplicator() {
+        return dynamicObjectsApplicator;
+    }
+
+
+    public class JoinApplicator implements IMsgApplicator<JoinMsg> {
+
+        @Override
+        public boolean shouldSendMessage() {
+            return false;
+        }
+
+        @Override
+        public JoinMsg getMessage() {
+            return null;
+        }
+
+        @Override
+        public void receive(JoinMsg networkMsg) {
+            System.out.println("Creating player.");
+            Player player = new Player(0,0, 0.06f, networkMsg.name);
+            addObject(player);
+            hasNewPlayer = true;
+        }
+    }
+
+    public class DynamicObjectsApplicator implements IMsgApplicator<DynamicObjectsMsg> {
+
+        @Override
+        public boolean shouldSendMessage() {
+            return false;
+        }
+
+        @Override
+        public DynamicObjectsMsg getMessage() {
+            return new DynamicObjectsMsg(ObjectHandler.this.getDynamicObjects());
+        }
+
+        @Override
+        public void receive(DynamicObjectsMsg networkMsg) {
+            try {
+                networkMsg.deserializeAndApplyData(ObjectHandler.this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

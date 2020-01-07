@@ -38,6 +38,7 @@ public class GameServer {
         networkManager = new NetworkManager(getServerNetworkCommunicator());
         msgApplicators = new ArrayList<>();
         msgApplicators.add(world);
+        msgApplicators.add(objectHandler.getDynamicObjectsApplicator());
     }
 
     public void runGame(){
@@ -95,7 +96,7 @@ public class GameServer {
 
     private ServerNetworkCommunicator getServerNetworkCommunicator(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
-        msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(objectHandler));
+        msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(objectHandler.getJoinApplicator()));
         return new ServerNetworkCommunicator(msgHandlers);
     }
 

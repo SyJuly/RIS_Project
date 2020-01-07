@@ -1,5 +1,6 @@
 package gameLWJGL.objects;
 
 public enum ObjectType {
-    PLAYER;
+    PLAYER,
+    STATIC;
 }

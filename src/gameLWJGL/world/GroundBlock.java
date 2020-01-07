@@ -2,13 +2,14 @@ package gameLWJGL.world;
 
 import gameLWJGL.collision.Collision;
 import gameLWJGL.objects.GameObject;
+import gameLWJGL.objects.ObjectType;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class GroundBlock extends GameObject {
 
     public GroundBlock (float x, float y, float width, float height){
-        super(x, y, width, height);
+        super(x, y, width, height, "static", ObjectType.STATIC);
     }
 
     @Override
