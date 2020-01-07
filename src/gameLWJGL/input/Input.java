@@ -17,14 +17,16 @@ public class Input implements IMsgApplicator<InputMsg> {
     public Input(){
         this.moveables = moveables != null ? moveables : new ArrayList<>();
     }
-
     private boolean shouldSendMessage = false;
 
-    private int xDirection, yDirection;
+    private int xDirection, yDirection, prevXDirection, prevYDirection;
 
     public void handleInput(long window){
-        int xDirection = 0, yDirection = 0;
+        prevXDirection = xDirection;
+        prevYDirection = yDirection;
 
+        xDirection = 0;
+        yDirection = 0;
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE){
             glfwSetWindowShouldClose(window, true);
         }
@@ -42,10 +44,7 @@ public class Input implements IMsgApplicator<InputMsg> {
             yDirection = - 1;
         }
 
-        if(xDirection == 0 && yDirection == 0) {
-            shouldSendMessage = false;
-            return;
-        }
+        if(xDirection == prevXDirection && yDirection == prevYDirection) { return; }
 
         // if x and y direction have changed
         this.xDirection = xDirection;
