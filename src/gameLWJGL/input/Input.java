@@ -13,10 +13,14 @@ public class Input {
         this.moveables = moveables != null ? moveables : new ArrayList<>();
     }
 
+    private int xDirection, yDirection, prevXDirection, prevYDirection;
 
     public void handleInput(long window){
-        int xDirection = 0, yDirection = 0;
+        prevXDirection = xDirection;
+        prevYDirection = yDirection;
 
+        xDirection = 0;
+        yDirection = 0;
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE){
             glfwSetWindowShouldClose(window, true);
         }
@@ -34,7 +38,7 @@ public class Input {
             yDirection = - 1;
         }
 
-        if(xDirection == 0 && yDirection == 0) { return; }
+        if(xDirection == prevXDirection && yDirection == prevYDirection) { return; }
 
         for (int i = 0; i < moveables.size(); i++){
             IMoveable tempMovable = moveables.get(i);
