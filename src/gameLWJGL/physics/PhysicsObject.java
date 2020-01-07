@@ -6,12 +6,12 @@ import gameLWJGL.objects.GameObject;
 public abstract class PhysicsObject extends GameObject {
 
     public static final float FRICTION = 0.99f;
-    public static final float GRAVITY = 0.03f;
+    public static final float GRAVITY = 0.002f;
 
     protected float speedX = 0;
     protected float speedY = 0;
 
-    protected float maxSpeed = 10;
+    protected float maxSpeed = 0.05f;
 
     protected PhysicsObject(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -31,7 +31,7 @@ public abstract class PhysicsObject extends GameObject {
     public void update() {
         moveWithPhysics(speedX, speedY);
         speedX = Math.min(speedX * FRICTION, maxSpeed);
-        speedY = Math.min(speedX * FRICTION, maxSpeed);
+        speedY = Math.min(speedY * FRICTION, maxSpeed);
         accelerate(0, -GRAVITY);
     }
 
