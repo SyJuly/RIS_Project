@@ -76,7 +76,6 @@ public class ServerNetworkCommunicator extends NetworkCommunicator{
   }
 
   public void sendMsgToAllClients(NetworkMsg msg) {
-    System.out.println("sending msg to all clients");
     for (ClientWorker worker: clientWorkers) {
       worker.send(msg);
     }

@@ -44,7 +44,7 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
     private void sendJoinMsg(OutputStream outputStream) throws IOException {
         synchronized (outputStream){
             sentJoinMsg = true;
-            JoinMsg msg = new JoinMsg("readyplayerone");
+            JoinMsg msg = new JoinMsg(GameClient.CLIENTID);
             msg.serialize(outputStream);
         }
     }

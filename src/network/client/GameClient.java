@@ -6,14 +6,18 @@ import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
+import network.IMsgApplicator;
 import network.MsgType;
 import network.NetworkManager;
 import network.networkMessageHandler.DynamicObjectsMsgHandler;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessageHandler.WorldMsgHandler;
+import network.networkMessages.NetworkMsg;
 import org.lwjgl.opengl.GL;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -22,11 +26,14 @@ import static org.lwjgl.opengl.GL11.glClear;
 
 public class GameClient {
 
+    public static final String CLIENTID = "1";
     private Camera camera;
     private World world;
     private ObjectHandler objectHandler;
     private Input input;
     private NetworkManager networkManager;
+
+    private List<IMsgApplicator> msgSenders;
 
     public GameClient(){
         camera = new Camera();
@@ -34,6 +41,8 @@ public class GameClient {
         objectHandler = new ObjectHandler();
         input = new Input();
         networkManager = new NetworkManager(getClientNetworkCommunicator());
+        msgSenders = new ArrayList<>();
+        msgSenders.add(input);
     }
 
     private void runGame(){
@@ -70,7 +79,13 @@ public class GameClient {
                 glfwPollEvents();
 
                 input.handleInput(window.window);
-
+                for (IMsgApplicator msgApplicator: msgSenders) {
+                    if(msgApplicator.shouldSendMessage()){
+                        NetworkMsg msg = msgApplicator.getMessage();
+                        networkManager.sendMsg(msg);
+                        System.out.println("send msg: " + msg.msgType);
+                    }
+                }
 
                 if(frame_time >= 1.0){
                     frame_time = 0;

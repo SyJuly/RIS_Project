@@ -1,11 +1,16 @@
 package gameLWJGL.input;
+
+import network.IMsgApplicator;
+import network.client.GameClient;
+import network.networkMessages.InputMsg;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 
-public class Input {
+public class Input implements IMsgApplicator<InputMsg> {
 
     private List<IMoveable> moveables;
 
@@ -13,6 +18,9 @@ public class Input {
         this.moveables = moveables != null ? moveables : new ArrayList<>();
     }
 
+    private boolean shouldSendMessage = false;
+
+    private int xDirection, yDirection;
 
     public void handleInput(long window){
         int xDirection = 0, yDirection = 0;
@@ -34,12 +42,16 @@ public class Input {
             yDirection = - 1;
         }
 
-        if(xDirection == 0 && yDirection == 0) { return; }
-
-        for (int i = 0; i < moveables.size(); i++){
-            IMoveable tempMovable = moveables.get(i);
-            tempMovable.move(xDirection, yDirection);
+        if(xDirection == 0 && yDirection == 0) {
+            shouldSendMessage = false;
+            return;
         }
+
+        // if x and y direction have changed
+        this.xDirection = xDirection;
+        this.yDirection = yDirection;
+        shouldSendMessage = true;
+
     }
 
     public void addMoveable(IMoveable moveable){
@@ -48,5 +60,26 @@ public class Input {
 
     public void removeMoveable(IMoveable moveable){
         moveables.remove(moveable);
+    }
+
+    @Override
+    public boolean shouldSendMessage() {
+        return shouldSendMessage;
+    }
+
+    @Override
+    public InputMsg getMessage() {
+        return new InputMsg(GameClient.CLIENTID, xDirection, yDirection);
+    }
+
+    @Override
+    public void receive(InputMsg networkMsg) {
+        for (int i = 0; i < moveables.size(); i++){
+            IMoveable tempMovable = moveables.get(i);
+            if (networkMsg.clientID.equals(tempMovable.getId())){
+                System.out.println("INPUT APPLIED");
+                tempMovable.move(networkMsg.xDirection, networkMsg.yDirection);
+            }
+        }
     }
 }

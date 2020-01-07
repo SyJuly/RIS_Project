@@ -53,6 +53,11 @@ public class Player extends PhysicsObject implements IMoveable {
         moveWithPhysics(SPEED * xDirection, 0);
     }
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
     public void jump() {
         accelerate(0, JUMP_STRENGTH);
     }

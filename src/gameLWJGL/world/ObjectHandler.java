@@ -1,5 +1,6 @@
 package gameLWJGL.world;
 
+import gameLWJGL.input.Input;
 import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.ObjectType;
 import gameLWJGL.objects.Player;
@@ -20,8 +21,15 @@ public class ObjectHandler {
 
     private boolean hasNewPlayer = false;
 
+    private Input input; // only on server
     private JoinApplicator joinApplicator = new JoinApplicator();
     private DynamicObjectsApplicator dynamicObjectsApplicator = new DynamicObjectsApplicator();
+
+    public ObjectHandler(Input input){
+        this.input = input;
+    }
+
+    public ObjectHandler(){ }
 
     public void update(){
         for (GameObject gameObject : objects.values()) {
@@ -97,6 +105,7 @@ public class ObjectHandler {
             System.out.println("Creating player.");
             Player player = new Player(0,0, 0.06f, networkMsg.name);
             addObject(player);
+            input.addMoveable(player);
             hasNewPlayer = true;
         }
     }
@@ -105,7 +114,7 @@ public class ObjectHandler {
 
         @Override
         public boolean shouldSendMessage() {
-            return false;
+            return true;
         }
 
         @Override

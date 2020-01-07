@@ -49,4 +49,9 @@ public class NonGravityObject extends GameObject implements IMoveable {
         this.xDirection = xDirection;
         this.yDirection = yDirection;
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
 }

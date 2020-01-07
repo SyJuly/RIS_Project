@@ -2,12 +2,14 @@ package network.server;
 
 import gameLWJGL.Timer;
 import gameLWJGL.collision.CollisionDetector;
+import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.ObjectHandler;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
 import network.NetworkManager;
+import network.networkMessageHandler.InputMsgHandler;
 import network.networkMessageHandler.JoinMsgHandler;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessages.NetworkMsg;
@@ -20,25 +22,26 @@ import java.util.Map;
 public class GameServer {
 
     private Camera camera;
+    private Input input;
     private World world;
     private ObjectHandler objectHandler;
     private CollisionDetector collisionDetector;
     private NetworkManager networkManager;
 
-    private List<IMsgApplicator> msgApplicators;
+    private List<IMsgApplicator> msgSenders;
 
     public GameServer(){
         camera = new Camera();
         world = new World(4, camera);
 
         world.buildWorld(0);
-        //Input input = new Input();
-        objectHandler = new ObjectHandler();
+        input = new Input();
+        objectHandler = new ObjectHandler(input);
         collisionDetector = new CollisionDetector(world, objectHandler);
         networkManager = new NetworkManager(getServerNetworkCommunicator());
-        msgApplicators = new ArrayList<>();
-        msgApplicators.add(world);
-        msgApplicators.add(objectHandler.getDynamicObjectsApplicator());
+        msgSenders = new ArrayList<>();
+        msgSenders.add(world);
+        msgSenders.add(objectHandler.getDynamicObjectsApplicator());
     }
 
     public void runGame(){
@@ -71,7 +74,7 @@ public class GameServer {
                 camera.update();
                 collisionDetector.detectCollisions();
 
-                for (IMsgApplicator msgApplicator: msgApplicators) {
+                for (IMsgApplicator msgApplicator: msgSenders) {
                     if(msgApplicator.shouldSendMessage() || objectHandler.hasNewPlayer()){
                         NetworkMsg msg = msgApplicator.getMessage();
                         networkManager.sendMsg(msg);
@@ -97,6 +100,7 @@ public class GameServer {
     private ServerNetworkCommunicator getServerNetworkCommunicator(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
         msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(objectHandler.getJoinApplicator()));
+        msgHandlers.put(MsgType.Input.getCode(), new InputMsgHandler(input));
         return new ServerNetworkCommunicator(msgHandlers);
     }
 
