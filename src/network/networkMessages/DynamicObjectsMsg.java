@@ -38,7 +38,12 @@ public class DynamicObjectsMsg extends NetworkMsg {
             float height = dis.readFloat();
             String id = readString(dis);
             int objectTypeCode = dis.readInt();
-            objectHandler.createOrUpdateObject(x,y,width,height,id,objectTypeCode);
+            int specificsLength = dis.readInt();
+            Float[] specifics = new Float[specificsLength];
+            for(int j = 0; j < specificsLength; j++) {
+                specifics[j] = dis.readFloat();
+            }
+            objectHandler.createOrUpdateObject(x,y,width,height,id,objectTypeCode, specifics);
         }
     }
     @Override
@@ -47,12 +52,17 @@ public class DynamicObjectsMsg extends NetworkMsg {
         serializeBase(dos);
         dos.writeInt(objects.size());
         for(GameObject gameObject: objects){
+            Float[] specifics = gameObject.getSpecifics();
             dos.writeFloat(gameObject.x);
             dos.writeFloat(gameObject.y);
             dos.writeFloat(gameObject.width);
             dos.writeFloat(gameObject.height);
             writeString(dos, gameObject.id);
             dos.writeInt(gameObject.objectType.ordinal());
+            dos.writeInt(specifics.length);
+            for(int i = 0; i < specifics.length; i++) {
+                dos.writeFloat(specifics[i]);
+            }
         }
 
     }

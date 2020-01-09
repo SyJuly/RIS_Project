@@ -45,6 +45,16 @@ public class NonGravityObject extends GameObject implements IMoveable {
     }
 
     @Override
+    public Float[] getSpecifics() {
+        return new Float[0];
+    }
+
+    @Override
+    public void setSpecifics(Float[] specifics) {
+        return;
+    }
+
+    @Override
     public void move(int xDirection, int yDirection) {
         this.xDirection = xDirection;
         this.yDirection = yDirection;

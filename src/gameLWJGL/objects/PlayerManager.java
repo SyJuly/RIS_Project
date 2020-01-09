@@ -29,9 +29,10 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         this.camera = camera; // for client
     }
 
-    public void createPlayer(float x, float y, float width, String id){
+    public void createPlayer(float x, float y, float width, String id, Float[] specifics){
         System.out.println("Created player instance on client.");
         Player player = new Player(x,y,width,id);
+        player.setSpecifics(specifics);
         createdPlayers.add(player.id);
         players.put(player.id, player);
         if(id.equals(GameClient.CLIENTID)){

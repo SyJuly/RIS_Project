@@ -23,7 +23,7 @@ public class WorldArea {
         float worldX = 0;
         for (float x = 0; x < width; x+=0.7f){
             worldX = x + startingX;
-            GroundBlock block = new GroundBlock(worldX, getY(worldX), 0.4f, 0.02f);
+            GroundBlock block = new GroundBlock(worldX, getY(worldX), 0.4f, 0.05f);
             staticObjects.add(block);
         }
     }

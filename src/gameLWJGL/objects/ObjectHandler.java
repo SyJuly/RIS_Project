@@ -51,12 +51,12 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
         return new ArrayList<>(objects.values());
     }
 
-    public void createOrUpdateObject(float x, float y, float width, float height, String id, int objectTypeCode){
+    public void createOrUpdateObject(float x, float y, float width, float height, String id, int objectTypeCode, Float[] specifics){
         if(!objects.containsKey(id)){
             ObjectType type = ObjectType.values()[objectTypeCode];
             switch (type) {
                 case PLAYER:
-                    playerManager.createPlayer(x,y,width,id); break;
+                    playerManager.createPlayer(x,y,width,id, specifics); break;
                 default: return;
             }
         } else {

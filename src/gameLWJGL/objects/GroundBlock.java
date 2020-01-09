@@ -32,4 +32,14 @@ public class GroundBlock extends GameObject {
     public void handleCollision(Collision collisionData) {
 
     }
+
+    @Override
+    public Float[] getSpecifics() {
+        return new Float[0];
+    }
+
+    @Override
+    public void setSpecifics(Float[] specifics){
+        return;
+    }
 }

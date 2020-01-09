@@ -12,8 +12,8 @@ public abstract class PhysicsObject extends GameObject {
     public static final float GROUND_THRESHOLD = 0.0021f;
     public static final float COLLISION_THRESHOLD = 0.00001f;
 
-    protected float speedX = 0;
-    protected float speedY = 0;
+    public float speedX = 0;
+    public float speedY = 0;
 
     protected float maxSpeed = 0.05f;
 
@@ -61,4 +61,16 @@ public abstract class PhysicsObject extends GameObject {
         }
         speedY = 0;
     }
+
+    @Override
+    public Float[] getSpecifics() {
+        return new Float[]{speedX, speedY};
+    }
+
+    @Override
+    public void setSpecifics(Float[] specifics) {
+        speedX = specifics[0];
+        speedY = specifics[1];
+    }
+
 }
