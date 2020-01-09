@@ -44,11 +44,10 @@ public class Input implements IMsgApplicator<InputMsg> {
             yDirection = - 1;
         }
 
-        if(xDirection == prevXDirection && yDirection == prevYDirection) { return; }
-
-        // if x and y direction have changed
-        this.xDirection = xDirection;
-        this.yDirection = yDirection;
+        if(xDirection == prevXDirection && yDirection == prevYDirection) {
+            shouldSendMessage = false;
+            return;
+        }
         shouldSendMessage = true;
 
     }
