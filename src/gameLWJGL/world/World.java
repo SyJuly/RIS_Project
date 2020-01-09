@@ -30,7 +30,6 @@ public class World implements IMsgApplicator<WorldMsg> {
     public void buildWorld(float centralX){
         this.currentCentralX = centralX;
         float startingX = centralX - worldAreaWidth;
-
         world = new WorldArea[worldSize];
         for (int i = 0; i < worldSize; i++){
             WorldArea area = new WorldArea(startingX, worldAreaWidth);

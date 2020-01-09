@@ -3,8 +3,9 @@ package network.server;
 import gameLWJGL.Timer;
 import gameLWJGL.collision.CollisionDetector;
 import gameLWJGL.input.Input;
-import gameLWJGL.world.Camera;
 import gameLWJGL.objects.ObjectHandler;
+import gameLWJGL.objects.PlayerManager;
+import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
@@ -25,6 +26,7 @@ public class GameServer {
     private Input input;
     private World world;
     private ObjectHandler objectHandler;
+    private PlayerManager playerManager;
     private CollisionDetector collisionDetector;
     private NetworkManager networkManager;
 
@@ -36,12 +38,13 @@ public class GameServer {
 
         world.buildWorld(0);
         input = new Input();
-        objectHandler = new ObjectHandler(input);
+        playerManager = new PlayerManager(input);
+        objectHandler = new ObjectHandler(playerManager);
         collisionDetector = new CollisionDetector(world, objectHandler);
         networkManager = new NetworkManager(getServerNetworkCommunicator());
         msgSenders = new ArrayList<>();
         msgSenders.add(world);
-        msgSenders.add(objectHandler.getDynamicObjectsApplicator());
+        msgSenders.add(objectHandler);
     }
 
     public void runGame(){
@@ -70,19 +73,20 @@ public class GameServer {
 
                 //input.handleInput(window.window);
                 world.update();
-                objectHandler.update();
+                objectHandler.updateObjectsList();
+                objectHandler.updateObjects();
                 //camera.update();
                 collisionDetector.detectCollisions();
 
                 for (IMsgApplicator msgApplicator: msgSenders) {
-                    if(msgApplicator.shouldSendMessage() || objectHandler.hasNewPlayer()){
+                    if(msgApplicator.shouldSendMessage() || playerManager.hasNewPlayer()){
                         NetworkMsg msg = msgApplicator.getMessage();
                         networkManager.sendMsg(msg);
                         System.out.println("send msg: " + msg.msgType);
                     }
                 }
-                if(objectHandler.hasNewPlayer()){
-                    objectHandler.setHasNewPlayer(false);
+                if(playerManager.hasNewPlayer()){
+                    playerManager.setHasNewPlayer(false);
                 }
                 // for each IMsgSender check if shouldSend
                 // if true -> send msg to SNM
@@ -99,7 +103,7 @@ public class GameServer {
 
     private ServerNetworkCommunicator getServerNetworkCommunicator(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
-        msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(objectHandler.getJoinApplicator()));
+        msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(playerManager));
         msgHandlers.put(MsgType.Input.getCode(), new InputMsgHandler(input));
         return new ServerNetworkCommunicator(msgHandlers);
     }

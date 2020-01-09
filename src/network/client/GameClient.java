@@ -3,8 +3,9 @@ package network.client;
 import gameLWJGL.Timer;
 import gameLWJGL.Window;
 import gameLWJGL.input.Input;
-import gameLWJGL.world.Camera;
 import gameLWJGL.objects.ObjectHandler;
+import gameLWJGL.objects.PlayerManager;
+import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
@@ -30,6 +31,7 @@ public class GameClient {
     private Camera camera;
     private World world;
     private ObjectHandler objectHandler;
+    private PlayerManager playerManager;
     private Input input;
     private NetworkManager networkManager;
 
@@ -38,11 +40,13 @@ public class GameClient {
     public GameClient(){
         camera = new Camera();
         world = new World(4, camera);
-        objectHandler = new ObjectHandler(camera);
+        playerManager = new PlayerManager(camera);
+        objectHandler = new ObjectHandler(playerManager);
         input = new Input();
         networkManager = new NetworkManager(getClientNetworkCommunicator());
         msgSenders = new ArrayList<>();
         msgSenders.add(input);
+        msgSenders.add(playerManager);
     }
 
     private void runGame(){
@@ -79,6 +83,7 @@ public class GameClient {
                 glfwPollEvents();
 
                 input.handleInput(window.window);
+
                 for (IMsgApplicator msgApplicator: msgSenders) {
                     if(msgApplicator.shouldSendMessage()){
                         NetworkMsg msg = msgApplicator.getMessage();
@@ -86,8 +91,10 @@ public class GameClient {
                         System.out.println("send msg: " + msg.msgType);
                     }
                 }
+
                 camera.update();
                 world.update();
+                objectHandler.updateObjectsList();
 
                 if(frame_time >= 1.0){
                     frame_time = 0;
@@ -116,7 +123,7 @@ public class GameClient {
     private ClientNetworkCommunicator getClientNetworkCommunicator(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
         msgHandlers.put(MsgType.World.getCode(), new WorldMsgHandler(world));
-        msgHandlers.put(MsgType.DynamicObjects.getCode(), new DynamicObjectsMsgHandler(objectHandler.getDynamicObjectsApplicator()));
+        msgHandlers.put(MsgType.DynamicObjects.getCode(), new DynamicObjectsMsgHandler(objectHandler));
         return new ClientNetworkCommunicator(msgHandlers);
     }
 

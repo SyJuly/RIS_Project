@@ -2,7 +2,6 @@ package network.client;
 
 import network.NetworkCommunicatorMessager;
 import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.JoinMsg;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,8 +10,6 @@ import java.net.Socket;
 import java.util.Map;
 
 public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
-    private boolean sentJoinMsg = false;
-
     public ClientNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers) {
         super(msgHandlers);
     }
@@ -26,7 +23,6 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
         try (Socket clientSocket = new Socket("localhost", port);
              InputStream inputStream = clientSocket.getInputStream();
              OutputStream outputStream = clientSocket.getOutputStream()){
-             sendJoinMsg(outputStream);
             while (!isStopped()) {
                 handleOutgoingMessages(outputStream);
                 handleIncomingMessages(inputStream);
@@ -39,14 +35,6 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
             throw new RuntimeException("Error connecting client", e);
         }
         System.out.println("ClientNetworkCommunicator stopped running.");
-    }
-
-    private void sendJoinMsg(OutputStream outputStream) throws IOException {
-        synchronized (outputStream){
-            sentJoinMsg = true;
-            JoinMsg msg = new JoinMsg(GameClient.CLIENTID);
-            msg.serialize(outputStream);
-        }
     }
 
     public synchronized void stop() {
