@@ -1,17 +1,5 @@
 package gameLWJGL;
 
-import gameLWJGL.collision.CollisionDetector;
-import gameLWJGL.input.Input;
-import gameLWJGL.world.Camera;
-import gameLWJGL.world.ObjectHandler;
-import gameLWJGL.objects.Player;
-import gameLWJGL.world.World;
-import org.lwjgl.opengl.GL;
-
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.*;
-
 public class Main {
 
     public static void main(String[] args) {

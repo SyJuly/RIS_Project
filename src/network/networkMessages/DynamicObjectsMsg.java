@@ -1,7 +1,7 @@
 package network.networkMessages;
 
 import gameLWJGL.objects.GameObject;
-import gameLWJGL.world.ObjectHandler;
+import gameLWJGL.objects.ObjectHandler;
 import network.MsgType;
 
 import java.io.DataInputStream;

@@ -1,9 +1,7 @@
-package gameLWJGL.world;
+package gameLWJGL.objects;
 
 import gameLWJGL.input.Input;
-import gameLWJGL.objects.GameObject;
-import gameLWJGL.objects.ObjectType;
-import gameLWJGL.objects.Player;
+import gameLWJGL.world.Camera;
 import network.IMsgApplicator;
 import network.client.GameClient;
 import network.networkMessages.DynamicObjectsMsg;

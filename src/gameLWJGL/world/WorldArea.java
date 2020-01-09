@@ -1,6 +1,8 @@
 package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
+import gameLWJGL.objects.GroundBlock;
+
 import java.util.LinkedList;
 import java.util.List;
 

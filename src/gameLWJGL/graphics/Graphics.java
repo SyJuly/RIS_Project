@@ -1,13 +1,5 @@
 package gameLWJGL.graphics;
 
-import gameLWJGL.Window;
-import gameLWJGL.world.ObjectHandler;
-import gameLWJGL.world.World;
-import org.lwjgl.opengl.GL;
-
-import static org.lwjgl.glfw.GLFW.glfwInit;
-import static org.lwjgl.glfw.GLFW.glfwTerminate;
-
 /*public class Graphics implements Runnable {
 
     private ObjectHandler objectHandler;

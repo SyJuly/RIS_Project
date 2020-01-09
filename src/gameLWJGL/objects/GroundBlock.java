@@ -1,8 +1,7 @@
-package gameLWJGL.world;
+package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
-import gameLWJGL.objects.GameObject;
-import gameLWJGL.objects.ObjectType;
+import gameLWJGL.world.Camera;
 
 import static org.lwjgl.opengl.GL11.*;
 

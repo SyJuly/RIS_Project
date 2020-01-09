@@ -4,7 +4,7 @@ import gameLWJGL.Timer;
 import gameLWJGL.collision.CollisionDetector;
 import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
-import gameLWJGL.world.ObjectHandler;
+import gameLWJGL.objects.ObjectHandler;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
