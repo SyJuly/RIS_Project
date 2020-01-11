@@ -4,7 +4,7 @@ import gameLWJGL.objects.GameObject;
 
 public class AABB {
 
-    public static Collision getCollision(GameObject a, GameObject b) // AABB - AABB collision
+    public static Collision getCollision(GameObject a, GameObject b, boolean isStatic) // AABB - AABB collision
     {
         boolean isColliding = false;
         CollisionDirection aMetBs = (a.y > b.y) ? CollisionDirection.UPSIDE : CollisionDirection.DOWNSIDE;
@@ -15,7 +15,7 @@ public class AABB {
                 isColliding = true;
             }
         }
-        return new Collision( isColliding, new GameObject[]{a, b}, aMetBs);
+        return new Collision( isColliding, new GameObject[]{a, b}, aMetBs, isStatic);
     }
 
 }

@@ -1,6 +1,7 @@
 package gameLWJGL.objects;
 
 import gameLWJGL.world.Camera;
+import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.networkMessages.DynamicObjectsMsg;
 
@@ -14,12 +15,15 @@ import java.util.Map;
 public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
 
     private PlayerManager playerManager;
+    private World world;
     private Map<String, GameObject> objects = new HashMap<>();
     private List<IObjectHolder> objectHolders = new ArrayList<>();
 
-    public ObjectHandler(PlayerManager playerManager){
+    public ObjectHandler(PlayerManager playerManager, World world){
         this.playerManager = playerManager;
+        this.world = world;
         objectHolders.add(playerManager);
+        objectHolders.add(world);
     }
 
     public void updateObjects(){
@@ -56,7 +60,7 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             ObjectType type = ObjectType.values()[objectTypeCode];
             switch (type) {
                 case PLAYER:
-                    playerManager.createPlayer(x,y,width,id, specifics); break;
+                    playerManager.createPlayer(x,y,id, specifics); break;
                 default: return;
             }
         } else {

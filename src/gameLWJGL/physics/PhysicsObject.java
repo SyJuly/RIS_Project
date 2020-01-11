@@ -52,14 +52,15 @@ public abstract class PhysicsObject extends GameObject {
 
     @Override
     public void handleCollision(Collision collisionData) {
-        if(collisionData.aMetBs == CollisionDirection.UPSIDE) {
+        if(collisionData.isStatic && collisionData.aMetBs == CollisionDirection.UPSIDE) {
             GameObject collidingGameObject = collisionData.gameObjects[1];
             float upperBorder = collidingGameObject.y + collidingGameObject.height;
             y = upperBorder + height - COLLISION_THRESHOLD;
             isOnGroundAt = y;
             isOnGround = true;
+            speedY = 0;
         }
-        speedY = 0;
+
     }
 
     @Override

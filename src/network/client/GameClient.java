@@ -41,7 +41,7 @@ public class GameClient {
         camera = new Camera();
         world = new World(4, camera);
         playerManager = new PlayerManager(camera);
-        objectHandler = new ObjectHandler(playerManager);
+        objectHandler = new ObjectHandler(playerManager, world);
         input = new Input();
         networkManager = new NetworkManager(getClientNetworkCommunicator());
         msgSenders = new ArrayList<>();

@@ -11,12 +11,15 @@ public class Player extends PhysicsObject implements IMoveable {
 
     public static final double JUMP_STRENGTH = 0.3f;
     public static final double SPEED = 0.03f;
+    public static final float INITIAL_SIZE = 0.06f;
 
     private  boolean isJumping = false;
     private float xDelta;
 
-    public Player(float x, float y, float size, String id){
-        super(x,y, size, size, id, ObjectType.PLAYER);
+    private float weight = 0;
+
+    public Player(float x, float y, String id){
+        super(x,y, INITIAL_SIZE, INITIAL_SIZE, id, ObjectType.PLAYER);
     }
 
     @Override
@@ -30,6 +33,7 @@ public class Player extends PhysicsObject implements IMoveable {
 
     @Override
     public void render(Camera camera){
+
         float xOffset = camera.getXOffset(x);
         float yOffset = camera.getYOffset(y);
         glBegin(GL_QUADS);
@@ -52,6 +56,11 @@ public class Player extends PhysicsObject implements IMoveable {
             glEnd();*/
     }
 
+    public void gainWeight(){
+        weight += 0.001f;
+        width += weight;
+        height += weight;
+    }
 
 
     @Override

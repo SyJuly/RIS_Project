@@ -1,15 +1,13 @@
 package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
+import gameLWJGL.objects.IObjectHolder;
 import network.IMsgApplicator;
 import network.networkMessages.WorldMsg;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class World implements IMsgApplicator<WorldMsg> {
+public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
 
     private WorldArea[] world;
     private Map<Float, WorldArea> worldCache;
@@ -132,5 +130,23 @@ public class World implements IMsgApplicator<WorldMsg> {
         } else {
             System.out.println("Got world msg although world existed.");
         }
+    }
+
+    @Override
+    public GameObject[] getNewlyCreatedObjects() {
+        if(world == null) return new GameObject[0];
+        ArrayList<GameObject> gameObjectsList = new ArrayList<>();
+        for(int i = 0; i < world.length; i++){
+            WorldArea area = world[i];
+            if(area == null) return new GameObject[0];
+            gameObjectsList.addAll(Arrays.asList(area.getNewlyCreatedObjects()));
+        }
+        GameObject[] gameObjects = new GameObject[gameObjectsList.size()];
+        return gameObjectsList.toArray(gameObjects);
+    }
+
+    @Override
+    public String[] getRemovedObjects() {
+        return new String[0];
     }
 }

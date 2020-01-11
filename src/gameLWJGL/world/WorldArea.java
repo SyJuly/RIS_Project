@@ -2,21 +2,27 @@ package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.GroundBlock;
+import gameLWJGL.objects.IObjectHolder;
+import gameLWJGL.objects.WeightPill;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class WorldArea {
+public class WorldArea implements IObjectHolder {
 
     public float startingX;
     public float lastUsed;
     private float width;
     private LinkedList<GameObject> staticObjects;
+    private LinkedList<GameObject> dynamicObjects;
+
+    private boolean registeredDynamicObjects = true;
 
     public WorldArea (float startingX, float width) {
         this.startingX = startingX;
         this.width = width;
         staticObjects = new LinkedList<>();
+        dynamicObjects = new LinkedList<>();
     }
 
     public void buildWorld(){
@@ -24,13 +30,20 @@ public class WorldArea {
         for (float x = 0; x < width; x+=0.7f){
             worldX = x + startingX;
             GroundBlock block = new GroundBlock(worldX, getY(worldX), 0.4f, 0.05f);
+            WeightPill pill = new WeightPill(worldX, getY(worldX) + 0.2f, "pill" + worldX + getY(worldX));
             staticObjects.add(block);
+            dynamicObjects.add(pill);
         }
+        registeredDynamicObjects = false;
     }
 
     public void render(Camera camera){
         for(int i = 0; i < staticObjects.size(); i++){
             GameObject tempObject = staticObjects.get(i);
+            tempObject.render(camera);
+        }
+        for(int i = 0; i < dynamicObjects.size(); i++){
+            GameObject tempObject = dynamicObjects.get(i);
             tempObject.render(camera);
         }
     }
@@ -41,5 +54,21 @@ public class WorldArea {
 
     public List<GameObject> getStaticObjects(){
         return staticObjects;
+    }
+
+    @Override
+    public GameObject[] getNewlyCreatedObjects() {
+        if(!registeredDynamicObjects){
+            GameObject[] gameObjects = new GameObject[dynamicObjects.size()];
+            registeredDynamicObjects = true;
+            gameObjects = dynamicObjects.toArray(gameObjects);
+            return dynamicObjects.toArray(gameObjects);
+        }
+        return new GameObject[0];
+    }
+
+    @Override
+    public String[] getRemovedObjects() {
+        return new String[0];
     }
 }

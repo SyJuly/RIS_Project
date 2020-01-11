@@ -15,13 +15,22 @@ public class CollisionDetector {
     }
 
     public void detectCollisions(){
-        for (GameObject staticObject : world.getStaticObjects()) {
-            for (GameObject dynamicObject: objectHandler.getDynamicObjects()) {
-                Collision collision = AABB.getCollision(dynamicObject, staticObject);
-                if(collision.isColliding){
-                    dynamicObject.handleCollision(collision);
-                }
+
+        for (GameObject dynamicObject: objectHandler.getDynamicObjects()) {
+            for (GameObject staticObject : world.getStaticObjects()) {
+                handleCollision(dynamicObject, staticObject, true);
             }
+            for (GameObject otherDynamicObject: objectHandler.getDynamicObjects()) {
+                if(dynamicObject.id == otherDynamicObject.id) continue;
+                handleCollision(dynamicObject, otherDynamicObject, false);
+            }
+        }
+    }
+
+    private void handleCollision(GameObject dynamicObject, GameObject otherObject, boolean isStatic) {
+        Collision collision = AABB.getCollision(dynamicObject, otherObject, isStatic);
+        if (collision.isColliding) {
+            dynamicObject.handleCollision(collision);
         }
     }
 }

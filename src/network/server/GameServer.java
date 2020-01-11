@@ -39,7 +39,7 @@ public class GameServer {
         world.buildWorld(0);
         input = new Input();
         playerManager = new PlayerManager(input, camera);
-        objectHandler = new ObjectHandler(playerManager);
+        objectHandler = new ObjectHandler(playerManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
         networkManager = new NetworkManager(getServerNetworkCommunicator());
         msgSenders = new ArrayList<>();
