@@ -2,10 +2,7 @@ package gameLWJGL.world;
 
 import gameLWJGL.objects.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class WorldArea implements IObjectHolder {
 
@@ -15,6 +12,7 @@ public class WorldArea implements IObjectHolder {
     private LinkedList<GameObject> staticObjects;
     private LinkedList<IDynamicObject> dynamicObjects;
 
+    private Random generator = new Random(5);
     private boolean registeredDynamicObjects = true;
 
     public WorldArea (float startingX, float width) {
@@ -28,10 +26,10 @@ public class WorldArea implements IObjectHolder {
         float worldX = 0;
         for (float x = 0; x < width; x+=0.7f){
             worldX = x + startingX;
-            GroundBlock block = new GroundBlock(worldX, getY(worldX), 0.4f, 0.05f);
-            WeightPill pill = new WeightPill(worldX, getY(worldX) + 0.2f, "pill" + worldX + getY(worldX));
+            float worldY = getY(worldX);
+            GroundBlock block = new GroundBlock(worldX, worldY, 0.4f, 0.05f);
             staticObjects.add(block);
-            dynamicObjects.add(pill);
+            spawnWeightPill(worldX, worldY);
         }
         registeredDynamicObjects = false;
     }
@@ -49,6 +47,14 @@ public class WorldArea implements IObjectHolder {
 
     private float getY(float x){
         return (float)(0.4f * Math.cos(0.5f * x) - 0.4f * Math.cos(1f * x) - 0.4f * Math.cos(2f * x) + 0.3f);
+    }
+
+    private void spawnWeightPill(float x, float y){
+        System.out.println(generator.nextDouble());
+        if(generator.nextDouble() > 0.6){
+            WeightPill pill = new WeightPill(x, y + 0.2f, "pill" + x + y);
+            dynamicObjects.add(pill);
+        }
     }
 
     public List<GameObject> getStaticObjects(){
