@@ -57,7 +57,7 @@ public class Player extends PhysicsObject implements IMoveable {
     }
 
     public void gainWeight(){
-        weight += 0.001f;
+        weight += 0.02f;
         width += weight;
         height += weight;
     }

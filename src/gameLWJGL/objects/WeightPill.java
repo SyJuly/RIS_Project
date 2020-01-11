@@ -5,11 +5,13 @@ import gameLWJGL.world.Camera;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class WeightPill extends GameObject {
+public class WeightPill extends GameObject implements IDynamicObject {
 
     public static final float SIZE = 0.1f;
     public static final float NUM_TRIANGLES = 10;
     public static final float PI_TWICE = 2.0f * (float)Math.PI;
+
+    private boolean hasBeenEaten = false;
 
     public WeightPill(float x, float y, String id ) {
         super(x, y, SIZE, SIZE, id, ObjectType.PILL);
@@ -17,7 +19,6 @@ public class WeightPill extends GameObject {
 
     @Override
     public void update() {
-
     }
 
     @Override
@@ -40,10 +41,12 @@ public class WeightPill extends GameObject {
 
     @Override
     public void handleCollision(Collision collisionData) {
+        if(hasBeenEaten) return;
         GameObject collidingGameObject = collisionData.gameObjects[0].id == id ? collisionData.gameObjects[1] : collisionData.gameObjects[0];
         if(collidingGameObject.objectType == ObjectType.PLAYER){
             Player player = (Player) collidingGameObject;
             player.gainWeight();
+            hasBeenEaten = true;
         }
     }
 
@@ -55,5 +58,15 @@ public class WeightPill extends GameObject {
     @Override
     public void setSpecifics(Float[] specifics) {
 
+    }
+
+    @Override
+    public boolean shouldBeDestroyed() {
+        return hasBeenEaten;
+    }
+
+    @Override
+    public GameObject getGameObject() {
+        return this;
     }
 }

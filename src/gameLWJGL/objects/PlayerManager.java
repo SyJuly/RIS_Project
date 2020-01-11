@@ -85,4 +85,9 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     public String[] getRemovedObjects() {
         return new String[0]; //TODO
     }
+
+    @Override
+    public void removeObject(String id) {
+        players.remove(id);
+    }
 }

@@ -45,6 +45,7 @@ public class DynamicObjectsMsg extends NetworkMsg {
             }
             objectHandler.createOrUpdateObject(x,y,width,height,id,objectTypeCode, specifics);
         }
+        objectHandler.acknowledgeEndOfDynamicObjectsMsg();
     }
     @Override
     public void serialize(OutputStream outputStream) throws IOException {

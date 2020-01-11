@@ -6,10 +6,7 @@ import network.IMsgApplicator;
 import network.networkMessages.DynamicObjectsMsg;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
@@ -18,6 +15,8 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
     private World world;
     private Map<String, GameObject> objects = new HashMap<>();
     private List<IObjectHolder> objectHolders = new ArrayList<>();
+
+    private ArrayList<String> objectIdsThatWhereNotFound = new ArrayList<>();
 
     public ObjectHandler(PlayerManager playerManager, World world){
         this.playerManager = playerManager;
@@ -39,13 +38,17 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
     }
 
     public void updateObjectsList(){
-        for(IObjectHolder objectHolder: objectHolders){
+        Iterator<IObjectHolder> iter = objectHolders.iterator();
+        while(iter.hasNext()) {
+            IObjectHolder objectHolder = iter.next();
             GameObject[] newlyCreatedObjects = objectHolder.getNewlyCreatedObjects();
             String[] removedObjects = objectHolder.getRemovedObjects();
-            for(GameObject gameObject: newlyCreatedObjects){
+            for(int i = 0; i < newlyCreatedObjects.length; i++){
+                GameObject gameObject = newlyCreatedObjects[i];
                 objects.put(gameObject.id, gameObject);
             }
-            for(String removedObjectId: removedObjects){
+            for(int i = 0; i < removedObjects.length; i++){
+                String removedObjectId = removedObjects[i];
                 objects.remove(removedObjectId);
             }
         }
@@ -61,7 +64,9 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             switch (type) {
                 case PLAYER:
                     playerManager.createPlayer(x,y,id, specifics); break;
-                default: return;
+                default:
+                    System.out.println("didnt find id: " + id);
+                    objectIdsThatWhereNotFound.add(id);
             }
         } else {
             GameObject gameObject = objects.get(id);
@@ -70,7 +75,12 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             gameObject.width = width;
             gameObject.height = height;
         }
+    }
+
+    public void acknowledgeEndOfDynamicObjectsMsg(){
         updateObjectsList();
+        objects.keySet().removeAll(objectIdsThatWhereNotFound);
+        objectIdsThatWhereNotFound.clear();
     }
 
     public boolean shouldSendMessage() {

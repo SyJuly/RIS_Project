@@ -147,6 +147,23 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
 
     @Override
     public String[] getRemovedObjects() {
-        return new String[0];
+        if(world == null) return new String[0];
+        ArrayList<String> objectIdList = new ArrayList<>();
+        for(int i = 0; i < world.length; i++){
+            WorldArea area = world[i];
+            if(area == null) return new String[0];
+            objectIdList.addAll(Arrays.asList(area.getRemovedObjects()));
+        }
+        String[] gameObjectIds = new String[objectIdList.size()];
+        return objectIdList.toArray(gameObjectIds);
+    }
+
+    @Override
+    public void removeObject(String id) {
+        for(int i = 0; i < world.length; i++){
+            WorldArea area = world[i];
+            if(area == null) return ;
+            area.removeObject(id);
+        }
     }
 }

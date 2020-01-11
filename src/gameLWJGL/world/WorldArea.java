@@ -1,10 +1,9 @@
 package gameLWJGL.world;
 
-import gameLWJGL.objects.GameObject;
-import gameLWJGL.objects.GroundBlock;
-import gameLWJGL.objects.IObjectHolder;
-import gameLWJGL.objects.WeightPill;
+import gameLWJGL.objects.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class WorldArea implements IObjectHolder {
     public float lastUsed;
     private float width;
     private LinkedList<GameObject> staticObjects;
-    private LinkedList<GameObject> dynamicObjects;
+    private LinkedList<IDynamicObject> dynamicObjects;
 
     private boolean registeredDynamicObjects = true;
 
@@ -31,6 +30,7 @@ public class WorldArea implements IObjectHolder {
             worldX = x + startingX;
             GroundBlock block = new GroundBlock(worldX, getY(worldX), 0.4f, 0.05f);
             WeightPill pill = new WeightPill(worldX, getY(worldX) + 0.2f, "pill" + worldX + getY(worldX));
+            System.out.println("pill" + worldX + getY(worldX));
             staticObjects.add(block);
             dynamicObjects.add(pill);
         }
@@ -43,7 +43,7 @@ public class WorldArea implements IObjectHolder {
             tempObject.render(camera);
         }
         for(int i = 0; i < dynamicObjects.size(); i++){
-            GameObject tempObject = dynamicObjects.get(i);
+            GameObject tempObject = dynamicObjects.get(i).getGameObject();
             tempObject.render(camera);
         }
     }
@@ -69,6 +69,27 @@ public class WorldArea implements IObjectHolder {
 
     @Override
     public String[] getRemovedObjects() {
-        return new String[0];
+        ArrayList<String> idsOfRemovedObjects = new ArrayList<>();
+        Iterator<IDynamicObject> iter = dynamicObjects.iterator();
+        while(iter.hasNext()) {
+            IDynamicObject dynamicObject = iter.next();
+            if (dynamicObject.shouldBeDestroyed()) {
+                idsOfRemovedObjects.add(dynamicObject.getGameObject().id);
+                iter.remove();
+            }
+        }
+        String[] idsOfRemovedObjectsArray = new String[idsOfRemovedObjects.size()];
+        return idsOfRemovedObjects.toArray(idsOfRemovedObjectsArray);
+    }
+
+    @Override
+    public void removeObject(String id) {
+        Iterator<IDynamicObject> iter = dynamicObjects.iterator();
+        while(iter.hasNext()) {
+            IDynamicObject dynamicObject = iter.next();
+            if (dynamicObject.getGameObject().id.equals(id)) {
+                iter.remove();
+            }
+        }
     }
 }
