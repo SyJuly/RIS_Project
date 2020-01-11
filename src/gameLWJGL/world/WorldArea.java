@@ -30,7 +30,6 @@ public class WorldArea implements IObjectHolder {
             worldX = x + startingX;
             GroundBlock block = new GroundBlock(worldX, getY(worldX), 0.4f, 0.05f);
             WeightPill pill = new WeightPill(worldX, getY(worldX) + 0.2f, "pill" + worldX + getY(worldX));
-            System.out.println("pill" + worldX + getY(worldX));
             staticObjects.add(block);
             dynamicObjects.add(pill);
         }
@@ -84,11 +83,10 @@ public class WorldArea implements IObjectHolder {
 
     @Override
     public void removeObject(String id) {
-        Iterator<IDynamicObject> iter = dynamicObjects.iterator();
-        while(iter.hasNext()) {
-            IDynamicObject dynamicObject = iter.next();
+        for(int i= 0; i < dynamicObjects.size(); i++){
+            IDynamicObject dynamicObject = dynamicObjects.get(i);
             if (dynamicObject.getGameObject().id.equals(id)) {
-                iter.remove();
+                dynamicObjects.remove(dynamicObject);
             }
         }
     }

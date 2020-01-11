@@ -19,7 +19,7 @@ public abstract class GameObject {
         this.objectType = objectType;
     }
 
-    public abstract void update();
+    public abstract boolean update();
     public abstract void render(Camera camera);
     public abstract void handleCollision(Collision collisionData);
     public abstract Float[] getSpecifics();

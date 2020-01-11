@@ -35,14 +35,14 @@ public abstract class PhysicsObject extends GameObject {
     }
 
     @Override
-    public void update() {
+    public boolean update() {
         moveWithPhysics(speedX, speedY);
         speedX = Math.min(speedX * FRICTION, maxSpeed);
         speedY = Math.min(speedY * FRICTION, maxSpeed);
         if(!isOnGround()){
             accelerate(0, -GRAVITY);
         }
-        isOnGround = false;
+        return true; //TODO: could be improved
     }
 
     private boolean isOnGround(){

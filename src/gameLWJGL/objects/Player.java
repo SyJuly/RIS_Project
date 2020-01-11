@@ -23,12 +23,13 @@ public class Player extends PhysicsObject implements IMoveable {
     }
 
     @Override
-    public void update() {
-        super.update();
+    public boolean update() {
+        boolean physicsHasBeenUpdated = super.update();
         x += xDelta;
         if(isJumping && speedY < 0){
             isJumping = false;
         }
+        return true; //TODO: could be improved
     }
 
     @Override

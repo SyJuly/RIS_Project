@@ -8,18 +8,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DynamicObjectsMsg extends NetworkMsg {
 
-    List<GameObject> objects = new ArrayList<>();
+    ObjectHandler objectHandler;
     DataInputStream dis = null;
 
-    public DynamicObjectsMsg(List<GameObject> objects){
+    public DynamicObjectsMsg(ObjectHandler objectHandler){
         super();
         this.msgType = MsgType.DynamicObjects;
-        this.objects = objects;
+        this.objectHandler = objectHandler;
     }
 
     public DynamicObjectsMsg(DataInputStream dis){
@@ -30,8 +29,8 @@ public class DynamicObjectsMsg extends NetworkMsg {
 
     public void deserializeAndApplyData(ObjectHandler objectHandler) throws IOException {
         deserializeBase(dis);
-        int objectsSize = dis.readInt();
-        for(int i = 0; i < objectsSize; i++){
+        int updatedObjectsSize = dis.readInt();
+        for(int i = 0; i < updatedObjectsSize; i++){
             float x = dis.readFloat();
             float y = dis.readFloat();
             float width = dis.readFloat();
@@ -45,14 +44,23 @@ public class DynamicObjectsMsg extends NetworkMsg {
             }
             objectHandler.createOrUpdateObject(x,y,width,height,id,objectTypeCode, specifics);
         }
+        int removedObjectsSize = dis.readInt();
+        for(int i = 0; i < removedObjectsSize; i++){
+            String removedObjectId = readString(dis);
+            objectHandler.removeObject(removedObjectId);
+        }
         objectHandler.acknowledgeEndOfDynamicObjectsMsg();
     }
     @Override
     public void serialize(OutputStream outputStream) throws IOException {
+        List<GameObject> updatedObjects = objectHandler.getUpdatedObjects();
+        List<GameObject> removedObjects = objectHandler.getRemovedObjects();
+
         DataOutputStream dos = new DataOutputStream(outputStream);
         serializeBase(dos);
-        dos.writeInt(objects.size());
-        for(GameObject gameObject: objects){
+        dos.writeInt(updatedObjects.size());
+        for(int i = 0; i < updatedObjects.size(); i++){
+            GameObject gameObject = updatedObjects.get(i);
             Float[] specifics = gameObject.getSpecifics();
             dos.writeFloat(gameObject.x);
             dos.writeFloat(gameObject.y);
@@ -61,10 +69,16 @@ public class DynamicObjectsMsg extends NetworkMsg {
             writeString(dos, gameObject.id);
             dos.writeInt(gameObject.objectType.ordinal());
             dos.writeInt(specifics.length);
-            for(int i = 0; i < specifics.length; i++) {
-                dos.writeFloat(specifics[i]);
+            for(int j = 0; j < specifics.length; j++) {
+                dos.writeFloat(specifics[j]);
             }
         }
-
+        dos.writeInt(removedObjects.size());
+        for(int i  = 0; i < removedObjects.size(); i++){
+            GameObject gameObject = removedObjects.get(i);
+            System.out.println("putting in msg to remove: " + gameObject.id);
+            writeString(dos, gameObject.id);
+        }
+        objectHandler.clearMsgLists();
     }
 }

@@ -18,7 +18,8 @@ public class WeightPill extends GameObject implements IDynamicObject {
     }
 
     @Override
-    public void update() {
+    public boolean update() {
+        return hasBeenEaten;
     }
 
     @Override

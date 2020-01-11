@@ -12,7 +12,8 @@ public class GroundBlock extends GameObject {
     }
 
     @Override
-    public void update() {
+    public boolean update() {
+        return false;
     }
 
     @Override

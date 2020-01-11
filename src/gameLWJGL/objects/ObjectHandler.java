@@ -12,22 +12,22 @@ import java.util.*;
 public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
 
     private PlayerManager playerManager;
-    private World world;
     private Map<String, GameObject> objects = new HashMap<>();
+    private ArrayList<GameObject> updatedObjects = new ArrayList<>();
+    private ArrayList<GameObject> removedObjects = new ArrayList<>();
     private List<IObjectHolder> objectHolders = new ArrayList<>();
-
-    private ArrayList<String> objectIdsThatWhereNotFound = new ArrayList<>();
 
     public ObjectHandler(PlayerManager playerManager, World world){
         this.playerManager = playerManager;
-        this.world = world;
         objectHolders.add(playerManager);
         objectHolders.add(world);
     }
 
     public void updateObjects(){
         for (GameObject gameObject : objects.values()) {
-            gameObject.update();
+            if(gameObject.update()){
+                updatedObjects.add(gameObject);
+            }
         }
     }
 
@@ -42,14 +42,15 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
         while(iter.hasNext()) {
             IObjectHolder objectHolder = iter.next();
             GameObject[] newlyCreatedObjects = objectHolder.getNewlyCreatedObjects();
-            String[] removedObjects = objectHolder.getRemovedObjects();
+            String[] removedObjectIds = objectHolder.getRemovedObjects();
             for(int i = 0; i < newlyCreatedObjects.length; i++){
                 GameObject gameObject = newlyCreatedObjects[i];
                 objects.put(gameObject.id, gameObject);
             }
-            for(int i = 0; i < removedObjects.length; i++){
-                String removedObjectId = removedObjects[i];
-                objects.remove(removedObjectId);
+            for(int i = 0; i < removedObjectIds.length; i++){
+                String removedObjectId = removedObjectIds[i];
+                GameObject removedGameObject = objects.remove(removedObjectId);
+                removedObjects.add(removedGameObject);
             }
         }
     }
@@ -64,9 +65,7 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             switch (type) {
                 case PLAYER:
                     playerManager.createPlayer(x,y,id, specifics); break;
-                default:
-                    System.out.println("didnt find id: " + id);
-                    objectIdsThatWhereNotFound.add(id);
+                default: return;
             }
         } else {
             GameObject gameObject = objects.get(id);
@@ -79,17 +78,15 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
 
     public void acknowledgeEndOfDynamicObjectsMsg(){
         updateObjectsList();
-        objects.keySet().removeAll(objectIdsThatWhereNotFound);
-        objectIdsThatWhereNotFound.clear();
     }
 
     public boolean shouldSendMessage() {
-        return true;
+        return (updatedObjects.size() > 0 || removedObjects.size() > 0);
     }
 
     @Override
     public DynamicObjectsMsg getMessage() {
-        return new DynamicObjectsMsg(ObjectHandler.this.getDynamicObjects());
+        return new DynamicObjectsMsg(this);
     }
 
     @Override
@@ -99,5 +96,27 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void removeObject(String removedObjectId) {
+        Iterator<IObjectHolder> iter = objectHolders.iterator();
+        while(iter.hasNext()) {
+            IObjectHolder objectHolder = iter.next();
+            objectHolder.removeObject(removedObjectId);
+        }
+        objects.remove(removedObjectId);
+    }
+
+    public List<GameObject> getUpdatedObjects() {
+        return updatedObjects;
+    }
+
+    public List<GameObject> getRemovedObjects() {
+        return removedObjects;
+    }
+
+    public void clearMsgLists() {
+        updatedObjects.clear();
+        removedObjects.clear();
     }
 }
