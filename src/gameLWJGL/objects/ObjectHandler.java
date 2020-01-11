@@ -66,6 +66,7 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             gameObject.width = width;
             gameObject.height = height;
         }
+        updateObjectsList();
     }
 
     public boolean shouldSendMessage() {

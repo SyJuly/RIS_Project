@@ -92,9 +92,10 @@ public class GameClient {
                     }
                 }
 
+
+                objectHandler.updateObjectsList();
                 camera.update();
                 world.update();
-                objectHandler.updateObjectsList();
 
                 if(frame_time >= 1.0){
                     frame_time = 0;

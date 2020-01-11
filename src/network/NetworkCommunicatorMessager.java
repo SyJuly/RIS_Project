@@ -28,7 +28,7 @@ public abstract class NetworkCommunicatorMessager extends NetworkCommunicator {
 
                 int msgCode = dis.readInt();
                 if (msgHandlers.containsKey((msgCode))) {
-                    System.out.println("got msg: " + msgHandlers.get(msgCode));
+                    //System.out.println("got msg: " + msgHandlers.get(msgCode));
                     msgHandlers.get(msgCode).handleMsg(dis);
                 } else {
                     System.out.println("Code not found: " + msgCode);

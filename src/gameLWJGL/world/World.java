@@ -50,6 +50,7 @@ public class World implements IMsgApplicator<WorldMsg> {
     }
 
     public void update(){
+        if(world == null) return;
         if (camera.x > currentCentralX + worldAreaWidth){
             expandWorld(1);
         } else if (camera.x < currentCentralX){
@@ -74,13 +75,13 @@ public class World implements IMsgApplicator<WorldMsg> {
             world[i] = world[i + direction];
         }
         world[endIndex] = area;
-        hasBeenUpdated = true;
     }
 
     public void render(){
         if(world == null) return;
         for(int i = 0; i < world.length; i++){
             WorldArea area = world[i];
+            if(area == null) continue;
             area.render(camera);
         }
     }
@@ -95,6 +96,7 @@ public class World implements IMsgApplicator<WorldMsg> {
                 }
             }
             worldCache.remove(oldestArea.startingX);
+            System.out.println("Removed oldest area in cache: " + oldestArea.startingX);
         }
     }
 
@@ -128,8 +130,7 @@ public class World implements IMsgApplicator<WorldMsg> {
         if(world == null) {
             buildWorld(worldMsg.centralX);
         } else {
-            currentCentralX = worldMsg.centralX;
-            update();
+            System.out.println("Got world msg although world existed.");
         }
     }
 }

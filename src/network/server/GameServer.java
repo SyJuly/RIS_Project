@@ -38,7 +38,7 @@ public class GameServer {
 
         world.buildWorld(0);
         input = new Input();
-        playerManager = new PlayerManager(input);
+        playerManager = new PlayerManager(input, camera);
         objectHandler = new ObjectHandler(playerManager);
         collisionDetector = new CollisionDetector(world, objectHandler);
         networkManager = new NetworkManager(getServerNetworkCommunicator());
@@ -71,18 +71,17 @@ public class GameServer {
                 // UPDATE
                 unprocessed -= frame_cap;
 
-                //input.handleInput(window.window);
-                world.update();
+
                 objectHandler.updateObjectsList();
                 objectHandler.updateObjects();
-                //camera.update();
+                camera.update();
+                world.update();
                 collisionDetector.detectCollisions();
 
                 for (IMsgApplicator msgApplicator: msgSenders) {
                     if(msgApplicator.shouldSendMessage() || playerManager.hasNewPlayer()){
                         NetworkMsg msg = msgApplicator.getMessage();
                         networkManager.sendMsg(msg);
-                        System.out.println("send msg: " + msg.msgType);
                     }
                 }
                 if(playerManager.hasNewPlayer()){

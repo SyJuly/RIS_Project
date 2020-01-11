@@ -21,8 +21,9 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     private Input input;
     private Camera camera;
 
-    public PlayerManager(Input input){
+    public PlayerManager(Input input, Camera camera){
         this.input = input; //for server
+        this.camera = camera;
     }
 
     public PlayerManager(Camera camera){
@@ -65,6 +66,7 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         Player player = new Player(0,0, 0.06f, networkMsg.name);
         createdPlayers.add(player.id);
         players.put(player.id, player);
+        camera.setPlayer(player); // latest player controlls camera
         input.addMoveable(player);
         hasNewPlayer = true;
     }
