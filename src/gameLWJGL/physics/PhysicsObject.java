@@ -20,7 +20,7 @@ public abstract class PhysicsObject extends GameObject {
     protected boolean isOnGround = false;
     protected float isOnGroundAt = 0;
 
-    protected float weight = 0;
+    protected float weight = 0.005f;
 
     protected PhysicsObject(float x, float y, float width, float height, String id, ObjectType objectType) {
         super(x, y, width, height, id, objectType);

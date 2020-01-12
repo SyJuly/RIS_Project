@@ -81,7 +81,6 @@ public class GameServer {
                     if(msgApplicator.shouldSendMessage() || playerManager.hasNewPlayer()){
                         NetworkMsg msg = msgApplicator.getMessage();
                         networkManager.sendMsg(msg);
-                        System.out.println("send msg: " + msg.msgType);
                     }
                 }
                 if(playerManager.hasNewPlayer()){

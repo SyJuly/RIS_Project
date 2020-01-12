@@ -12,7 +12,7 @@ public class ConnectionWorker {
     private Socket clientSocket;
     private ConnectionInputWorker inputWorker;
     private ConnectionOutputWorker outputWorker;
-    public long id = 0;
+    public int id = 0;
 
     public ConnectionWorker(Socket clientSocket, Map<Integer, NetworkMsgHandler> msgHandlers) {
         this.clientSocket = clientSocket;
@@ -20,8 +20,8 @@ public class ConnectionWorker {
     }
 
     public void start() {
-        inputWorker= new ConnectionInputWorker(clientSocket, msgHandlers);
-        outputWorker= new ConnectionOutputWorker(clientSocket);
+        inputWorker= new ConnectionInputWorker(id, clientSocket, msgHandlers);
+        outputWorker= new ConnectionOutputWorker(id, clientSocket);
         Thread inputWorkerThread = new Thread(inputWorker);
         Thread outputWorkerThread = new Thread(outputWorker);
         inputWorkerThread.start();

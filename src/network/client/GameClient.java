@@ -91,7 +91,6 @@ public class GameClient {
                     if(msgApplicator.shouldSendMessage()){
                         NetworkMsg msg = msgApplicator.getMessage();
                         networkManager.sendMsg(msg);
-                        System.out.println("send msg: " + msg.msgType);
                     }
                 }
 

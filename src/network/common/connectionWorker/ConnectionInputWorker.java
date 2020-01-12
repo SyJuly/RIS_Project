@@ -12,10 +12,10 @@ public class ConnectionInputWorker extends NetworkInputCommunicator {
 
     protected Socket clientSocket = null;
 
-    public ConnectionInputWorker(Socket clientSocket, Map<Integer, NetworkMsgHandler> msgHandlers) {
+    public ConnectionInputWorker(int id, Socket clientSocket, Map<Integer, NetworkMsgHandler> msgHandlers) {
         super(msgHandlers);
         this.clientSocket = clientSocket;
-
+        this.id = id;
     }
 
     public void run() {

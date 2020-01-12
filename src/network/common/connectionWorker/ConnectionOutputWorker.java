@@ -8,9 +8,9 @@ import java.net.Socket;
 
 public class ConnectionOutputWorker extends NetworkOutputCommunicator {
 
-    public ConnectionOutputWorker(Socket clientSocket) {
+    public ConnectionOutputWorker(int id,Socket clientSocket) {
         this.clientSocket = clientSocket;
-
+        this.id = id;
     }
 
     public void run() {

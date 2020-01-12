@@ -18,7 +18,12 @@ public abstract class NetworkOutputCommunicator extends NetworkCommunicator {
     protected void handleOutgoingMessages(OutputStream output) throws IOException{
         synchronized (output) {
             while(messagesToSend.size()> 0){
-                messagesToSend.poll().serialize(output);
+                NetworkMsg networkMsg = messagesToSend.poll();
+                synchronized (networkMsg){
+                    networkMsg.serialize(output);
+                }
+                output.flush();
+                System.out.println("send msg: " + networkMsg.msgType + " from " + id);
             }
         }
     }

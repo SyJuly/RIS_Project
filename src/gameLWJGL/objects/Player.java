@@ -1,5 +1,7 @@
 package gameLWJGL.objects;
 
+import gameLWJGL.collision.Collision;
+import gameLWJGL.collision.CollisionDirection;
 import gameLWJGL.input.IMoveable;
 import gameLWJGL.physics.PhysicsObject;
 import gameLWJGL.world.Camera;
@@ -11,7 +13,8 @@ public class Player extends PhysicsObject implements IMoveable {
 
     public static final double JUMP_STRENGTH = 0.3f;
     public static final double SPEED = 0.03f;
-    public static final float INITIAL_SIZE = 0.06f;
+    public static final float INITIAL_SIZE = 0.05f;
+    public static final float WEIGHT_DIFF = 0.005f;
     public static final float[] DEFAULT_COLOR = new float[]{1,1,1};
 
     private  boolean isJumping = false;
@@ -66,11 +69,16 @@ public class Player extends PhysicsObject implements IMoveable {
     }
 
     public void gainWeight(){
-        weight += 0.005f;
+        weight += WEIGHT_DIFF;
         width += weight;
         height += weight;
     }
 
+    public void looseWeight(){
+        weight -= WEIGHT_DIFF;
+        width += weight;
+        height += weight;
+    }
 
     @Override
     public void move(int xDirection, int yDirection) {
@@ -112,6 +120,22 @@ public class Player extends PhysicsObject implements IMoveable {
         if(!isJumping){
             isJumping = true;
             accelerate(0, JUMP_STRENGTH);
+        }
+    }
+
+    @Override
+    public void handleCollision(Collision collisionData) {
+        super.handleCollision(collisionData);
+        GameObject collidingGameObject = collisionData.gameObjects[0].id == id ? collisionData.gameObjects[1] : collisionData.gameObjects[0];
+        if(collidingGameObject.objectType != ObjectType.PLAYER) return;
+        if(collisionData.aMetBs != CollisionDirection.UPSIDE){
+            looseWeight();
+            if(weight > 0){
+                for(int i = 0; i < 5; i++){
+                    System.out.println();
+                }
+                System.out.println("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOSER");
+            }
         }
     }
 }

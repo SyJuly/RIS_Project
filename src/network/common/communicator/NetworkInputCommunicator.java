@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 public abstract class NetworkInputCommunicator extends NetworkCommunicator {
+
     protected Map<Integer, NetworkMsgHandler> msgHandlers;
 
     public NetworkInputCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers) {
@@ -15,13 +16,6 @@ public abstract class NetworkInputCommunicator extends NetworkCommunicator {
     }
 
     protected void handleIncomingMessages(InputStream inputStream) throws IOException {
-        /*
-        *PushbackInputStream pbi = new PushbackInputStream(inputStream, 1);
-        int singleByte;
-        DataInputStream dis = new DataInputStream(pbi);
-        while((singleByte = pbi.read()) != -1) {
-            pbi.unread(singleByte);
-         */
         synchronized (inputStream) {
             DataInputStream dis = new DataInputStream((inputStream));
 

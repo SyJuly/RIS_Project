@@ -77,12 +77,13 @@ public class ConnectionWorkerPool implements Runnable{
   private void setUpIncomingClient(Socket clientSocket){
     ConnectionWorker worker = new ConnectionWorker(clientSocket, msgHandlers);
     clientWorkers.add(worker);
+    worker.id = clientWorkers.indexOf(worker);
     worker.start();
   }
 
   public void sendMsgToAllClients(NetworkMsg msg) {
-    for (ConnectionWorker worker: clientWorkers) {
-      worker.send(msg);
+    for (int i = 0; i< clientWorkers.size(); i++) {
+      clientWorkers.get(i).send(msg);
     }
   }
 }

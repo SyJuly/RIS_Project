@@ -6,6 +6,7 @@ import java.net.Socket;
 public abstract class NetworkCommunicator implements Runnable{
     protected Socket clientSocket = null;
     protected Thread runningThread = null;
+    protected int id;
     protected boolean isStopped = false;
 
     protected synchronized boolean isStopped() {

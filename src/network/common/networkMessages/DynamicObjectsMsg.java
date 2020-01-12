@@ -62,6 +62,9 @@ public class DynamicObjectsMsg extends NetworkMsg {
         dos.writeInt(updatedObjects.size());
         for(int i = 0; i < updatedObjects.size(); i++){
             GameObject gameObject = updatedObjects.get(i);
+            if(gameObject == null){
+                continue;
+            }
             float[] specifics = gameObject.getSpecifics();
             dos.writeFloat(gameObject.x);
             dos.writeFloat(gameObject.y);
