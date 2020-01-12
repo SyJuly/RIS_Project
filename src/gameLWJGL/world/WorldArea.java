@@ -50,7 +50,6 @@ public class WorldArea implements IObjectHolder {
     }
 
     private void spawnWeightPill(float x, float y){
-        System.out.println(generator.nextDouble());
         if(generator.nextDouble() > 0.6){
             WeightPill pill = new WeightPill(x, y + 0.2f, "pill" + x + y);
             dynamicObjects.add(pill);

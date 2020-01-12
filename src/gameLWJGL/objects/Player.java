@@ -16,8 +16,6 @@ public class Player extends PhysicsObject implements IMoveable {
     private  boolean isJumping = false;
     private float xDelta;
 
-    private float weight = 0;
-
     public Player(float x, float y, String id){
         super(x,y, INITIAL_SIZE, INITIAL_SIZE, id, ObjectType.PLAYER);
     }
@@ -58,7 +56,7 @@ public class Player extends PhysicsObject implements IMoveable {
     }
 
     public void gainWeight(){
-        weight += 0.01f;
+        weight += 0.005f;
         width += weight;
         height += weight;
     }

@@ -20,6 +20,8 @@ public abstract class PhysicsObject extends GameObject {
     protected boolean isOnGround = false;
     protected float isOnGroundAt = 0;
 
+    protected float weight = 0;
+
     protected PhysicsObject(float x, float y, float width, float height, String id, ObjectType objectType) {
         super(x, y, width, height, id, objectType);
     }
@@ -42,11 +44,12 @@ public abstract class PhysicsObject extends GameObject {
         if(!isOnGround()){
             accelerate(0, -GRAVITY);
         }
+        isOnGround = false;
         return true; //TODO: could be improved
     }
 
     private boolean isOnGround(){
-        return isOnGround && Math.abs(y - isOnGroundAt) <  GROUND_THRESHOLD;
+        return isOnGround && Math.abs(y - isOnGroundAt) <  (GROUND_THRESHOLD + weight/2f);
     }
 
 
