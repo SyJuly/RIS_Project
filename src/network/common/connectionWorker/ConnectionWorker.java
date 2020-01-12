@@ -1,7 +1,7 @@
-package network.server;
+package network.common.connectionWorker;
 
-import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.NetworkMsg;
+import network.common.networkMessageHandler.NetworkMsgHandler;
+import network.common.networkMessages.NetworkMsg;
 
 import java.net.Socket;
 import java.util.Map;

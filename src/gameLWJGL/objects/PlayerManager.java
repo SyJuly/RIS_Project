@@ -2,9 +2,9 @@ package gameLWJGL.objects;
 
 import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
-import network.IMsgApplicator;
+import network.common.IMsgApplicator;
 import network.client.GameClient;
-import network.networkMessages.JoinMsg;
+import network.common.networkMessages.JoinMsg;
 
 import java.util.ArrayList;
 import java.util.HashMap;

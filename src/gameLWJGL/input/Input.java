@@ -1,8 +1,8 @@
 package gameLWJGL.input;
 
-import network.IMsgApplicator;
+import network.common.IMsgApplicator;
 import network.client.GameClient;
-import network.networkMessages.InputMsg;
+import network.common.networkMessages.InputMsg;
 
 import java.util.ArrayList;
 import java.util.List;

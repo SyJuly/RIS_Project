@@ -2,8 +2,8 @@ package gameLWJGL.objects;
 
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
-import network.IMsgApplicator;
-import network.networkMessages.DynamicObjectsMsg;
+import network.common.IMsgApplicator;
+import network.common.networkMessages.DynamicObjectsMsg;
 
 import java.io.IOException;
 import java.util.*;

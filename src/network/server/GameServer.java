@@ -7,12 +7,12 @@ import gameLWJGL.objects.ObjectHandler;
 import gameLWJGL.objects.PlayerManager;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
-import network.IMsgApplicator;
-import network.MsgType;
-import network.networkMessageHandler.InputMsgHandler;
-import network.networkMessageHandler.JoinMsgHandler;
-import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.NetworkMsg;
+import network.common.IMsgApplicator;
+import network.common.MsgType;
+import network.common.networkMessageHandler.InputMsgHandler;
+import network.common.networkMessageHandler.JoinMsgHandler;
+import network.common.networkMessageHandler.NetworkMsgHandler;
+import network.common.networkMessages.NetworkMsg;
 
 import java.util.ArrayList;
 import java.util.HashMap;

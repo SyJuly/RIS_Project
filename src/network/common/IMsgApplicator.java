@@ -1,6 +1,6 @@
-package network;
+package network.common;
 
-import network.networkMessages.NetworkMsg;
+import network.common.networkMessages.NetworkMsg;
 
 public interface IMsgApplicator<TNetworkMsg extends NetworkMsg> {
 

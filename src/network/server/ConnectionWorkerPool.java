@@ -1,7 +1,8 @@
 package network.server;
 
-import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.NetworkMsg;
+import network.common.connectionWorker.ConnectionWorker;
+import network.common.networkMessageHandler.NetworkMsgHandler;
+import network.common.networkMessages.NetworkMsg;
 
 import java.io.IOException;
 import java.net.ServerSocket;

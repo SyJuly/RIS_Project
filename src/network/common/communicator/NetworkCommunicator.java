@@ -1,4 +1,4 @@
-package network;
+package network.common.communicator;
 
 import java.io.IOException;
 import java.net.Socket;

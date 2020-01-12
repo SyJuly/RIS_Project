@@ -1,7 +1,7 @@
-package network.networkMessageHandler;
+package network.common.networkMessageHandler;
 
-import network.IMsgApplicator;
-import network.networkMessages.InputMsg;
+import network.common.IMsgApplicator;
+import network.common.networkMessages.InputMsg;
 
 import java.io.DataInputStream;
 import java.io.IOException;

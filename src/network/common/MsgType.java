@@ -1,4 +1,4 @@
-package network;
+package network.common;
 
 public enum MsgType {
 	World(6001),

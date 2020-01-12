@@ -1,7 +1,7 @@
-package network.server;
+package network.common.connectionWorker;
 
-import network.NetworkInputCommunicator;
-import network.networkMessageHandler.NetworkMsgHandler;
+import network.common.communicator.NetworkInputCommunicator;
+import network.common.networkMessageHandler.NetworkMsgHandler;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,8 +2,8 @@ package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.IObjectHolder;
-import network.IMsgApplicator;
-import network.networkMessages.WorldMsg;
+import network.common.IMsgApplicator;
+import network.common.networkMessages.WorldMsg;
 
 import java.util.*;
 

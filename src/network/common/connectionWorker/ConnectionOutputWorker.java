@@ -1,6 +1,6 @@
-package network.server;
+package network.common.connectionWorker;
 
-import network.NetworkOutputCommunicator;
+import network.common.communicator.NetworkOutputCommunicator;
 
 import java.io.IOException;
 import java.io.OutputStream;

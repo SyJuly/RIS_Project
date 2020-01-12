@@ -1,6 +1,6 @@
-package network;
+package network.common.communicator;
 
-import network.networkMessageHandler.NetworkMsgHandler;
+import network.common.networkMessageHandler.NetworkMsgHandler;
 
 import java.io.DataInputStream;
 import java.io.IOException;

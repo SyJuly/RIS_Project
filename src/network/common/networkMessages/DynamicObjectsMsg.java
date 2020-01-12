@@ -1,8 +1,8 @@
-package network.networkMessages;
+package network.common.networkMessages;
 
 import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.ObjectHandler;
-import network.MsgType;
+import network.common.MsgType;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
