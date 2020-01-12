@@ -6,13 +6,17 @@ import java.util.*;
 
 public class WorldArea implements IObjectHolder {
 
+    private final float GROUNDBLOCK_WIDTH = 0.3f;
+    private final float GROUNDBLOCK_HEIGHT = 0.05f;
+
     public float startingX;
     public float lastUsed;
     private float width;
     private LinkedList<GameObject> staticObjects;
     private LinkedList<IDynamicObject> dynamicObjects;
 
-    private Random generator = new Random(5);
+    private Random pillGenerator = new Random(5);
+    private Random blockWidthGenerator = new Random((int)startingX);
     private boolean registeredDynamicObjects = true;
 
     public WorldArea (float startingX, float width) {
@@ -27,7 +31,7 @@ public class WorldArea implements IObjectHolder {
         for (float x = 0; x < width; x+=0.7f){
             worldX = x + startingX;
             float worldY = getY(worldX);
-            GroundBlock block = new GroundBlock(worldX, worldY, 0.4f, 0.05f);
+            GroundBlock block = new GroundBlock(worldX, worldY, getWidth(), GROUNDBLOCK_HEIGHT);
             staticObjects.add(block);
             spawnWeightPill(worldX, worldY);
         }
@@ -49,8 +53,12 @@ public class WorldArea implements IObjectHolder {
         return (float)(0.4f * Math.cos(0.5f * x) - 0.4f * Math.cos(1f * x) - 0.4f * Math.cos(2f * x) + 0.3f);
     }
 
+    private float getWidth(){
+        return GROUNDBLOCK_WIDTH + (blockWidthGenerator.nextFloat() - 0.5f) * 0.5f;
+    }
+
     private void spawnWeightPill(float x, float y){
-        if(generator.nextDouble() > 0.6){
+        if(pillGenerator.nextDouble() > 0.6){
             WeightPill pill = new WeightPill(x, y + 0.2f, "pill" + x + y);
             dynamicObjects.add(pill);
         }

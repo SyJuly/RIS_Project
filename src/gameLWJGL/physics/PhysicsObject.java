@@ -9,7 +9,7 @@ public abstract class PhysicsObject extends GameObject {
 
     public static final float FRICTION = 0.99f;
     public static final float GRAVITY = 0.002f;
-    public static final float GROUND_THRESHOLD = 0.0021f;
+    public static final float GROUND_THRESHOLD = 0.0015f;
     public static final float COLLISION_THRESHOLD = 0.00001f;
 
     public float speedX = 0;
