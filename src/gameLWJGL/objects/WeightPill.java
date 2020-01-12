@@ -52,12 +52,12 @@ public class WeightPill extends GameObject implements IDynamicObject {
     }
 
     @Override
-    public Float[] getSpecifics() {
-        return new Float[0];
+    public float[] getSpecifics() {
+        return new float[0];
     }
 
     @Override
-    public void setSpecifics(Float[] specifics) {
+    public void setSpecifics(float[] specifics) {
 
     }
 

@@ -67,12 +67,12 @@ public abstract class PhysicsObject extends GameObject {
     }
 
     @Override
-    public Float[] getSpecifics() {
-        return new Float[]{speedX, speedY};
+    public float[] getSpecifics() {
+        return new float[]{speedX, speedY};
     }
 
     @Override
-    public void setSpecifics(Float[] specifics) {
+    public void setSpecifics(float[] specifics) {
         speedX = specifics[0];
         speedY = specifics[1];
     }

@@ -27,7 +27,8 @@ import static org.lwjgl.opengl.GL11.glClear;
 
 public class GameClient {
 
-    public static final String CLIENTID = "1";
+    public static String CLIENTID;
+    public static float[] COLOR;
     private Camera camera;
     private World world;
     private ObjectHandler objectHandler;
@@ -37,7 +38,9 @@ public class GameClient {
 
     private List<IMsgApplicator> msgSenders;
 
-    public GameClient(){
+    public GameClient(String id, float[] color){
+        CLIENTID = id;
+        COLOR = color;
         camera = new Camera();
         world = new World(4, camera);
         playerManager = new PlayerManager(camera);
@@ -129,7 +132,8 @@ public class GameClient {
     }
 
     public static void main(String[] args) {
-        GameClient gameClient = new GameClient();
+        float[] color = new float[]{Float.parseFloat(args[1]),Float.parseFloat(args[2]),Float.parseFloat(args[3])};
+        GameClient gameClient = new GameClient(args[0], color);
         gameClient.runGame();
     }
 }

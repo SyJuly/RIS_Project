@@ -38,7 +38,7 @@ public class DynamicObjectsMsg extends NetworkMsg {
             String id = readString(dis);
             int objectTypeCode = dis.readInt();
             int specificsLength = dis.readInt();
-            Float[] specifics = new Float[specificsLength];
+            float[] specifics = new float[specificsLength];
             for(int j = 0; j < specificsLength; j++) {
                 specifics[j] = dis.readFloat();
             }
@@ -61,7 +61,7 @@ public class DynamicObjectsMsg extends NetworkMsg {
         dos.writeInt(updatedObjects.size());
         for(int i = 0; i < updatedObjects.size(); i++){
             GameObject gameObject = updatedObjects.get(i);
-            Float[] specifics = gameObject.getSpecifics();
+            float[] specifics = gameObject.getSpecifics();
             dos.writeFloat(gameObject.x);
             dos.writeFloat(gameObject.y);
             dos.writeFloat(gameObject.width);

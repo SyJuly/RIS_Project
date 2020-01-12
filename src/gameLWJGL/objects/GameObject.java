@@ -22,7 +22,7 @@ public abstract class GameObject {
     public abstract boolean update();
     public abstract void render(Camera camera);
     public abstract void handleCollision(Collision collisionData);
-    public abstract Float[] getSpecifics();
-    public abstract void setSpecifics(Float[] specifics);
+    public abstract float[] getSpecifics();
+    public abstract void setSpecifics(float[] specifics);
 }
 

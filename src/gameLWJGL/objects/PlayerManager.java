@@ -30,8 +30,8 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         this.camera = camera; // for client
     }
 
-    public void createPlayer(float x, float y, String id, Float[] specifics){
-        System.out.println("Created player instance on client.");
+    public void createPlayer(float x, float y, String id, float[] specifics){
+        System.out.println("Created player instance on client with id: " + id);
         Player player = new Player(x,y,id);
         player.setSpecifics(specifics);
         createdPlayers.add(player.id);
@@ -57,13 +57,13 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     @Override
     public JoinMsg getMessage() {
         createLocalPlayerOnServer = false;
-        return new JoinMsg(GameClient.CLIENTID);
+        return new JoinMsg(GameClient.CLIENTID, GameClient.COLOR);
     }
 
     @Override
     public void receive(JoinMsg networkMsg) {
-        System.out.println("Creating player.");
-        Player player = new Player(0,0, networkMsg.name);
+        System.out.println("Creating player: " + networkMsg.name);
+        Player player = new Player(0,0, networkMsg.name, networkMsg.color);
         createdPlayers.add(player.id);
         players.put(player.id, player);
         camera.setPlayer(player); // latest player controlls camera

@@ -71,8 +71,6 @@ public class ServerNetworkCommunicator extends NetworkCommunicator{
     clientWorkers.add(worker);
     Thread incomingClientWorkerThread = new Thread(worker);
     incomingClientWorkerThread.start();
-    //long id = incomingClientWorkerThread.getId();
-    //worker.id = id;
   }
 
   public void sendMsgToAllClients(NetworkMsg msg) {

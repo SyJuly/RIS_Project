@@ -43,14 +43,14 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             IObjectHolder objectHolder = iter.next();
             GameObject[] newlyCreatedObjects = objectHolder.getNewlyCreatedObjects();
             String[] removedObjectIds = objectHolder.getRemovedObjects();
-            for(int i = 0; i < newlyCreatedObjects.length; i++){
-                GameObject gameObject = newlyCreatedObjects[i];
-                objects.put(gameObject.id, gameObject);
-            }
             for(int i = 0; i < removedObjectIds.length; i++){
                 String removedObjectId = removedObjectIds[i];
                 GameObject removedGameObject = objects.remove(removedObjectId);
                 removedObjects.add(removedGameObject);
+            }
+            for(int i = 0; i < newlyCreatedObjects.length; i++){
+                GameObject gameObject = newlyCreatedObjects[i];
+                objects.put(gameObject.id, gameObject);
             }
         }
     }
@@ -59,7 +59,7 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
         return new ArrayList<>(objects.values());
     }
 
-    public void createOrUpdateObject(float x, float y, float width, float height, String id, int objectTypeCode, Float[] specifics){
+    public void createOrUpdateObject(float x, float y, float width, float height, String id, int objectTypeCode, float[] specifics){
         if(!objects.containsKey(id)){
             ObjectType type = ObjectType.values()[objectTypeCode];
             switch (type) {
@@ -73,6 +73,7 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             gameObject.y = y;
             gameObject.width = width;
             gameObject.height = height;
+            gameObject.setSpecifics(specifics);
         }
     }
 
