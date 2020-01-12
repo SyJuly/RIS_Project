@@ -1,27 +1,29 @@
-package network;
+package network.server;
 
+import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessages.NetworkMsg;
-import network.server.ServerNetworkCommunicator;
+
+import java.util.Map;
 
 public class ServerNetworkManager {
 
-    private ServerNetworkCommunicator communicator;
+    private ConnectionWorkerPool connectionWorkerPool;
 
-    public ServerNetworkManager(ServerNetworkCommunicator communicator){
-        this.communicator = communicator;
+    public ServerNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers){
+        this.connectionWorkerPool = new ConnectionWorkerPool(msgHandlers);
     }
 
     public void start(){
-        Thread thread = new Thread(communicator);
+        Thread thread = new Thread(connectionWorkerPool);
         thread.start();
     }
 
     public void stop(){
-        System.out.println("Stopping NetworkManager.");
-        communicator.stop();
+        System.out.println("Stopping ServerNetworkManager.");
+        connectionWorkerPool.stop();
     }
 
     public void sendMsg(NetworkMsg msg) {
-        communicator.sendMsgToAllClients(msg);
+        connectionWorkerPool.sendMsgToAllClients(msg);
     }
 }

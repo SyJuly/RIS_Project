@@ -9,7 +9,6 @@ import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
-import network.NetworkManager;
 import network.networkMessageHandler.InputMsgHandler;
 import network.networkMessageHandler.JoinMsgHandler;
 import network.networkMessageHandler.NetworkMsgHandler;
@@ -28,7 +27,7 @@ public class GameServer {
     private ObjectHandler objectHandler;
     private PlayerManager playerManager;
     private CollisionDetector collisionDetector;
-    private NetworkManager networkManager;
+    private ServerNetworkManager networkManager;
 
     private List<IMsgApplicator> msgSenders;
 
@@ -41,7 +40,7 @@ public class GameServer {
         playerManager = new PlayerManager(input, camera);
         objectHandler = new ObjectHandler(playerManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
-        networkManager = new NetworkManager(getServerNetworkCommunicator());
+        networkManager = new ServerNetworkManager(getMsgHandlers());
         msgSenders = new ArrayList<>();
         msgSenders.add(world);
         msgSenders.add(objectHandler);
@@ -98,13 +97,14 @@ public class GameServer {
                 }
             }
         }
+        //networkManager.stop();
     }
 
-    private ServerNetworkCommunicator getServerNetworkCommunicator(){
+    private  Map<Integer, NetworkMsgHandler> getMsgHandlers(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
         msgHandlers.put(MsgType.Join.getCode(), new JoinMsgHandler(playerManager));
         msgHandlers.put(MsgType.Input.getCode(), new InputMsgHandler(input));
-        return new ServerNetworkCommunicator(msgHandlers);
+        return msgHandlers;
     }
 
     public static void main(String[] args) {

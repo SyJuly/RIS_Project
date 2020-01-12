@@ -1,43 +1,37 @@
 package network.client;
 
-import network.NetworkInputCommunicator;
 import network.networkMessageHandler.NetworkMsgHandler;
+import network.networkMessages.NetworkMsg;
+import network.server.ConnectionWorker;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Map;
 
-public class ClientNetworkCommunicator {
+public class ClientNetworkManager {
 
     private Map<Integer, NetworkMsgHandler> msgHandlers;
+    private ConnectionWorker connectionWorker = null;
 
-    public ClientNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers) {
+    public ClientNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers) {
         this.msgHandlers = msgHandlers;
     }
 
-    public void run() {
-        System.out.println("Starting client at port " + port);
-        synchronized (this) {
-            this.runningThread = Thread.currentThread();
-        }
-
-        try (Socket clientSocket = new Socket("localhost", port);
-             InputStream inputStream = clientSocket.getInputStream();
-             OutputStream outputStream = clientSocket.getOutputStream()){
-            while (!isStopped()) {
-                handleOutgoingMessages(outputStream);
-                handleIncomingMessages(inputStream);
-            }
+    public void start() {
+        System.out.println("Starting client at port " + 8080);
+        try {
+            Socket clientSocket = new Socket("localhost", 8080);
+            connectionWorker = new ConnectionWorker(clientSocket, msgHandlers);
+            connectionWorker.start();
         } catch (IOException e) {
-            if (isStopped()) {
-                System.out.println("ClientNetworkCommunicator stopped with Exception: " + e );
-                return;
+            if(connectionWorker != null){
+                connectionWorker.stop();
             }
-            throw new RuntimeException("Error connecting client", e);
+            throw new RuntimeException("Error in ClientNetworkManager, stopping connection worker.", e);
         }
-        System.out.println("ClientNetworkCommunicator stopped running.");
     }
 
+    public void sendMsg(NetworkMsg msg) {
+        connectionWorker.send(msg);
+    }
 }

@@ -9,7 +9,6 @@ import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
 import network.IMsgApplicator;
 import network.MsgType;
-import network.NetworkManager;
 import network.networkMessageHandler.DynamicObjectsMsgHandler;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessageHandler.WorldMsgHandler;
@@ -34,7 +33,7 @@ public class GameClient {
     private ObjectHandler objectHandler;
     private PlayerManager playerManager;
     private Input input;
-    private NetworkManager networkManager;
+    private ClientNetworkManager networkManager;
 
     private List<IMsgApplicator> msgSenders;
 
@@ -46,7 +45,7 @@ public class GameClient {
         playerManager = new PlayerManager(camera);
         objectHandler = new ObjectHandler(playerManager, world);
         input = new Input();
-        networkManager = new NetworkManager(getClientNetworkCommunicator());
+        networkManager = new ClientNetworkManager(getMsgHandlers());
         msgSenders = new ArrayList<>();
         msgSenders.add(input);
         msgSenders.add(playerManager);
@@ -69,6 +68,7 @@ public class GameClient {
         double lastTime = Timer.getTime();
         double unprocessed = 0; // time that hasn't been processed
 
+        System.out.println("clients main thread: " + Thread.currentThread());
         while(!window.shouldClose()){
             boolean can_render = false;
             double currentTime = Timer.getTime();
@@ -124,11 +124,11 @@ public class GameClient {
         glfwTerminate();
     }
 
-    private ClientNetworkCommunicator getClientNetworkCommunicator(){
+    private Map<Integer, NetworkMsgHandler> getMsgHandlers(){
         Map<Integer, NetworkMsgHandler> msgHandlers = new HashMap<>();
         msgHandlers.put(MsgType.World.getCode(), new WorldMsgHandler(world));
         msgHandlers.put(MsgType.DynamicObjects.getCode(), new DynamicObjectsMsgHandler(objectHandler));
-        return new ClientNetworkCommunicator(msgHandlers);
+        return msgHandlers;
     }
 
     public static void main(String[] args) {

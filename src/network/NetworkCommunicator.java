@@ -1,23 +1,24 @@
 package network;
 
-import network.networkMessageHandler.NetworkMsgHandler;
-import network.networkMessages.NetworkMsg;
-import java.util.Map;
+import java.io.IOException;
+import java.net.Socket;
 
 public abstract class NetworkCommunicator implements Runnable{
-    protected int port = 8080;
-    protected Map<Integer, NetworkMsgHandler> msgHandlers;
+    protected Socket clientSocket = null;
     protected Thread runningThread = null;
     protected boolean isStopped = false;
-
-    public NetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers){
-        this.msgHandlers = msgHandlers;
-    }
 
     protected synchronized boolean isStopped() {
         return this.isStopped;
     }
 
-    protected abstract void send(NetworkMsg networkMsg);
-    protected abstract void stop();
+    public synchronized void stop(){
+        this.isStopped = true;
+        try {
+            System.out.println("Stopping NetworkCommunicator");
+            this.clientSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error closing server", e);
+        }
+    }
 }

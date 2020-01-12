@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ServerNetworkCommunicator implements Runnable{
+public class ConnectionWorkerPool implements Runnable{
 
   protected int port = 8080;
   protected Thread runningThread = null;
@@ -20,7 +20,7 @@ public class ServerNetworkCommunicator implements Runnable{
 
   private List<ConnectionWorker> clientWorkers;
 
-  public ServerNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers){
+  public ConnectionWorkerPool(Map<Integer, NetworkMsgHandler> msgHandlers){
     this.clientWorkers = new ArrayList<>();
     this.msgHandlers = msgHandlers;
   }
@@ -38,14 +38,14 @@ public class ServerNetworkCommunicator implements Runnable{
         setUpIncomingClient(clientSocket);
       } catch (IOException e) {
         if(isStopped()) {
-          System.out.println("ServerNetworkCommunicator Stopped.") ;
+          System.out.println("ConnectionWorkerPool Stopped.") ;
           return;
         }
         throw new RuntimeException(
                 "Error accepting client connection", e);
       }
     }
-    System.out.println("ServerNetworkCommunicator Stopped.") ;
+    System.out.println("ConnectionWorkerPool Stopped.") ;
   }
 
   protected synchronized boolean isStopped() {
@@ -55,7 +55,7 @@ public class ServerNetworkCommunicator implements Runnable{
   public synchronized void stop(){
     this.isStopped = true;
     try {
-      System.out.println("Stopping ServerNetworkCommunicator");
+      System.out.println("Stopping ConnectionWorkerPool");
       for (ConnectionWorker worker: clientWorkers) {
         worker.stop();
       }
