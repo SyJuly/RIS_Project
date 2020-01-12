@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DynamicObjectsMsg extends NetworkMsg {
@@ -53,8 +54,8 @@ public class DynamicObjectsMsg extends NetworkMsg {
     }
     @Override
     public void serialize(OutputStream outputStream) throws IOException {
-        List<GameObject> updatedObjects = objectHandler.getUpdatedObjects();
-        List<GameObject> removedObjects = objectHandler.getRemovedObjects();
+        List<GameObject> updatedObjects = new ArrayList<>(objectHandler.getUpdatedObjects());
+        List<GameObject> removedObjects = new ArrayList<>(objectHandler.getRemovedObjects());
 
         DataOutputStream dos = new DataOutputStream(outputStream);
         serializeBase(dos);

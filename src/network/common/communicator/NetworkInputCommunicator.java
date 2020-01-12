@@ -23,17 +23,14 @@ public abstract class NetworkInputCommunicator extends NetworkCommunicator {
             pbi.unread(singleByte);
          */
         synchronized (inputStream) {
-            if (inputStream.available() > 0) {
-                //System.out.println("inputstream available: " + inputStream.available());
-                DataInputStream dis = new DataInputStream((inputStream));
+            DataInputStream dis = new DataInputStream((inputStream));
 
-                int msgCode = dis.readInt();
-                if (msgHandlers.containsKey((msgCode))) {
-                    System.out.println("got msg: " + msgHandlers.get(msgCode));
-                    msgHandlers.get(msgCode).handleMsg(dis);
-                } else {
-                    System.out.println("Code not found: " + msgCode);
-                }
+            int msgCode = dis.readInt();
+            if (msgHandlers.containsKey((msgCode))) {
+                System.out.println("got msg: " + msgHandlers.get(msgCode));
+                msgHandlers.get(msgCode).handleMsg(dis);
+            } else {
+                System.out.println("Code not found: " + msgCode);
             }
         }
     }
