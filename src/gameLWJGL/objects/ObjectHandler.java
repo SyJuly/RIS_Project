@@ -47,6 +47,9 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
                 String removedObjectId = removedObjectIds[i];
                 GameObject removedGameObject = objects.remove(removedObjectId);
                 removedObjects.add(removedGameObject);
+                if(updatedObjects.contains(removedGameObject)){
+                    updatedObjects.remove(removedGameObject);
+                }
             }
             for(int i = 0; i < newlyCreatedObjects.length; i++){
                 GameObject gameObject = newlyCreatedObjects[i];

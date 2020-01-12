@@ -1,11 +1,13 @@
 package network;
 
 import network.networkMessages.NetworkMsg;
-public class NetworkManager {
+import network.server.ServerNetworkCommunicator;
 
-    private NetworkCommunicator communicator;
+public class ServerNetworkManager {
 
-    public NetworkManager(NetworkCommunicator communicator){
+    private ServerNetworkCommunicator communicator;
+
+    public ServerNetworkManager(ServerNetworkCommunicator communicator){
         this.communicator = communicator;
     }
 
@@ -20,6 +22,6 @@ public class NetworkManager {
     }
 
     public void sendMsg(NetworkMsg msg) {
-        communicator.send(msg);
+        communicator.sendMsgToAllClients(msg);
     }
 }

@@ -1,6 +1,6 @@
 package network.client;
 
-import network.NetworkCommunicatorMessager;
+import network.NetworkInputCommunicator;
 import network.networkMessageHandler.NetworkMsgHandler;
 
 import java.io.IOException;
@@ -9,9 +9,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Map;
 
-public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
+public class ClientNetworkCommunicator {
+
+    private Map<Integer, NetworkMsgHandler> msgHandlers;
+
     public ClientNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers) {
-        super(msgHandlers);
+        this.msgHandlers = msgHandlers;
     }
 
     public void run() {
@@ -37,7 +40,4 @@ public class ClientNetworkCommunicator extends NetworkCommunicatorMessager {
         System.out.println("ClientNetworkCommunicator stopped running.");
     }
 
-    public synchronized void stop() {
-        this.isStopped = true;
-    }
 }

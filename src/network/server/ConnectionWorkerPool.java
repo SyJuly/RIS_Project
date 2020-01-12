@@ -1,6 +1,5 @@
 package network.server;
 
-import network.NetworkCommunicator;
 import network.networkMessageHandler.NetworkMsgHandler;
 import network.networkMessages.NetworkMsg;
 
@@ -11,15 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ServerNetworkCommunicator extends NetworkCommunicator{
+public class ServerNetworkCommunicator implements Runnable{
 
+  protected int port = 8080;
+  protected Thread runningThread = null;
+  private Map<Integer, NetworkMsgHandler> msgHandlers;
   protected ServerSocket serverSocket = null;
+  protected boolean isStopped = false;
 
-  private List<ClientWorker> clientWorkers;
+  private List<ConnectionWorker> clientWorkers;
 
   public ServerNetworkCommunicator(Map<Integer, NetworkMsgHandler> msgHandlers){
-    super(msgHandlers);
     this.clientWorkers = new ArrayList<>();
+    this.msgHandlers = msgHandlers;
   }
 
   public void run(){
@@ -45,11 +48,15 @@ public class ServerNetworkCommunicator extends NetworkCommunicator{
     System.out.println("ServerNetworkCommunicator Stopped.") ;
   }
 
+  protected synchronized boolean isStopped() {
+    return this.isStopped;
+  }
+
   public synchronized void stop(){
     this.isStopped = true;
     try {
       System.out.println("Stopping ServerNetworkCommunicator");
-      for (ClientWorker worker: clientWorkers) {
+      for (ConnectionWorker worker: clientWorkers) {
         worker.stop();
       }
       this.serverSocket.close();
@@ -67,20 +74,14 @@ public class ServerNetworkCommunicator extends NetworkCommunicator{
   }
 
   private void setUpIncomingClient(Socket clientSocket){
-    ClientWorker worker = new ClientWorker(clientSocket, "Multithreaded ServerNetworkCommunicator", msgHandlers);
+    ConnectionWorker worker = new ConnectionWorker(clientSocket, msgHandlers);
     clientWorkers.add(worker);
-    Thread incomingClientWorkerThread = new Thread(worker);
-    incomingClientWorkerThread.start();
+    worker.start();
   }
 
   public void sendMsgToAllClients(NetworkMsg msg) {
-    for (ClientWorker worker: clientWorkers) {
+    for (ConnectionWorker worker: clientWorkers) {
       worker.send(msg);
     }
-  }
-
-  @Override
-  protected void send(NetworkMsg networkMsg) {
-    sendMsgToAllClients(networkMsg);
   }
 }
