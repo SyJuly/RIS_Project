@@ -49,7 +49,7 @@ public abstract class PhysicsObject extends GameObject {
     }
 
     private boolean isOnGround(){
-        return isOnGround && Math.abs(y - isOnGroundAt) <  (GROUND_THRESHOLD + weight/2f);
+        return isOnGround && Math.abs(y - isOnGroundAt) <  (GROUND_THRESHOLD);
     }
 
 
@@ -63,7 +63,6 @@ public abstract class PhysicsObject extends GameObject {
             isOnGround = true;
             speedY = 0;
         }
-
     }
 
     @Override

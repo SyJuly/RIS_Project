@@ -32,7 +32,9 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
     }
 
     public void render(Camera camera){
-        for (GameObject gameObject : objects.values()) {
+        Iterator<GameObject> iter = objects.values().iterator();
+        while(iter.hasNext()) {
+            GameObject gameObject= iter.next();
             gameObject.render(camera);
         }
     }

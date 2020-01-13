@@ -21,7 +21,7 @@ public class CollisionDetector {
                 handleCollision(dynamicObject, staticObject, true);
             }
             for (GameObject otherDynamicObject: objectHandler.getDynamicObjects()) {
-                if(dynamicObject.id == otherDynamicObject.id) continue;
+                if(dynamicObject.id.equals(otherDynamicObject.id)) continue;
                 handleCollision(dynamicObject, otherDynamicObject, false);
             }
         }

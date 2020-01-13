@@ -75,7 +75,7 @@ public class Player extends PhysicsObject implements IMoveable {
     }
 
     public void looseWeight(){
-        weight -= WEIGHT_DIFF;
+        weight = Math.max(weight - WEIGHT_DIFF, 0);
         width += weight;
         height += weight;
     }
