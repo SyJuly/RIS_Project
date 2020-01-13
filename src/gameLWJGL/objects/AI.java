@@ -10,13 +10,13 @@ import static org.lwjgl.opengl.GL11.*;
 public class AI extends PhysicsObject implements IDynamicObject {
 
     public static final double JUMP_STRENGTH = 0.3f;
-    public static final long JUMP_RECOVERY = 1000;
+    public static final long JUMP_RECOVERY = 500;
     public static final double SPEED = 0.005f;
     public static final float[] DEFAULT_COLOR = new float[]{1,1,1};
     public static final float INITIAL_SIZE = 0.02f;
 
     private  long lastJumped = 0;
-    private  Float obstacleX = null;
+    private  float obstacleX = 0;
     private  boolean hasBeenDestroyed = false;
     private Player player;
 
@@ -35,7 +35,6 @@ public class AI extends PhysicsObject implements IDynamicObject {
         boolean physicsHasBeenUpdated = super.update();
         x += move();
 
-        obstacleX = null;
         isOnGround = false;
         return true; //TODO: could be improved
     }
@@ -59,26 +58,20 @@ public class AI extends PhysicsObject implements IDynamicObject {
 
     private float move(){
         float xPlayerDiff = player.x - x;
-        System.out.println("wayIsBlockedY? "  + wayIsBlockedY + " | y: " + y);
-        if(wayIsBlocked && !isOnGround && y+ 0.1f < wayIsBlockedY){
+        if(wayIsBlocked && !isOnGround && y + 0.01f < wayIsBlockedY){
             wayIsBlocked = false;
-            System.out.println("WAY IS UNNNNNNNNNNNNNNnBLOCKED ");
         } else if(xPlayerDiff < 0.01 && xPlayerDiff > -0.01){
             wayIsBlocked = true;
             wayIsBlockedY = y;
-            System.out.println("WAY IS BLOCKED ");
         }
         float playerDirection = xPlayerDiff/ Math.abs(xPlayerDiff);
-        float obstacleDirection = playerDirection;
 
         float yDiff = player.y - y;
         if(yDiff > 0){
             jump(yDiff);
         }
-        if(obstacleX != null){
-            float xObstacleDiff = x - obstacleX;
-            obstacleDirection = (xObstacleDiff/ Math.abs(xObstacleDiff));
-        }
+        float xObstacleDiff = x - obstacleX;
+        float obstacleDirection = (xObstacleDiff/ Math.abs(xObstacleDiff));
         float xDirection = wayIsBlocked ? obstacleDirection : playerDirection;
         xDirection = xDirection/ Math.abs(xDirection);
         float xDelta = (float) SPEED * xDirection;
@@ -87,8 +80,7 @@ public class AI extends PhysicsObject implements IDynamicObject {
 
     public void jump(float yDiff) {
         if(System.currentTimeMillis() - lastJumped > JUMP_RECOVERY){
-            //System.out.println("yDiff: " + yDiff + " | y: " + y);
-            accelerate(0, JUMP_STRENGTH * 0.2 * (double) yDiff);
+            accelerate(0, JUMP_STRENGTH * 1.2 * (double) yDiff);
             lastJumped = System.currentTimeMillis();
         }
     }
