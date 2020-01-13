@@ -12,15 +12,18 @@ import java.util.*;
 public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
 
     private PlayerManager playerManager;
+    private AIManager aiManager;
     private Map<String, GameObject> objects = new HashMap<>();
     private ArrayList<GameObject> updatedObjects = new ArrayList<>();
     private ArrayList<GameObject> removedObjects = new ArrayList<>();
     private List<IObjectHolder> objectHolders = new ArrayList<>();
 
-    public ObjectHandler(PlayerManager playerManager, World world){
+    public ObjectHandler(PlayerManager playerManager, AIManager aiManager, World world){
         this.playerManager = playerManager;
+        this.aiManager = aiManager;
         objectHolders.add(playerManager);
         objectHolders.add(world);
+        objectHolders.add(aiManager);
     }
 
     public void updateObjects(){
@@ -70,6 +73,8 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
             switch (type) {
                 case PLAYER:
                     playerManager.createPlayer(x,y,id, specifics); break;
+                case AI:
+                    aiManager.createAI(x,y,id, specifics); break;
                 default: return;
             }
         } else {

@@ -16,8 +16,6 @@ public class Player extends PhysicsObject implements IMoveable {
     public static final float INITIAL_SIZE = 0.05f;
     public static final float WEIGHT_DIFF = 0.005f;
     public static final float[] DEFAULT_COLOR = new float[]{1,1,1};
-
-    private  boolean isJumping = false;
     private float xDelta;
 
     private float[] color;
@@ -36,9 +34,7 @@ public class Player extends PhysicsObject implements IMoveable {
     public boolean update() {
         boolean physicsHasBeenUpdated = super.update();
         x += xDelta;
-        if(isJumping && speedY < 0){
-            isJumping = false;
-        }
+        isOnGround = false;
         return true; //TODO: could be improved
     }
 
@@ -55,17 +51,6 @@ public class Player extends PhysicsObject implements IMoveable {
         glVertex2f(width + xOffset, -height + yOffset);
         glVertex2f(-width + xOffset, -height + yOffset);
         glEnd();
-
-        /*glBegin(GL_QUADS);
-                glTexCoord2f(0,0);
-                glVertex2f(-squareSize + x, squareSize + y);
-                glTexCoord2f(1,0);
-                glVertex2f(squareSize + x, squareSize + y);
-                glTexCoord2f(1,1);
-                glVertex2f(squareSize + x, -squareSize + y);
-                glTexCoord2f(0,1);
-                glVertex2f(-squareSize + x, -squareSize + y);
-            glEnd();*/
     }
 
     public void gainWeight(){
@@ -83,7 +68,7 @@ public class Player extends PhysicsObject implements IMoveable {
     @Override
     public void move(int xDirection, int yDirection) {
         if(yDirection > 0){
-            jump();
+            jump(JUMP_STRENGTH);
         }
         xDelta = (float) SPEED * xDirection;
     }
@@ -114,13 +99,6 @@ public class Player extends PhysicsObject implements IMoveable {
             physicsSpecifics[i] = specifics[i];
         }
         super.setSpecifics(physicsSpecifics);
-    }
-
-    public void jump() {
-        if(!isJumping){
-            isJumping = true;
-            accelerate(0, JUMP_STRENGTH);
-        }
     }
 
     @Override

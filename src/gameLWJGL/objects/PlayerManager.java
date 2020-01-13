@@ -20,14 +20,17 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
 
     private Input input;
     private Camera camera;
+    private AIManager aiManager;
 
-    public PlayerManager(Input input, Camera camera){
+    public PlayerManager(Input input, Camera camera, AIManager aiManager){
         this.input = input; //for server
         this.camera = camera;
+        this.aiManager = aiManager;
     }
 
-    public PlayerManager(Camera camera){
-        this.camera = camera; // for client
+    public PlayerManager(Camera camera, AIManager aiManager){
+        this.camera = camera;
+        this.aiManager = aiManager; // for client
     }
 
     public void createPlayer(float x, float y, String id, float[] specifics){
@@ -36,6 +39,7 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         player.setSpecifics(specifics);
         createdPlayers.add(player.id);
         players.put(player.id, player);
+        aiManager.addPlayer(player);
         if(id.equals(GameClient.CLIENTID)){
             camera.setPlayer(player);
         }
@@ -64,6 +68,7 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     public void receive(JoinMsg networkMsg) {
         System.out.println("Creating player: " + networkMsg.name);
         Player player = new Player(0,0, networkMsg.name, networkMsg.color);
+        aiManager.addPlayer(player);
         createdPlayers.add(player.id);
         players.put(player.id, player);
         camera.setPlayer(player); // latest player controlls camera
@@ -74,7 +79,7 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     @Override
     public GameObject[] getNewlyCreatedObjects() {
         GameObject[] newlyCreatedObjects = new GameObject[createdPlayers.size()];
-        for(int i = 0; i < newlyCreatedObjects.length; i++){
+        for (int i = 0; i < newlyCreatedObjects.length; i++) {
             newlyCreatedObjects[i] = players.get(createdPlayers.get(i));
         }
         createdPlayers.clear();

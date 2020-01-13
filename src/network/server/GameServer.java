@@ -3,6 +3,7 @@ package network.server;
 import gameLWJGL.Timer;
 import gameLWJGL.collision.CollisionDetector;
 import gameLWJGL.input.Input;
+import gameLWJGL.objects.AIManager;
 import gameLWJGL.objects.ObjectHandler;
 import gameLWJGL.objects.PlayerManager;
 import gameLWJGL.world.Camera;
@@ -26,6 +27,7 @@ public class GameServer {
     private World world;
     private ObjectHandler objectHandler;
     private PlayerManager playerManager;
+    private AIManager aiManager;
     private CollisionDetector collisionDetector;
     private ServerNetworkManager networkManager;
 
@@ -37,8 +39,9 @@ public class GameServer {
 
         world.buildWorld(0);
         input = new Input();
-        playerManager = new PlayerManager(input, camera);
-        objectHandler = new ObjectHandler(playerManager, world);
+        aiManager = new AIManager();
+        playerManager = new PlayerManager(input, camera, aiManager);
+        objectHandler = new ObjectHandler(playerManager, aiManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
         networkManager = new ServerNetworkManager(getMsgHandlers());
         msgSenders = new ArrayList<>();
@@ -75,6 +78,7 @@ public class GameServer {
                 objectHandler.updateObjects();
                 camera.update();
                 world.update();
+                aiManager.update();
                 collisionDetector.detectCollisions();
 
                 for (IMsgApplicator msgApplicator: msgSenders) {

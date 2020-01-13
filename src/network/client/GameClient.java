@@ -3,6 +3,7 @@ package network.client;
 import gameLWJGL.Timer;
 import gameLWJGL.Window;
 import gameLWJGL.input.Input;
+import gameLWJGL.objects.AIManager;
 import gameLWJGL.objects.ObjectHandler;
 import gameLWJGL.objects.PlayerManager;
 import gameLWJGL.world.Camera;
@@ -32,6 +33,7 @@ public class GameClient {
     private World world;
     private ObjectHandler objectHandler;
     private PlayerManager playerManager;
+    private AIManager aiManager;
     private Input input;
     private ClientNetworkManager networkManager;
 
@@ -42,8 +44,9 @@ public class GameClient {
         COLOR = color;
         camera = new Camera();
         world = new World(4, camera);
-        playerManager = new PlayerManager(camera);
-        objectHandler = new ObjectHandler(playerManager, world);
+        aiManager = new AIManager();
+        playerManager = new PlayerManager(camera, aiManager);
+        objectHandler = new ObjectHandler(playerManager, aiManager, world);
         input = new Input();
         networkManager = new ClientNetworkManager(getMsgHandlers());
         msgSenders = new ArrayList<>();
