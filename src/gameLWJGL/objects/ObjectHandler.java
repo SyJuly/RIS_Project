@@ -2,6 +2,7 @@ package gameLWJGL.objects;
 
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
+import gameLWJGL.world.WorldUpdates;
 import network.common.IMsgApplicator;
 import network.common.networkMessages.DynamicObjectsMsg;
 
@@ -44,7 +45,21 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
     }
 
     public void updateObjectsList(){
-        Iterator<IObjectHolder> iter = objectHolders.iterator();
+        Queue<GameObject> objectsToUpdate = WorldUpdates.getInstance().getObjectUpdate();
+        while(!objectsToUpdate.isEmpty()) {
+            GameObject gameObject = objectsToUpdate.poll();
+            objects.put(gameObject.id, gameObject);
+        }
+        Queue<String> objectsToRemove = WorldUpdates.getInstance().getObjectRemove();
+        while(!objectsToRemove.isEmpty()) {
+            String removedObjectId = objectsToRemove.poll();
+            GameObject removedGameObject = objects.remove(removedObjectId);
+            removedObjects.add(removedGameObject);
+            if(updatedObjects.contains(removedGameObject)){
+                updatedObjects.remove(removedGameObject);
+            }
+        }
+        /*Iterator<IObjectHolder> iter = objectHolders.iterator();
         while(iter.hasNext()) {
             IObjectHolder objectHolder = iter.next();
             GameObject[] newlyCreatedObjects = objectHolder.getNewlyCreatedObjects();
@@ -61,7 +76,7 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
                 GameObject gameObject = newlyCreatedObjects[i];
                 objects.put(gameObject.id, gameObject);
             }
-        }
+        }*/
     }
 
     public List<GameObject> getDynamicObjects(){

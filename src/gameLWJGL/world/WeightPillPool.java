@@ -29,6 +29,7 @@ public class WeightPillPool {
             nextPill.y = y;
         }
         nextPill.setActive(true);
+        WorldUpdates.getInstance().addGameObjectToUpdate(nextPill);
         return nextPill;
     }
 

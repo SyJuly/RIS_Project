@@ -4,6 +4,7 @@ import gameLWJGL.collision.Collision;
 import gameLWJGL.collision.CollisionDirection;
 import gameLWJGL.physics.PhysicsObject;
 import gameLWJGL.world.Camera;
+import gameLWJGL.world.WorldUpdates;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -91,6 +92,7 @@ public class AI extends PhysicsObject implements IDynamicObject {
         GameObject collidingGameObject = collisionData.gameObjects[0].id == id ? collisionData.gameObjects[1] : collisionData.gameObjects[0];
         if(collidingGameObject.objectType == ObjectType.PLAYER && collisionData.aMetBs != CollisionDirection.UPSIDE){
             hasBeenDestroyed = true;
+            WorldUpdates.getInstance().addGameObjectToRemove(id);
         } else if(collisionData.isStatic){
             obstacleX = collidingGameObject.x;
         }

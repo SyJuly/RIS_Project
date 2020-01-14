@@ -1,5 +1,6 @@
 package gameLWJGL.objects;
 
+import gameLWJGL.world.WorldUpdates;
 import gameLWJGL.world.events.PrintEvent;
 import gameLWJGL.world.events.SpawnAIEvent;
 import gameLWJGL.world.events.WorldEvents;
@@ -46,35 +47,11 @@ public class AIManager implements IObjectHolder{
         createdAIs.add(ai.id);
         targets.add(target);
         idCounter++;
+        WorldUpdates.getInstance().addGameObjectToUpdate(ai);
     }
 
     public void addPlayer(Player player){
         targets.add(player);
-    }
-
-    @Override
-    public GameObject[] getNewlyCreatedObjects() {
-        GameObject[] newlyCreatedObjects = new GameObject[createdAIs.size()];
-        for (int i = 0; i < newlyCreatedObjects.length; i++) {
-            newlyCreatedObjects[i] = ais.get(createdAIs.get(i));
-        }
-        createdAIs.clear();
-        return newlyCreatedObjects;
-    }
-
-    @Override
-    public String[] getRemovedObjects() {
-        ArrayList<String> objectIdList = new ArrayList<>();
-        Iterator<AI> iter = ais.values().iterator();
-        while(iter.hasNext()) {
-            AI ai = iter.next();
-            if(ai.shouldBeDestroyed()){
-                objectIdList.add(ai.id);
-                iter.remove();
-            }
-        }
-        String[] gameObjectIds = new String[objectIdList.size()];
-        return objectIdList.toArray(gameObjectIds);
     }
 
     @Override

@@ -63,6 +63,7 @@ public class WorldArea implements IObjectHolder {
         if(pillGenerator.nextDouble() < 0.5){
             WeightPill weightPill = weightPillPool.getPill(x, y+0.2f);
             dynamicObjects.add(weightPill);
+            WorldUpdates.getInstance().addGameObjectToUpdate(weightPill);
         }
     }
 
@@ -70,32 +71,6 @@ public class WorldArea implements IObjectHolder {
         return staticObjects;
     }
 
-    @Override
-    public GameObject[] getNewlyCreatedObjects() {
-        if(!registeredDynamicObjects){
-            GameObject[] gameObjects = new GameObject[dynamicObjects.size()];
-            registeredDynamicObjects = true;
-            gameObjects = dynamicObjects.toArray(gameObjects);
-            return dynamicObjects.toArray(gameObjects);
-        }
-        return new GameObject[0];
-    }
-
-    @Override
-    public String[] getRemovedObjects() {
-        ArrayList<String> idsOfRemovedObjects = new ArrayList<>();
-        Iterator<WeightPill> iter = dynamicObjects.iterator();
-        while(iter.hasNext()) {
-            WeightPill dynamicObject = iter.next();
-            if (dynamicObject.shouldBeDestroyed()) {
-                idsOfRemovedObjects.add(dynamicObject.getGameObject().id);
-                weightPillPool.resetPill(dynamicObject);
-                iter.remove();
-            }
-        }
-        String[] idsOfRemovedObjectsArray = new String[idsOfRemovedObjects.size()];
-        return idsOfRemovedObjects.toArray(idsOfRemovedObjectsArray);
-    }
 
     @Override
     public void removeObject(String id) {

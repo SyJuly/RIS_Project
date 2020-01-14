@@ -2,6 +2,7 @@ package gameLWJGL.objects;
 
 import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
+import gameLWJGL.world.WorldUpdates;
 import gameLWJGL.world.events.WorldEvents;
 import network.common.IMsgApplicator;
 import network.client.GameClient;
@@ -45,6 +46,7 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         if(id.equals(GameClient.CLIENTID)){
             camera.setPlayer(player);
         }
+        WorldUpdates.getInstance().addGameObjectToUpdate(player);
     }
 
     @Override
@@ -72,21 +74,7 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         players.put(player.id, player);
         camera.setPlayer(player); // latest player controlls camera
         input.addMoveable(player);
-    }
-
-    @Override
-    public GameObject[] getNewlyCreatedObjects() {
-        GameObject[] newlyCreatedObjects = new GameObject[createdPlayers.size()];
-        for (int i = 0; i < newlyCreatedObjects.length; i++) {
-            newlyCreatedObjects[i] = players.get(createdPlayers.get(i));
-        }
-        createdPlayers.clear();
-        return newlyCreatedObjects;
-    }
-
-    @Override
-    public String[] getRemovedObjects() {
-        return new String[0]; //TODO
+        WorldUpdates.getInstance().addGameObjectToUpdate(player);
     }
 
     @Override

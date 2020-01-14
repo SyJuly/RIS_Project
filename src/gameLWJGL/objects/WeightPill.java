@@ -2,6 +2,7 @@ package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
 import gameLWJGL.world.Camera;
+import gameLWJGL.world.WorldUpdates;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -48,6 +49,7 @@ public class WeightPill extends GameObject implements IDynamicObject {
             Player player = (Player) collidingGameObject;
             player.gainWeight();
             hasBeenEaten = true;
+            WorldUpdates.getInstance().addGameObjectToRemove(id);
         }
     }
 
