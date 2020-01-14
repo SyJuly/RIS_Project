@@ -23,7 +23,7 @@ public abstract class NetworkOutputCommunicator extends NetworkCommunicator {
                     networkMsg.serialize(output);
                 }
                 output.flush();
-                //System.out.println("send msg: " + networkMsg.msgType + " from " + id);
+                //System.out.println("send msg: " + networkMsg.msgType + "-" + networkMsg.id +" from " + id);
             }
         }
     }

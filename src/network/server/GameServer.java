@@ -30,17 +30,18 @@ public class GameServer {
     private AIManager aiManager;
     private CollisionDetector collisionDetector;
     private ServerNetworkManager networkManager;
+    private WorldEvents eventHandler;
 
     private Thread worldEventThread;
 
     private List<IMsgApplicator> msgSenders;
 
     public GameServer(){
-        WorldEvents eventHandler = new WorldEvents();
+        eventHandler = new WorldEvents();
         camera = new Camera();
         world = new World(4, camera);
         input = new Input();
-        aiManager = new AIManager(eventHandler);
+        aiManager = new AIManager();
         playerManager = new PlayerManager(input, camera, aiManager);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
@@ -48,15 +49,13 @@ public class GameServer {
         msgSenders.add(world);
         msgSenders.add(objectHandler);
         networkManager = new ServerNetworkManager(getMsgHandlers(), msgSenders);
-
-        worldEventThread = new Thread(eventHandler);
-        worldEventThread.start();
     }
 
     public void runGame(){
-        networkManager.start();
-
         world.buildWorld(0);
+        worldEventThread = new Thread(eventHandler);
+        worldEventThread.start();
+        networkManager.start();
 
         double frame_cap = 1.0/60.0; // 60 frames per second
         double frame_time = 0;
@@ -66,6 +65,11 @@ public class GameServer {
         double unprocessed = 0; // executionTime that hasn't been processed
 
         while(true){
+
+            if(networkManager.firstPlayerHasConnected()) {
+                aiManager.setUpSpawningAIs(eventHandler);
+            }
+
             double currentTime = Timer.getTime();
             double delta = currentTime - lastTime;
             unprocessed += delta;

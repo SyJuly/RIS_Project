@@ -14,7 +14,7 @@ public class AIManager implements IObjectHolder{
             100
     };
     private static final long LEVEL_DURANCE = 10000;
-    private static final long START_SPAWNING = 1000;
+    private static final long START_SPAWNING = 0;
 
     Map<String, AI> ais = new HashMap<>();
     List<String> createdAIs = new ArrayList<>();
@@ -23,7 +23,7 @@ public class AIManager implements IObjectHolder{
 
     public AIManager(){}
 
-    public AIManager(WorldEvents eventHandler){
+    public void setUpSpawningAIs(WorldEvents eventHandler) {
         long first_spawning = System.currentTimeMillis() + START_SPAWNING;
         long nextSpawning = first_spawning;
         for(int i = 0; i < LEVEL_SPAWNING_INTERVALS.length; i++){

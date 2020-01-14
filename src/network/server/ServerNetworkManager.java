@@ -10,7 +10,9 @@ import java.util.Map;
 public class ServerNetworkManager {
 
     private ConnectionWorkerPool connectionWorkerPool;
-    List<IMsgApplicator> msgSenders;
+    private List<IMsgApplicator> msgSenders;
+
+    private boolean firedFirstPlayerArrivalEvent = false;
 
     public ServerNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers, List<IMsgApplicator> msgSenders){
         this.connectionWorkerPool = new ConnectionWorkerPool(msgHandlers);
@@ -45,5 +47,13 @@ public class ServerNetworkManager {
 
     private void sendMsg(NetworkMsg msg) {
         connectionWorkerPool.sendMsgToAllClients(msg);
+    }
+
+    public boolean firstPlayerHasConnected(){
+        if(!firedFirstPlayerArrivalEvent && connectionWorkerPool.newPlayerConnected){
+            firedFirstPlayerArrivalEvent = true;
+            return true;
+        }
+        return false;
     }
 }

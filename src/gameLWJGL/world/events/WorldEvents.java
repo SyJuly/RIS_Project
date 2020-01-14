@@ -19,8 +19,8 @@ public class WorldEvents implements Runnable{
 
     @Override
     public void run() {
-        while(!isStopped()) {
-            if(worldEvents.isEmpty()) return;
+        while(true) {
+            if(worldEvents.isEmpty()) continue;
             long time = worldEvents.peek().executionTime;
             long timeout =  time - System.currentTimeMillis();
             if (timeout <= 0) {

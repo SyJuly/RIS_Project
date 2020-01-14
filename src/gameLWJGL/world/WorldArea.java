@@ -60,7 +60,7 @@ public class WorldArea implements IObjectHolder {
     }
 
     private void spawnWeightPill(float x, float y){
-        if(pillGenerator.nextDouble() > 0.6){
+        if(pillGenerator.nextDouble() < 0.5){
             WeightPill weightPill = weightPillPool.getPill(x, y+0.2f);
             dynamicObjects.add(weightPill);
         }

@@ -4,7 +4,6 @@ public abstract class WorldEvent implements Comparable<WorldEvent>{
 
     protected WorldEventType type;
     public long executionTime;
-    public int level;
 
     public abstract void execute();
 

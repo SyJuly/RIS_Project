@@ -83,7 +83,6 @@ public class DynamicObjectsMsg extends NetworkMsg {
         dos.writeInt(removedObjects.size());
         for(int i  = 0; i < removedObjects.size(); i++){
             GameObject gameObject = removedObjects.get(i);
-            System.out.println("putting in msg to remove: " + gameObject.id);
             writeString(dos, gameObject.id);
         }
         objectHandler.clearMsgLists();

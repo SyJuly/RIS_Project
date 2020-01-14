@@ -108,12 +108,6 @@ public class Player extends PhysicsObject implements IMoveable {
         if(collidingGameObject.objectType != ObjectType.PLAYER) return;
         if(collisionData.aMetBs != CollisionDirection.UPSIDE){
             looseWeight();
-            if(weight > 0){
-                for(int i = 0; i < 5; i++){
-                    System.out.println();
-                }
-                System.out.println("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOSER");
-            }
         }
     }
 }

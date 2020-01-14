@@ -4,7 +4,8 @@ import gameLWJGL.objects.AIManager;
 
 public class SpawnAIEvent extends WorldEvent{
 
-    AIManager aiManager;
+    private AIManager aiManager;
+    private int level;
 
     public SpawnAIEvent(AIManager aiManager, long executionTime, int level){
         type = WorldEventType.SPAWN_AI;
