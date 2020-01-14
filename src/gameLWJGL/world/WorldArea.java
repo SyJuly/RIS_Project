@@ -13,15 +13,17 @@ public class WorldArea implements IObjectHolder {
     public float lastUsed;
     private float width;
     private LinkedList<GameObject> staticObjects;
-    private LinkedList<IDynamicObject> dynamicObjects;
+    private LinkedList<WeightPill> dynamicObjects;
+    private WeightPillPool weightPillPool;
 
     private Random pillGenerator = new Random(5);
     private Random blockWidthGenerator = new Random((int)startingX);
     private boolean registeredDynamicObjects = true;
 
-    public WorldArea (float startingX, float width) {
+    public WorldArea (float startingX, float width, WeightPillPool weightPillPool) {
         this.startingX = startingX;
         this.width = width;
+        this.weightPillPool = weightPillPool;
         staticObjects = new LinkedList<>();
         dynamicObjects = new LinkedList<>();
     }
@@ -59,8 +61,8 @@ public class WorldArea implements IObjectHolder {
 
     private void spawnWeightPill(float x, float y){
         if(pillGenerator.nextDouble() > 0.6){
-            WeightPill pill = new WeightPill(x, y + 0.2f, "pill" + x + y);
-            dynamicObjects.add(pill);
+            WeightPill weightPill = weightPillPool.getPill(x, y+0.2f);
+            dynamicObjects.add(weightPill);
         }
     }
 
@@ -82,11 +84,12 @@ public class WorldArea implements IObjectHolder {
     @Override
     public String[] getRemovedObjects() {
         ArrayList<String> idsOfRemovedObjects = new ArrayList<>();
-        Iterator<IDynamicObject> iter = dynamicObjects.iterator();
+        Iterator<WeightPill> iter = dynamicObjects.iterator();
         while(iter.hasNext()) {
-            IDynamicObject dynamicObject = iter.next();
+            WeightPill dynamicObject = iter.next();
             if (dynamicObject.shouldBeDestroyed()) {
                 idsOfRemovedObjects.add(dynamicObject.getGameObject().id);
+                weightPillPool.resetPill(dynamicObject);
                 iter.remove();
             }
         }
@@ -97,9 +100,10 @@ public class WorldArea implements IObjectHolder {
     @Override
     public void removeObject(String id) {
         for(int i= 0; i < dynamicObjects.size(); i++){
-            IDynamicObject dynamicObject = dynamicObjects.get(i);
+            WeightPill dynamicObject = dynamicObjects.get(i);
             if (dynamicObject.getGameObject().id.equals(id)) {
                 dynamicObjects.remove(dynamicObject);
+                weightPillPool.resetPill(dynamicObject);
             }
         }
     }

@@ -36,8 +36,6 @@ public class GameServer {
     public GameServer(){
         camera = new Camera();
         world = new World(4, camera);
-
-        world.buildWorld(0);
         input = new Input();
         aiManager = new AIManager();
         playerManager = new PlayerManager(input, camera, aiManager);

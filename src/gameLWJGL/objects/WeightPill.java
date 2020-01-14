@@ -12,6 +12,7 @@ public class WeightPill extends GameObject implements IDynamicObject {
     public static final float PI_TWICE = 2.0f * (float)Math.PI;
 
     private boolean hasBeenEaten = false;
+    private boolean isActive = false;
 
     public WeightPill(float x, float y, String id ) {
         super(x, y, SIZE, SIZE, id, ObjectType.PILL);
@@ -24,7 +25,6 @@ public class WeightPill extends GameObject implements IDynamicObject {
 
     @Override
     public void render(Camera camera) {
-
         float xOffset = camera.getXOffset(x);
         float yOffset = camera.getYOffset(y);
 
@@ -69,5 +69,16 @@ public class WeightPill extends GameObject implements IDynamicObject {
     @Override
     public GameObject getGameObject() {
         return this;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean setActive) {
+        isActive = setActive;
+        if(setActive){
+            hasBeenEaten = false;
+        }
     }
 }

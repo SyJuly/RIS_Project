@@ -56,6 +56,7 @@ public class GameClient {
 
     private void runGame(){
         networkManager.start();
+        world.buildWorld(0);
 
         if(!glfwInit()){
             throw new IllegalStateException("Failed to initialise GLFW.");
@@ -89,6 +90,9 @@ public class GameClient {
                 glfwPollEvents();
 
                 input.handleInput(window.window);
+                objectHandler.updateObjectsList();
+                camera.update();
+                world.update();
 
                 for (IMsgApplicator msgApplicator: msgSenders) {
                     if(msgApplicator.shouldSendMessage()){
@@ -97,10 +101,6 @@ public class GameClient {
                     }
                 }
 
-
-                objectHandler.updateObjectsList();
-                camera.update();
-                world.update();
 
                 if(frame_time >= 1.0){
                     frame_time = 0;

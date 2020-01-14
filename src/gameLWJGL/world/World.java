@@ -9,8 +9,10 @@ import java.util.*;
 
 public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
 
+    private final int NUMBER_OF_OBJECTS_IN_WEIGHTPILLPOOL = 20;
     private WorldArea[] world;
     private Map<Float, WorldArea> worldCache;
+    private WeightPillPool weightPillPool;
     private Camera camera;
     private int worldSize = 3;
     private int worldCacheSize = 6;
@@ -23,6 +25,7 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
         this.camera = camera;
         this.worldAreaWidth = worldAreaWidth;
         worldCache = new HashMap<>();
+        weightPillPool = new WeightPillPool(NUMBER_OF_OBJECTS_IN_WEIGHTPILLPOOL);
     }
 
     public void buildWorld(float centralX){
@@ -30,7 +33,7 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
         float startingX = centralX - worldAreaWidth;
         world = new WorldArea[worldSize];
         for (int i = 0; i < worldSize; i++){
-            WorldArea area = new WorldArea(startingX, worldAreaWidth);
+            WorldArea area = new WorldArea(startingX, worldAreaWidth, weightPillPool);
             world[i] = area;
             area.buildWorld();
             startingX += worldAreaWidth;
@@ -105,7 +108,7 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
             worldCache.remove(neededAreaStartingX);
             System.out.println("Loaded world area from cache in direction: " + direction);
         } else {
-            area = new WorldArea(neededAreaStartingX, worldAreaWidth);
+            area = new WorldArea(neededAreaStartingX, worldAreaWidth, weightPillPool);
             area.buildWorld();
             System.out.println("Created world area in direction: " + direction);
         }
