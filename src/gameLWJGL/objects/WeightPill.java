@@ -2,7 +2,6 @@ package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
 import gameLWJGL.world.Camera;
-import gameLWJGL.world.WeightPillPool;
 import gameLWJGL.world.WorldUpdates;
 
 import static org.lwjgl.opengl.GL11.*;

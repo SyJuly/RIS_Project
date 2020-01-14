@@ -2,8 +2,9 @@ package gameLWJGL.world;
 
 import gameLWJGL.objects.GameObject;
 import gameLWJGL.objects.IObjectHolder;
-import network.common.IMsgApplicator;
-import network.common.networkMessages.WorldMsg;
+import gameLWJGL.objects.WeightPillPool;
+import gameLWJGL.network.common.IMsgApplicator;
+import gameLWJGL.network.common.networkMessages.WorldMsg;
 
 import java.util.*;
 

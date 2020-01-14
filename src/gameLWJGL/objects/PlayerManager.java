@@ -4,9 +4,9 @@ import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.WorldUpdates;
 import gameLWJGL.world.events.WorldEvents;
-import network.client.GameClient;
-import network.common.IMsgApplicator;
-import network.common.networkMessages.JoinMsg;
+import gameLWJGL.network.client.GameClient;
+import gameLWJGL.network.common.IMsgApplicator;
+import gameLWJGL.network.common.networkMessages.JoinMsg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
