@@ -98,7 +98,12 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
 
     @Override
     public DynamicObjectsMsg getMessage() {
-        return new DynamicObjectsMsg(this);
+        return new DynamicObjectsMsg(this, false);
+    }
+
+    @Override
+    public DynamicObjectsMsg getStartMessage() {
+        return new DynamicObjectsMsg(this, true);
     }
 
     @Override

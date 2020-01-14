@@ -15,7 +15,6 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     private Map<String, Player> players = new HashMap<>();
     private ArrayList<String> createdPlayers = new ArrayList<>();
 
-    private boolean hasNewPlayer = false;
     private boolean createLocalPlayerOnServer = true;
 
     private Input input;
@@ -45,14 +44,6 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         }
     }
 
-    public boolean hasNewPlayer() {
-        return hasNewPlayer;
-    }
-
-    public void setHasNewPlayer(boolean hasNewPlayer) {
-        this.hasNewPlayer = hasNewPlayer;
-    }
-
     @Override
     public boolean shouldSendMessage() {
         return createLocalPlayerOnServer;
@@ -65,6 +56,11 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     }
 
     @Override
+    public JoinMsg getStartMessage() {
+        return null;
+    }
+
+    @Override
     public void receive(JoinMsg networkMsg) {
         System.out.println("Creating player: " + networkMsg.name);
         Player player = new Player(0,0, networkMsg.name, networkMsg.color);
@@ -73,7 +69,6 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         players.put(player.id, player);
         camera.setPlayer(player); // latest player controlls camera
         input.addMoveable(player);
-        hasNewPlayer = true;
     }
 
     @Override

@@ -13,7 +13,6 @@ import network.common.MsgType;
 import network.common.networkMessageHandler.DynamicObjectsMsgHandler;
 import network.common.networkMessageHandler.NetworkMsgHandler;
 import network.common.networkMessageHandler.WorldMsgHandler;
-import network.common.networkMessages.NetworkMsg;
 import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
@@ -48,10 +47,10 @@ public class GameClient {
         playerManager = new PlayerManager(camera, aiManager);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         input = new Input();
-        networkManager = new ClientNetworkManager(getMsgHandlers());
         msgSenders = new ArrayList<>();
         msgSenders.add(input);
         msgSenders.add(playerManager);
+        networkManager = new ClientNetworkManager(getMsgHandlers(), msgSenders);
     }
 
     private void runGame(){
@@ -89,16 +88,10 @@ public class GameClient {
                 glfwPollEvents();
 
                 input.handleInput(window.window);
+                world.update();
                 objectHandler.updateObjectsList();
                 camera.update();
-                world.update();
-
-                for (IMsgApplicator msgApplicator: msgSenders) {
-                    if(msgApplicator.shouldSendMessage()){
-                        NetworkMsg msg = msgApplicator.getMessage();
-                        networkManager.sendMsg(msg);
-                    }
-                }
+                networkManager.sendMessages();
 
 
                 if(frame_time >= 1.0){

@@ -14,7 +14,6 @@ import network.common.MsgType;
 import network.common.networkMessageHandler.InputMsgHandler;
 import network.common.networkMessageHandler.JoinMsgHandler;
 import network.common.networkMessageHandler.NetworkMsgHandler;
-import network.common.networkMessages.NetworkMsg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,10 +44,10 @@ public class GameServer {
         playerManager = new PlayerManager(input, camera, aiManager);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
-        networkManager = new ServerNetworkManager(getMsgHandlers());
         msgSenders = new ArrayList<>();
         msgSenders.add(world);
         msgSenders.add(objectHandler);
+        networkManager = new ServerNetworkManager(getMsgHandlers(), msgSenders);
 
         worldEventThread = new Thread(eventHandler);
         worldEventThread.start();
@@ -84,16 +83,7 @@ public class GameServer {
                 camera.update();
                 world.update();
                 collisionDetector.detectCollisions();
-
-                for (IMsgApplicator msgApplicator: msgSenders) {
-                    if(msgApplicator.shouldSendMessage() || playerManager.hasNewPlayer()){
-                        NetworkMsg msg = msgApplicator.getMessage();
-                        networkManager.sendMsg(msg);
-                    }
-                }
-                if(playerManager.hasNewPlayer()){
-                    playerManager.setHasNewPlayer(false);
-                }
+                networkManager.sendMessages();
 
                 // for each IMsgSender check if shouldSend
                 // if true -> send msg to SNM

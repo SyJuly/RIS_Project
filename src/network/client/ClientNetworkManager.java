@@ -1,20 +1,33 @@
 package network.client;
 
+import network.common.IMsgApplicator;
 import network.common.networkMessageHandler.NetworkMsgHandler;
 import network.common.networkMessages.NetworkMsg;
 import network.common.connectionWorker.ConnectionWorker;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.Map;
 
 public class ClientNetworkManager {
 
+    private final List<IMsgApplicator> msgSenders;
     private Map<Integer, NetworkMsgHandler> msgHandlers;
     private ConnectionWorker connectionWorker = null;
 
-    public ClientNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers) {
+    public ClientNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers, List<IMsgApplicator> msgSenders) {
         this.msgHandlers = msgHandlers;
+        this.msgSenders = msgSenders;
+    }
+
+    public void sendMessages(){
+        for (IMsgApplicator msgApplicator: msgSenders) {
+            if(msgApplicator.shouldSendMessage()){
+                NetworkMsg msg = msgApplicator.getMessage();
+                sendMsg(msg);
+            }
+        }
     }
 
     public void start() {

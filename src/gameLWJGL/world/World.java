@@ -19,8 +19,6 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
     private float currentCentralX;
     private float worldAreaWidth;
 
-    private boolean hasBeenUpdated = false;
-
     public World (float worldAreaWidth, Camera camera){
         this.camera = camera;
         this.worldAreaWidth = worldAreaWidth;
@@ -38,7 +36,6 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
             area.buildWorld();
             startingX += worldAreaWidth;
         }
-        hasBeenUpdated = true;
     }
 
     public List<GameObject> getStaticObjects(){
@@ -117,12 +114,16 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
 
     @Override
     public boolean shouldSendMessage() {
-        return hasBeenUpdated;
+        return false;
     }
 
     @Override
     public WorldMsg getMessage() {
-        hasBeenUpdated = false;
+        return new WorldMsg(currentCentralX);
+    }
+
+    @Override
+    public WorldMsg getStartMessage() {
         return new WorldMsg(currentCentralX);
     }
 

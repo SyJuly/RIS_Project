@@ -13,11 +13,13 @@ import java.util.List;
 
 public class DynamicObjectsMsg extends NetworkMsg {
 
-    ObjectHandler objectHandler;
-    DataInputStream dis = null;
+    private ObjectHandler objectHandler;
+    private DataInputStream dis = null;
+    private boolean sendAll = false;
 
-    public DynamicObjectsMsg(ObjectHandler objectHandler){
+    public DynamicObjectsMsg(ObjectHandler objectHandler, boolean sendAll){
         super();
+        this.sendAll = sendAll;
         this.msgType = MsgType.DynamicObjects;
         this.objectHandler = objectHandler;
     }
@@ -52,10 +54,11 @@ public class DynamicObjectsMsg extends NetworkMsg {
         }
         objectHandler.acknowledgeEndOfDynamicObjectsMsg();
     }
+
     @Override
     public void serialize(OutputStream outputStream) throws IOException {
-        List<GameObject> updatedObjects = new ArrayList<>(objectHandler.getUpdatedObjects());
-        List<GameObject> removedObjects = new ArrayList<>(objectHandler.getRemovedObjects());
+        List<GameObject> updatedObjects = sendAll ? new ArrayList<>(objectHandler.getDynamicObjects()) : new ArrayList<>(objectHandler.getUpdatedObjects());
+        List<GameObject> removedObjects = sendAll ? new ArrayList<>() : new ArrayList<>(objectHandler.getRemovedObjects());
 
         DataOutputStream dos = new DataOutputStream(outputStream);
         serializeBase(dos);

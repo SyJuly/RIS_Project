@@ -71,6 +71,11 @@ public class Input implements IMsgApplicator<InputMsg> {
     }
 
     @Override
+    public InputMsg getStartMessage() {
+        return null;
+    }
+
+    @Override
     public void receive(InputMsg networkMsg) {
         for (int i = 0; i < moveables.size(); i++){
             IMoveable tempMovable = moveables.get(i);

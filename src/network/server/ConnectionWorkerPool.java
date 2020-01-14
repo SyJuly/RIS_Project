@@ -19,6 +19,8 @@ public class ConnectionWorkerPool implements Runnable{
   protected ServerSocket serverSocket = null;
   protected boolean isStopped = false;
 
+  public boolean newPlayerConnected = false;
+
   private List<ConnectionWorker> clientWorkers;
 
   public ConnectionWorkerPool(Map<Integer, NetworkMsgHandler> msgHandlers){
@@ -79,6 +81,7 @@ public class ConnectionWorkerPool implements Runnable{
     clientWorkers.add(worker);
     worker.id = clientWorkers.indexOf(worker);
     worker.start();
+    newPlayerConnected = true;
   }
 
   public void sendMsgToAllClients(NetworkMsg msg) {

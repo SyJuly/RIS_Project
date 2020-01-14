@@ -1,16 +1,36 @@
 package network.server;
 
+import network.common.IMsgApplicator;
 import network.common.networkMessageHandler.NetworkMsgHandler;
 import network.common.networkMessages.NetworkMsg;
 
+import java.util.List;
 import java.util.Map;
 
 public class ServerNetworkManager {
 
     private ConnectionWorkerPool connectionWorkerPool;
+    List<IMsgApplicator> msgSenders;
 
-    public ServerNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers){
+    public ServerNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers, List<IMsgApplicator> msgSenders){
         this.connectionWorkerPool = new ConnectionWorkerPool(msgHandlers);
+        this.msgSenders = msgSenders;
+    }
+
+    public void sendMessages(){
+        for (IMsgApplicator msgApplicator: msgSenders) {
+            if(connectionWorkerPool.newPlayerConnected){
+                NetworkMsg msg = msgApplicator.getStartMessage();
+                if(msg != null){
+                    sendMsg(msg);
+                }
+            }
+            if(msgApplicator.shouldSendMessage()){
+                NetworkMsg msg = msgApplicator.getMessage();
+                sendMsg(msg);
+            }
+        }
+        connectionWorkerPool.newPlayerConnected = false;
     }
 
     public void start(){
@@ -23,7 +43,7 @@ public class ServerNetworkManager {
         connectionWorkerPool.stop();
     }
 
-    public void sendMsg(NetworkMsg msg) {
+    private void sendMsg(NetworkMsg msg) {
         connectionWorkerPool.sendMsgToAllClients(msg);
     }
 }

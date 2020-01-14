@@ -1,5 +1,6 @@
 package gameLWJGL.objects;
 
+import gameLWJGL.world.events.PrintEvent;
 import gameLWJGL.world.events.SpawnAIEvent;
 import gameLWJGL.world.events.WorldEvents;
 
@@ -27,6 +28,7 @@ public class AIManager implements IObjectHolder{
         long nextSpawning = first_spawning;
         for(int i = 0; i < LEVEL_SPAWNING_INTERVALS.length; i++){
             int numberOfEvents = Math.round(LEVEL_DURANCE * 1f/ LEVEL_SPAWNING_INTERVALS[i]);
+            eventHandler.addEvent(new PrintEvent("LEVEL " + (i + 1) + " BEGINS.", nextSpawning - 1));
             for(int j = 0; j < numberOfEvents; j++) {
                 nextSpawning += LEVEL_SPAWNING_INTERVALS[i];
                 SpawnAIEvent event = new SpawnAIEvent(this, nextSpawning, i);
