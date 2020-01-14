@@ -59,24 +59,6 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
                 updatedObjects.remove(removedGameObject);
             }
         }
-        /*Iterator<IObjectHolder> iter = objectHolders.iterator();
-        while(iter.hasNext()) {
-            IObjectHolder objectHolder = iter.next();
-            GameObject[] newlyCreatedObjects = objectHolder.getNewlyCreatedObjects();
-            String[] removedObjectIds = objectHolder.getRemovedObjects();
-            for(int i = 0; i < removedObjectIds.length; i++){
-                String removedObjectId = removedObjectIds[i];
-                GameObject removedGameObject = objects.remove(removedObjectId);
-                removedObjects.add(removedGameObject);
-                if(updatedObjects.contains(removedGameObject)){
-                    updatedObjects.remove(removedGameObject);
-                }
-            }
-            for(int i = 0; i < newlyCreatedObjects.length; i++){
-                GameObject gameObject = newlyCreatedObjects[i];
-                objects.put(gameObject.id, gameObject);
-            }
-        }*/
     }
 
     public List<GameObject> getDynamicObjects(){
@@ -131,6 +113,9 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
     }
 
     public void removeObject(String removedObjectId) {
+        if(!objects.containsKey(removedObjectId)){
+            return;
+        }
         Iterator<IObjectHolder> iter = objectHolders.iterator();
         while(iter.hasNext()) {
             IObjectHolder objectHolder = iter.next();

@@ -13,6 +13,5 @@ public class PrintEvent extends WorldEvent {
         System.out.println();
         System.out.println(text);
         System.out.println();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 }

@@ -2,6 +2,7 @@ package gameLWJGL.objects;
 
 import gameLWJGL.collision.Collision;
 import gameLWJGL.world.Camera;
+import gameLWJGL.world.WeightPillPool;
 import gameLWJGL.world.WorldUpdates;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -12,11 +13,13 @@ public class WeightPill extends GameObject implements IDynamicObject {
     public static final float NUM_TRIANGLES = 10;
     public static final float PI_TWICE = 2.0f * (float)Math.PI;
 
+    private WeightPillPool pool;
     private boolean hasBeenEaten = false;
     private boolean isActive = false;
 
-    public WeightPill(float x, float y, String id ) {
+    public WeightPill(float x, float y, String id, WeightPillPool pool) {
         super(x, y, SIZE, SIZE, id, ObjectType.PILL);
+        this.pool = pool;
     }
 
     @Override
@@ -49,6 +52,7 @@ public class WeightPill extends GameObject implements IDynamicObject {
             Player player = (Player) collidingGameObject;
             player.gainWeight();
             hasBeenEaten = true;
+            pool.resetPill(this);
             WorldUpdates.getInstance().addGameObjectToRemove(id);
         }
     }
@@ -59,9 +63,7 @@ public class WeightPill extends GameObject implements IDynamicObject {
     }
 
     @Override
-    public void setSpecifics(float[] specifics) {
-
-    }
+    public void setSpecifics(float[] specifics) { }
 
     @Override
     public boolean shouldBeDestroyed() {

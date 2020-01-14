@@ -14,6 +14,9 @@ import java.util.List;
 public class DynamicObjectsMsg extends NetworkMsg {
 
     private ObjectHandler objectHandler;
+    private List<GameObject> updatedObjectList;
+    private List<GameObject> allObjectList;
+    private List<GameObject> removedObjectList;
     private DataInputStream dis = null;
     private boolean sendAll = false;
 
@@ -22,6 +25,9 @@ public class DynamicObjectsMsg extends NetworkMsg {
         this.sendAll = sendAll;
         this.msgType = MsgType.DynamicObjects;
         this.objectHandler = objectHandler;
+        this.removedObjectList = new ArrayList<>(objectHandler.getRemovedObjects());
+        this.allObjectList = new ArrayList<>(objectHandler.getDynamicObjects());
+        this.updatedObjectList = new ArrayList<>(objectHandler.getUpdatedObjects());
     }
 
     public DynamicObjectsMsg(DataInputStream dis){
@@ -57,8 +63,8 @@ public class DynamicObjectsMsg extends NetworkMsg {
 
     @Override
     public void serialize(OutputStream outputStream) throws IOException {
-        List<GameObject> updatedObjects = sendAll ? new ArrayList<>(objectHandler.getDynamicObjects()) : new ArrayList<>(objectHandler.getUpdatedObjects());
-        List<GameObject> removedObjects = sendAll ? new ArrayList<>() : new ArrayList<>(objectHandler.getRemovedObjects());
+        List<GameObject> updatedObjects = sendAll ? allObjectList : updatedObjectList;
+        List<GameObject> removedObjects = sendAll ? new ArrayList<>() : removedObjectList;
 
         DataOutputStream dos = new DataOutputStream(outputStream);
         serializeBase(dos);

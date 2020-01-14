@@ -65,5 +65,6 @@ public class AIManager implements IObjectHolder{
         ais.put(ai.id, ai);
         createdAIs.add(ai.id);
         idCounter++;
+        WorldUpdates.getInstance().addGameObjectToUpdate(ai);
     }
 }
