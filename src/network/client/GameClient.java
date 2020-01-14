@@ -56,7 +56,6 @@ public class GameClient {
 
     private void runGame(){
         networkManager.start();
-        world.buildWorld(0);
 
         if(!glfwInit()){
             throw new IllegalStateException("Failed to initialise GLFW.");
@@ -70,7 +69,7 @@ public class GameClient {
         double frame_time = 0;
         int frames = 0;
         double lastTime = Timer.getTime();
-        double unprocessed = 0; // time that hasn't been processed
+        double unprocessed = 0; // executionTime that hasn't been processed
 
         System.out.println("clients main thread: " + Thread.currentThread());
         while(!window.shouldClose()){

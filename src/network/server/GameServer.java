@@ -8,6 +8,7 @@ import gameLWJGL.objects.ObjectHandler;
 import gameLWJGL.objects.PlayerManager;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.World;
+import gameLWJGL.world.events.WorldEvents;
 import network.common.IMsgApplicator;
 import network.common.MsgType;
 import network.common.networkMessageHandler.InputMsgHandler;
@@ -31,13 +32,16 @@ public class GameServer {
     private CollisionDetector collisionDetector;
     private ServerNetworkManager networkManager;
 
+    private Thread worldEventThread;
+
     private List<IMsgApplicator> msgSenders;
 
     public GameServer(){
+        WorldEvents eventHandler = new WorldEvents();
         camera = new Camera();
         world = new World(4, camera);
         input = new Input();
-        aiManager = new AIManager();
+        aiManager = new AIManager(eventHandler);
         playerManager = new PlayerManager(input, camera, aiManager);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
@@ -45,6 +49,9 @@ public class GameServer {
         msgSenders = new ArrayList<>();
         msgSenders.add(world);
         msgSenders.add(objectHandler);
+
+        worldEventThread = new Thread(eventHandler);
+        worldEventThread.start();
     }
 
     public void runGame(){
@@ -57,7 +64,7 @@ public class GameServer {
 
         int frames = 0;
         double lastTime = Timer.getTime();
-        double unprocessed = 0; // time that hasn't been processed
+        double unprocessed = 0; // executionTime that hasn't been processed
 
         while(true){
             double currentTime = Timer.getTime();
@@ -76,7 +83,6 @@ public class GameServer {
                 objectHandler.updateObjects();
                 camera.update();
                 world.update();
-                aiManager.update();
                 collisionDetector.detectCollisions();
 
                 for (IMsgApplicator msgApplicator: msgSenders) {
@@ -88,6 +94,7 @@ public class GameServer {
                 if(playerManager.hasNewPlayer()){
                     playerManager.setHasNewPlayer(false);
                 }
+
                 // for each IMsgSender check if shouldSend
                 // if true -> send msg to SNM
 

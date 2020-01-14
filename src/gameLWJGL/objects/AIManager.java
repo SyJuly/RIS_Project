@@ -1,23 +1,42 @@
 package gameLWJGL.objects;
 
+import gameLWJGL.world.events.SpawnAIEvent;
+import gameLWJGL.world.events.WorldEvents;
+
 import java.util.*;
 
 public class AIManager implements IObjectHolder{
 
-    private static final long SPAWNING_INTERVAL = 10000;
+    private static final long[] LEVEL_SPAWNING_INTERVALS = new long[]{
+            5000,
+            1000,
+            100
+    };
+    private static final long LEVEL_DURANCE = 10000;
+    private static final long START_SPAWNING = 1000;
+
     Map<String, AI> ais = new HashMap<>();
     List<String> createdAIs = new ArrayList<>();
     Queue<Player> targets = new LinkedList<>();
-    private long lastSpawned;
     private int idCounter;
 
-    public void update(){
-        if(targets.size() > 0 && System.currentTimeMillis() - lastSpawned > SPAWNING_INTERVAL){
-            spawnAI();
+    public AIManager(){}
+
+    public AIManager(WorldEvents eventHandler){
+        long first_spawning = System.currentTimeMillis() + START_SPAWNING;
+        long nextSpawning = first_spawning;
+        for(int i = 0; i < LEVEL_SPAWNING_INTERVALS.length; i++){
+            int numberOfEvents = Math.round(LEVEL_DURANCE * 1f/ LEVEL_SPAWNING_INTERVALS[i]);
+            for(int j = 0; j < numberOfEvents; j++) {
+                nextSpawning += LEVEL_SPAWNING_INTERVALS[i];
+                SpawnAIEvent event = new SpawnAIEvent(this, nextSpawning, i);
+                eventHandler.addEvent(event);
+            }
+            System.out.println("Spawing per level: " + numberOfEvents);
         }
     }
 
-    private void spawnAI(){
+    public void spawnAI(){
         System.out.println("Spawning AI.");
         Player target = targets.poll();
         AI ai = new AI( 1,2, "ai" + idCounter, target);
@@ -25,7 +44,6 @@ public class AIManager implements IObjectHolder{
         createdAIs.add(ai.id);
         targets.add(target);
         idCounter++;
-        lastSpawned = System.currentTimeMillis();
     }
 
     public void addPlayer(Player player){
@@ -68,6 +86,5 @@ public class AIManager implements IObjectHolder{
         ais.put(ai.id, ai);
         createdAIs.add(ai.id);
         idCounter++;
-        lastSpawned = System.currentTimeMillis();
     }
 }
