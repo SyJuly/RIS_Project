@@ -15,19 +15,19 @@ public class WeightPillPool {
         for (int i = 0; i <= numberOfObjectsInPool; i++) {
             weightPills.add(new WeightPill(0,0, "pill" + i, this));
         }
-        idCounter = numberOfObjectsInPool;
     }
 
     public WeightPill getPill(float x, float y){
         WeightPill nextPill = weightPills.peek();
         if(nextPill == null || nextPill.isActive()){
-            idCounter++;
             nextPill = new WeightPill(x,y,"pill" + idCounter, this);
         } else {
             nextPill = weightPills.poll();
             nextPill.x = x;
             nextPill.y = y;
+            nextPill.id = "pill" + idCounter;
         }
+        idCounter++;
         nextPill.setActive(true);
         WorldUpdates.getInstance().addGameObjectToUpdate(nextPill);
         return nextPill;

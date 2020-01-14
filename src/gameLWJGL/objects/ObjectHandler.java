@@ -48,12 +48,18 @@ public class ObjectHandler implements IMsgApplicator<DynamicObjectsMsg>{
         Queue<GameObject> objectsToUpdate = WorldUpdates.getInstance().getObjectUpdate();
         while(!objectsToUpdate.isEmpty()) {
             GameObject gameObject = objectsToUpdate.poll();
+            if(gameObject == null){
+                continue;
+            }
             objects.put(gameObject.id, gameObject);
         }
         Queue<String> objectsToRemove = WorldUpdates.getInstance().getObjectRemove();
         while(!objectsToRemove.isEmpty()) {
             String removedObjectId = objectsToRemove.poll();
             GameObject removedGameObject = objects.remove(removedObjectId);
+            if(removedGameObject == null){
+                continue;
+            }
             removedObjects.add(removedGameObject);
             if(updatedObjects.contains(removedGameObject)){
                 updatedObjects.remove(removedGameObject);

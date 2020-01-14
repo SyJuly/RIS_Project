@@ -40,11 +40,14 @@ public class DynamicObjectsMsg extends NetworkMsg {
         deserializeBase(dis);
         int updatedObjectsSize = dis.readInt();
         for(int i = 0; i < updatedObjectsSize; i++){
+            String id = readString(dis);
+            if(id.equals("NULL")){
+                continue;
+            }
             float x = dis.readFloat();
             float y = dis.readFloat();
             float width = dis.readFloat();
             float height = dis.readFloat();
-            String id = readString(dis);
             int objectTypeCode = dis.readInt();
             int specificsLength = dis.readInt();
             float[] specifics = new float[specificsLength];
@@ -63,7 +66,7 @@ public class DynamicObjectsMsg extends NetworkMsg {
 
     @Override
     public void serialize(OutputStream outputStream) throws IOException {
-        List<GameObject> updatedObjects = sendAll ? allObjectList : updatedObjectList;
+        List<GameObject> updatedObjects = sendAll ? allObjectList : new ArrayList<>(updatedObjectList);
         List<GameObject> removedObjects = sendAll ? new ArrayList<>() : removedObjectList;
 
         DataOutputStream dos = new DataOutputStream(outputStream);
@@ -71,15 +74,16 @@ public class DynamicObjectsMsg extends NetworkMsg {
         dos.writeInt(updatedObjects.size());
         for(int i = 0; i < updatedObjects.size(); i++){
             GameObject gameObject = updatedObjects.get(i);
-            if(gameObject == null){
-                continue;
+            if(gameObject != null){
+                writeString(dos, gameObject.id);
+            } else {
+                writeString(dos, "NULL");
             }
             float[] specifics = gameObject.getSpecifics();
             dos.writeFloat(gameObject.x);
             dos.writeFloat(gameObject.y);
             dos.writeFloat(gameObject.width);
             dos.writeFloat(gameObject.height);
-            writeString(dos, gameObject.id);
             dos.writeInt(gameObject.objectType.ordinal());
             dos.writeInt(specifics.length);
             for(int j = 0; j < specifics.length; j++) {

@@ -72,6 +72,20 @@ public class WorldArea implements IObjectHolder {
     }
 
 
+    public void activateDynamicObjects(){
+        for(int i = 0; i < dynamicObjects.size(); i++){
+            GameObject tempObject = dynamicObjects.get(i).getGameObject();
+            WorldUpdates.getInstance().addGameObjectToUpdate(tempObject);
+        }
+    }
+
+    public void deactivateDynamicObjects(){
+        for(int i = 0; i < dynamicObjects.size(); i++){
+            GameObject tempObject = dynamicObjects.get(i).getGameObject();
+            WorldUpdates.getInstance().addGameObjectToRemove(tempObject.id);
+        }
+    }
+
     @Override
     public void removeObject(String id) {
         for(int i= 0; i < dynamicObjects.size(); i++){

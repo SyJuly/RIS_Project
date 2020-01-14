@@ -15,7 +15,6 @@ public class CollisionDetector {
     }
 
     public void detectCollisions(){
-
         for (GameObject dynamicObject: objectHandler.getDynamicObjects()) {
             for (GameObject staticObject : world.getStaticObjects()) {
                 handleCollision(dynamicObject, staticObject, true);

@@ -64,6 +64,7 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
         int startIndex = direction > 0 ? 0 : worldSize - 1;
         int endIndex = direction > 0 ? worldSize - 1 : 0;
         WorldArea areaToCache = world[startIndex];
+        areaToCache.deactivateDynamicObjects();
         worldCache.put(areaToCache.startingX, areaToCache);
         areaToCache.lastUsed = System.currentTimeMillis();
 
@@ -103,6 +104,7 @@ public class World implements IMsgApplicator<WorldMsg>, IObjectHolder {
         if(worldCache.containsKey(neededAreaStartingX)){
             area = worldCache.get(neededAreaStartingX);
             worldCache.remove(neededAreaStartingX);
+            area.activateDynamicObjects();
             System.out.println("Loaded world area from cache in direction: " + direction);
         } else {
             area = new WorldArea(neededAreaStartingX, worldAreaWidth, weightPillPool);
