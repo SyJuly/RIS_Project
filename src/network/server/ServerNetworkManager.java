@@ -9,19 +9,19 @@ import java.util.Map;
 
 public class ServerNetworkManager {
 
-    private ConnectionWorkerPool connectionWorkerPool;
+    private ConnectionWorkerWrapper connectionWorkerWrapper;
     private List<IMsgApplicator> msgSenders;
 
     private boolean firedFirstPlayerArrivalEvent = false;
 
     public ServerNetworkManager(Map<Integer, NetworkMsgHandler> msgHandlers, List<IMsgApplicator> msgSenders){
-        this.connectionWorkerPool = new ConnectionWorkerPool(msgHandlers);
+        this.connectionWorkerWrapper = new ConnectionWorkerWrapper(msgHandlers);
         this.msgSenders = msgSenders;
     }
 
     public void sendMessages(){
         for (IMsgApplicator msgApplicator: msgSenders) {
-            if(connectionWorkerPool.newPlayerConnected){
+            if(connectionWorkerWrapper.newPlayerConnected){
                 NetworkMsg msg = msgApplicator.getStartMessage();
                 if(msg != null){
                     sendMsg(msg);
@@ -32,25 +32,25 @@ public class ServerNetworkManager {
                 sendMsg(msg);
             }
         }
-        connectionWorkerPool.newPlayerConnected = false;
+        connectionWorkerWrapper.newPlayerConnected = false;
     }
 
     public void start(){
-        Thread thread = new Thread(connectionWorkerPool);
+        Thread thread = new Thread(connectionWorkerWrapper);
         thread.start();
     }
 
     public void stop(){
         System.out.println("Stopping ServerNetworkManager.");
-        connectionWorkerPool.stop();
+        connectionWorkerWrapper.stop();
     }
 
     private void sendMsg(NetworkMsg msg) {
-        connectionWorkerPool.sendMsgToAllClients(msg);
+        connectionWorkerWrapper.sendMsgToAllClients(msg);
     }
 
     public boolean firstPlayerHasConnected(){
-        if(!firedFirstPlayerArrivalEvent && connectionWorkerPool.newPlayerConnected){
+        if(!firedFirstPlayerArrivalEvent && connectionWorkerWrapper.newPlayerConnected){
             firedFirstPlayerArrivalEvent = true;
             return true;
         }
