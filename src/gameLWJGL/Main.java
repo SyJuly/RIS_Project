@@ -78,6 +78,4 @@ public class Main {
 
         glfwTerminate();*/
     }
-
-    //https://www.youtube.com/watch?v=S7W-zjppzlI&list=PLILiqflMilIxta2xKk2EftiRHD4nQGW0u&index=17
 }

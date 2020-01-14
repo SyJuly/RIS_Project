@@ -40,7 +40,7 @@ public class AIManager implements IObjectHolder{
     }
 
     public void spawnAI(){
-        System.out.println("Spawning AI.");
+        //System.out.println("Spawning AI.");
         Player target = targets.poll();
         AI ai = new AI( 1,2, "ai" + idCounter, target);
         ais.put(ai.id, ai);

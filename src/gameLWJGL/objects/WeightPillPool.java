@@ -10,7 +10,7 @@ public class WeightPillPool {
     Queue<WeightPill> weightPills;
     int idCounter = 0;
 
-    WeightPillPool(int numberOfObjectsInPool){
+    public WeightPillPool(int numberOfObjectsInPool){
         weightPills = new ConcurrentLinkedQueue();
         for (int i = 0; i <= numberOfObjectsInPool; i++) {
             weightPills.add(new WeightPill(0,0, "pill" + i, this));
