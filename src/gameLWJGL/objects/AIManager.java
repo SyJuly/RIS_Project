@@ -11,7 +11,7 @@ public class AIManager implements IObjectHolder{
     private static final long[] LEVEL_SPAWNING_INTERVALS = new long[]{
             5000,
             1000,
-            100
+            1000
     };
     private static final long LEVEL_DURANCE = 10000;
     private static final long START_SPAWNING = 0;

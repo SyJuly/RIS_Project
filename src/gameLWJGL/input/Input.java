@@ -80,7 +80,7 @@ public class Input implements IMsgApplicator<InputMsg> {
         for (int i = 0; i < moveables.size(); i++){
             IMoveable tempMovable = moveables.get(i);
             if (networkMsg.clientID.equals(tempMovable.getId())){
-                System.out.println("INPUT APPLIED");
+                //System.out.println("INPUT APPLIED");
                 tempMovable.move(networkMsg.xDirection, networkMsg.yDirection);
             }
         }

@@ -5,6 +5,8 @@ import gameLWJGL.collision.CollisionDirection;
 import gameLWJGL.input.IMoveable;
 import gameLWJGL.physics.PhysicsObject;
 import gameLWJGL.world.Camera;
+import gameLWJGL.world.events.PrintEvent;
+import gameLWJGL.world.events.WorldEvents;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -14,10 +16,10 @@ public class Player extends PhysicsObject implements IMoveable {
     public static final double JUMP_STRENGTH = 0.3f;
     public static final double SPEED = 0.03f;
     public static final float INITIAL_SIZE = 0.05f;
-    public static final float WEIGHT_DIFF = 0.005f;
+    public static final float WEIGHT_DIFF = 0.02f;
     public static final float[] DEFAULT_COLOR = new float[]{1,1,1};
+    private WorldEvents eventHandler;
     private float xDelta;
-
     private float[] color;
 
     public Player(float x, float y, String id){
@@ -25,9 +27,10 @@ public class Player extends PhysicsObject implements IMoveable {
         this.color = DEFAULT_COLOR;
     }
 
-    public Player(float x, float y, String id, float[] color){
+    public Player(float x, float y, String id, float[] color, WorldEvents eventHandler){
         super(x,y, INITIAL_SIZE, INITIAL_SIZE, id, ObjectType.PLAYER);
         this.color = color;
+        this.eventHandler = eventHandler;
     }
 
     @Override
@@ -54,15 +57,25 @@ public class Player extends PhysicsObject implements IMoveable {
     }
 
     public void gainWeight(){
+        float prevWeight = weight;
         weight += WEIGHT_DIFF;
-        width += weight;
-        height += weight;
+        changeWeight(prevWeight);
     }
 
     public void looseWeight(){
+        float prevWeight = weight;
         weight = Math.max(weight - WEIGHT_DIFF, 0);
-        width += weight;
-        height += weight;
+        changeWeight(prevWeight);
+        if(weight == 0){
+            eventHandler.addEvent(new PrintEvent("PLAYER " + id + " LOST, HA YOU LOOSER.", System.currentTimeMillis()));
+        }
+    }
+
+    private void changeWeight(float prevWeight){
+        width = width - prevWeight + weight;
+        height = height - prevWeight + weight;
+        eventHandler.addEvent(new PrintEvent("Player " + id + " has a weight of " + weight + ".", System.currentTimeMillis()));
+
     }
 
     @Override
@@ -105,8 +118,8 @@ public class Player extends PhysicsObject implements IMoveable {
     public void handleCollision(Collision collisionData) {
         super.handleCollision(collisionData);
         GameObject collidingGameObject = collisionData.gameObjects[0].id == id ? collisionData.gameObjects[1] : collisionData.gameObjects[0];
-        if(collidingGameObject.objectType != ObjectType.PLAYER) return;
-        if(collisionData.aMetBs != CollisionDirection.UPSIDE){
+        if((collidingGameObject.objectType == ObjectType.AI || collidingGameObject.objectType == ObjectType.PLAYER)
+                && collisionData.aMetBs != CollisionDirection.DOWNSIDE){
             looseWeight();
         }
     }

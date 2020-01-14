@@ -9,11 +9,10 @@ public class PrintEvent extends WorldEvent {
     }
     @Override
     public void execute() {
-        for(int i = 0; i < 10; i++){
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        }
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         System.out.println();
         System.out.println(text);
+        System.out.println();
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 }

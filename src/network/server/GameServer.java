@@ -42,7 +42,7 @@ public class GameServer {
         world = new World(4, camera);
         input = new Input();
         aiManager = new AIManager();
-        playerManager = new PlayerManager(input, camera, aiManager);
+        playerManager = new PlayerManager(input, camera, aiManager, eventHandler);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
         msgSenders = new ArrayList<>();
