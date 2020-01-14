@@ -18,7 +18,6 @@ public class WorldArea implements IObjectHolder {
 
     private Random pillGenerator = new Random(5);
     private Random blockWidthGenerator = new Random((int)startingX);
-    private boolean registeredDynamicObjects = true;
 
     public WorldArea (float startingX, float width, WeightPillPool weightPillPool) {
         this.startingX = startingX;
@@ -37,7 +36,6 @@ public class WorldArea implements IObjectHolder {
             staticObjects.add(block);
             spawnWeightPill(worldX, worldY);
         }
-        registeredDynamicObjects = false;
     }
 
     public void render(Camera camera){

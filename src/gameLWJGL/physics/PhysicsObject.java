@@ -50,6 +50,10 @@ public abstract class PhysicsObject extends GameObject {
         return true; //TODO: could be improved
     }
 
+    public void updateOnClient(){
+        moveWithPhysics(speedX, speedY);
+    }
+
     public void jump(double jump_strength) {
         if(!isJumping){
             isJumping = true;

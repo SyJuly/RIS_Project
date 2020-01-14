@@ -59,6 +59,9 @@ public class DynamicObjectsMsg extends NetworkMsg {
         int removedObjectsSize = dis.readInt();
         for(int i = 0; i < removedObjectsSize; i++){
             String removedObjectId = readString(dis);
+            if(removedObjectId.equals("NULL")){
+                continue;
+            }
             objectHandler.removeObject(removedObjectId);
         }
         objectHandler.acknowledgeEndOfDynamicObjectsMsg();
@@ -78,6 +81,7 @@ public class DynamicObjectsMsg extends NetworkMsg {
                 writeString(dos, gameObject.id);
             } else {
                 writeString(dos, "NULL");
+                continue;
             }
             float[] specifics = gameObject.getSpecifics();
             dos.writeFloat(gameObject.x);
@@ -93,7 +97,12 @@ public class DynamicObjectsMsg extends NetworkMsg {
         dos.writeInt(removedObjects.size());
         for(int i  = 0; i < removedObjects.size(); i++){
             GameObject gameObject = removedObjects.get(i);
-            writeString(dos, gameObject.id);
+            if(gameObject != null){
+                writeString(dos, gameObject.id);
+            } else {
+                writeString(dos, "NULL");
+                continue;
+            }
         }
         objectHandler.clearMsgLists();
     }

@@ -90,6 +90,7 @@ public class GameClient {
                 input.handleInput(window.window);
                 world.update();
                 objectHandler.updateObjectsList();
+                playerManager.updateOnClient(); // for interpolation/prediction
                 camera.update();
                 networkManager.sendMessages();
 

@@ -4,13 +4,14 @@ import gameLWJGL.input.Input;
 import gameLWJGL.world.Camera;
 import gameLWJGL.world.WorldUpdates;
 import gameLWJGL.world.events.WorldEvents;
-import network.common.IMsgApplicator;
 import network.client.GameClient;
+import network.common.IMsgApplicator;
 import network.common.networkMessages.JoinMsg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
 
@@ -34,6 +35,13 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     public PlayerManager(Camera camera, AIManager aiManager){
         this.camera = camera;
         this.aiManager = aiManager; // for client
+    }
+
+    public void updateOnClient(){
+        Set<String> playerKeys = players.keySet();
+        for(String playerKey: playerKeys){
+            players.get(playerKey).updateOnClient();
+        }
     }
 
     public void createPlayer(float x, float y, String id, float[] specifics){
