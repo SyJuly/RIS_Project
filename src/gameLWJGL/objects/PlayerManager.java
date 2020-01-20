@@ -1,12 +1,11 @@
 package gameLWJGL.objects;
 
 import gameLWJGL.input.Input;
-import gameLWJGL.world.Camera;
-import gameLWJGL.world.WorldUpdates;
-import gameLWJGL.world.events.WorldEvents;
 import gameLWJGL.network.client.GameClient;
 import gameLWJGL.network.common.IMsgApplicator;
 import gameLWJGL.network.common.networkMessages.JoinMsg;
+import gameLWJGL.world.WorldUpdates;
+import gameLWJGL.world.events.WorldEvents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,19 +20,16 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     private boolean createLocalPlayerOnServer = true;
 
     private Input input;
-    private Camera camera;
     private AIManager aiManager;
     private WorldEvents eventsHandler;
 
     public PlayerManager(Input input, AIManager aiManager, WorldEvents eventsHandler){
         this.input = input; //for server
-        this.camera = camera;
         this.aiManager = aiManager;
         this.eventsHandler = eventsHandler;
     }
 
     public PlayerManager(AIManager aiManager){
-        this.camera = camera;
         this.aiManager = aiManager; // for client
     }
 
