@@ -25,14 +25,14 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
     private AIManager aiManager;
     private WorldEvents eventsHandler;
 
-    public PlayerManager(Input input, Camera camera, AIManager aiManager, WorldEvents eventsHandler){
+    public PlayerManager(Input input, AIManager aiManager, WorldEvents eventsHandler){
         this.input = input; //for server
         this.camera = camera;
         this.aiManager = aiManager;
         this.eventsHandler = eventsHandler;
     }
 
-    public PlayerManager(Camera camera, AIManager aiManager){
+    public PlayerManager(AIManager aiManager){
         this.camera = camera;
         this.aiManager = aiManager; // for client
     }
@@ -51,10 +51,11 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         createdPlayers.add(player.id);
         players.put(player.id, player);
         aiManager.addPlayer(player);
-        if(id.equals(GameClient.CLIENTID)){
-            camera.setPlayer(player);
-        }
         WorldUpdates.getInstance().addGameObjectToUpdate(player);
+    }
+
+    public Map<String, Player> getPlayers() {
+        return players;
     }
 
     @Override
@@ -80,7 +81,6 @@ public class PlayerManager implements IObjectHolder, IMsgApplicator<JoinMsg> {
         aiManager.addPlayer(player);
         createdPlayers.add(player.id);
         players.put(player.id, player);
-        camera.setPlayer(player); // latest player controlls camera
         input.addMoveable(player);
         WorldUpdates.getInstance().addGameObjectToUpdate(player);
     }

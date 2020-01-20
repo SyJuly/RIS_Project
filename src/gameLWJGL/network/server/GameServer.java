@@ -38,11 +38,11 @@ public class GameServer {
 
     public GameServer(){
         eventHandler = new WorldEvents();
-        camera = new Camera();
-        world = new World(4, camera);
         input = new Input();
         aiManager = new AIManager();
-        playerManager = new PlayerManager(input, camera, aiManager, eventHandler);
+        playerManager = new PlayerManager(input, aiManager, eventHandler);
+        camera = new Camera(playerManager);
+        world = new World(4, camera);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         collisionDetector = new CollisionDetector(world, objectHandler);
         msgSenders = new ArrayList<>();

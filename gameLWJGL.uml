@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>gameLWJGL</OriginalElement>
+  <nodes>
+    <node x="257.25" y="239.0">gameLWJGL.objects.GameObject</node>
+    <node x="589.0" y="468.0">gameLWJGL.network.client.ClientNetworkManager</node>
+    <node x="198.56944444444443" y="395.0">gameLWJGL.objects.AI</node>
+    <node x="217.0" y="692.0">gameLWJGL.objects.ObjectType</node>
+    <node x="243.75" y="317.0">gameLWJGL.physics.PhysicsObject</node>
+    <node x="0.0" y="692.0">gameLWJGL.objects.WeightPillPool</node>
+    <node x="119.55092592592592" y="78.0">gameLWJGL.objects.IObjectHolder</node>
+    <node x="573.75" y="317.0">gameLWJGL.objects.GroundBlock</node>
+    <node x="0.0" y="765.0">gameLWJGL.network.common.MsgType</node>
+    <node x="0.0" y="166.0">gameLWJGL.objects.AIManager</node>
+    <node x="680.0" y="166.0">gameLWJGL.input.Input</node>
+    <node x="291.0" y="468.0">gameLWJGL.network.server.ConnectionWorkerWrapper</node>
+    <node x="0.0" y="395.0">gameLWJGL.objects.WeightPill</node>
+    <node x="0.0" y="546.0">gameLWJGL.network.common.connectionWorker</node>
+    <node x="147.0" y="166.0">gameLWJGL.world</node>
+    <node x="613.375" y="78.0">gameLWJGL.network.common.networkMessageHandler</node>
+    <node x="426.75" y="317.0">gameLWJGL.input.IMoveable</node>
+    <node x="398.0" y="692.0">gameLWJGL.network.client.GameClient</node>
+    <node x="462.0" y="765.0">gameLWJGL.Window</node>
+    <node x="154.0" y="765.0">gameLWJGL.graphics.Texture</node>
+    <node x="0.0" y="838.0">gameLWJGL.Main</node>
+    <node x="579.0" y="692.0">gameLWJGL.network.server.GameServer</node>
+    <node x="127.0" y="838.0">gameLWJGL.collision.AABB</node>
+    <node x="0.0" y="619.0">gameLWJGL.network.server.ServerNetworkManager</node>
+    <node x="497.0" y="166.0">gameLWJGL.objects.ObjectHandler</node>
+    <node x="376.06944444444446" y="395.0">gameLWJGL.objects.Player</node>
+    <node x="271.0" y="619.0">gameLWJGL.collision.CollisionDirection</node>
+    <node x="524.0" y="619.0">gameLWJGL.collision.CollisionDetector</node>
+    <node x="314.0" y="166.0">gameLWJGL.objects.PlayerManager</node>
+    <node x="51.75" y="317.0">gameLWJGL.objects.IDynamicObject</node>
+    <node x="760.0" y="692.0">gameLWJGL.collision.Collision</node>
+    <node x="18.0" y="468.0">gameLWJGL.network.common.communicator</node>
+    <node x="514.625" y="0.0">gameLWJGL.network.common.networkMessages</node>
+    <node x="607.0" y="765.0">gameLWJGL.graphics.Model</node>
+    <node x="421.375" y="78.0">gameLWJGL.network.common.IMsgApplicator</node>
+    <node x="743.0" y="765.0">gameLWJGL.Timer</node>
+    <node x="308.0" y="765.0">gameLWJGL.graphics.Utility</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="gameLWJGL.objects.WeightPill" target="gameLWJGL.objects.IDynamicObject">
+      <point x="34.0" y="-14.0" />
+      <point x="102.0" y="370.0" />
+      <point x="94.75" y="370.0" />
+      <point x="-43.0" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.AIManager" target="gameLWJGL.objects.IObjectHolder">
+      <point x="0.0" y="-14.0" />
+      <point x="63.5" y="146.0" />
+      <point x="146.71759259259255" y="146.0" />
+      <point x="-54.33333333333334" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.Player" target="gameLWJGL.input.IMoveable">
+      <point x="25.0" y="-14.0" />
+      <point x="451.06944444444446" y="370.0" />
+      <point x="490.25" y="370.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.network.common.IMsgApplicator" target="gameLWJGL.network.common.networkMessages">
+      <point x="0.0" y="-14.0" />
+      <point x="507.375" y="53.0" />
+      <point x="573.875" y="53.0" />
+      <point x="-59.25" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.GroundBlock" target="gameLWJGL.objects.GameObject">
+      <point x="0.0" y="-14.0" />
+      <point x="646.25" y="292.0" />
+      <point x="370.58333333333337" y="292.0" />
+      <point x="45.33333333333337" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.WeightPill" target="gameLWJGL.objects.GameObject">
+      <point x="-34.0" y="-14.0" />
+      <point x="34.0" y="370.0" />
+      <point x="41.25" y="370.0" />
+      <point x="41.25" y="292.0" />
+      <point x="279.9166666666667" y="292.0" />
+      <point x="-45.333333333333314" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.PlayerManager" target="gameLWJGL.network.common.IMsgApplicator">
+      <point x="40.75" y="-14.0" />
+      <point x="436.25" y="146.0" />
+      <point x="485.875" y="146.0" />
+      <point x="-21.5" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.PlayerManager" target="gameLWJGL.objects.IObjectHolder">
+      <point x="-40.75" y="-14.0" />
+      <point x="354.75" y="126.0" />
+      <point x="255.38425925925927" y="126.0" />
+      <point x="54.33333333333334" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.world" target="gameLWJGL.network.common.IMsgApplicator">
+      <point x="36.75" y="-14.0" />
+      <point x="257.25" y="136.0" />
+      <point x="442.875" y="136.0" />
+      <point x="-64.5" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.network.common.networkMessageHandler" target="gameLWJGL.network.common.networkMessages">
+      <point x="0.0" y="-14.0" />
+      <point x="758.875" y="53.0" />
+      <point x="692.375" y="53.0" />
+      <point x="59.25" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.world" target="gameLWJGL.objects.IObjectHolder">
+      <point x="-36.75" y="-14.0" />
+      <point x="183.75" y="146.0" />
+      <point x="201.05092592592592" y="146.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.Player" target="gameLWJGL.physics.PhysicsObject">
+      <point x="-25.0" y="-14.0" />
+      <point x="401.06944444444446" y="370.0" />
+      <point x="366.0" y="370.0" />
+      <point x="40.75" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.physics.PhysicsObject" target="gameLWJGL.objects.GameObject">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.AI" target="gameLWJGL.physics.PhysicsObject">
+      <point x="16.0" y="-14.0" />
+      <point x="246.56944444444443" y="370.0" />
+      <point x="284.5" y="370.0" />
+      <point x="-40.75" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.AI" target="gameLWJGL.objects.IDynamicObject">
+      <point x="-16.0" y="-14.0" />
+      <point x="214.56944444444443" y="370.0" />
+      <point x="180.75" y="370.0" />
+      <point x="43.0" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.objects.ObjectHandler" target="gameLWJGL.network.common.IMsgApplicator">
+      <point x="0.0" y="-14.0" />
+      <point x="578.5" y="146.0" />
+      <point x="528.875" y="146.0" />
+      <point x="21.5" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.network.common.connectionWorker" target="gameLWJGL.network.common.communicator">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="gameLWJGL.input.Input" target="gameLWJGL.network.common.IMsgApplicator">
+      <point x="0.0" y="-14.0" />
+      <point x="725.5" y="136.0" />
+      <point x="571.875" y="136.0" />
+      <point x="64.5" y="14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.36665266694666104" x="683.5000000000002" y="436.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

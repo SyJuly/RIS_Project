@@ -1,20 +1,25 @@
 package gameLWJGL.world;
 
 import gameLWJGL.objects.Player;
+import gameLWJGL.objects.PlayerManager;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class Camera {
 
     private final float CAMERA_THRESHOLD = 0.3f;
-    private Player player;
+    private PlayerManager playerManager;
     public float x, y;
 
-    public Camera(Player player){
-        this.player = player;
+    public Camera(PlayerManager playerManager){
+        this.playerManager = playerManager;
     }
-    public Camera(){ }
 
     public void update(){
-        if(player == null) return;
+        Map<String, Player> players = playerManager.getPlayers();
+        if(players.isEmpty()) return;
+        Player player = getPlayerOnTheRight(players);
         float xDiff = Math.abs(x - player.x);
         float yDiff = Math.abs(y - player.y);
         if(xDiff > CAMERA_THRESHOLD){
@@ -25,8 +30,16 @@ public class Camera {
         }
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    private Player getPlayerOnTheRight(Map<String, Player> players) {
+        Iterator<Player> iter = players.values().iterator();
+        Player rightPlayer = iter.next();
+        while (iter.hasNext()){
+            Player player = iter.next();
+            if(player.x > rightPlayer.x){
+                rightPlayer = player;
+            }
+        }
+        return rightPlayer;
     }
 
     public float getXOffset(float objX){

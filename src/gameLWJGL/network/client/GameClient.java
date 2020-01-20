@@ -41,10 +41,10 @@ public class GameClient {
     public GameClient(String id, float[] color){
         CLIENTID = id;
         COLOR = color;
-        camera = new Camera();
-        world = new World(4, camera);
         aiManager = new AIManager();
-        playerManager = new PlayerManager(camera, aiManager);
+        playerManager = new PlayerManager(aiManager);
+        camera = new Camera(playerManager);
+        world = new World(4, camera);
         objectHandler = new ObjectHandler(playerManager, aiManager, world);
         input = new Input();
         msgSenders = new ArrayList<>();
